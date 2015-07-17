@@ -1,0 +1,979 @@
+fileFormatVersion: 2
+guid: b1f2222bfb99ab943adcc4c482b627c3
+timeCreated: 1435008238
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Cards6_0
+    21300002: Cards6_1
+    21300004: Cards6_2
+    21300006: Cards6_3
+    21300008: Cards6_4
+    21300010: Cards6_5
+    21300012: Cards6_6
+    21300014: Cards6_7
+    21300016: Cards6_8
+    21300018: Cards6_9
+    21300020: Cards6_10
+    21300022: Cards6_11
+    21300024: Cards6_12
+    21300026: Cards6_13
+    21300028: Cards6_14
+    21300030: Cards6_15
+    21300032: Cards6_16
+    21300034: Cards6_17
+    21300036: Cards6_18
+    21300038: Cards6_19
+    21300040: Cards6_20
+    21300042: Cards6_21
+    21300044: Cards6_22
+    21300046: Cards6_23
+    21300048: Cards6_24
+    21300050: Cards6_25
+    21300052: Cards6_26
+    21300054: Cards6_27
+    21300056: Cards6_28
+    21300058: Cards6_29
+    21300060: Cards6_30
+    21300062: Cards6_31
+    21300064: Cards6_32
+    21300066: Cards6_33
+    21300068: Cards6_34
+    21300070: Cards6_35
+    21300072: Cards6_36
+    21300074: Cards6_37
+    21300076: Cards6_38
+    21300078: Cards6_39
+    21300080: Cards6_40
+    21300082: Cards6_41
+    21300084: Cards6_42
+    21300086: Cards6_43
+    21300088: Cards6_44
+    21300090: Cards6_45
+    21300092: Cards6_46
+    21300094: Cards6_47
+    21300096: Cards6_48
+    21300098: Cards6_49
+    21300100: Cards6_50
+    21300102: Cards6_51
+    21300104: Cards6_52
+    21300106: Cards6_53
+    21300108: Cards6_54
+    21300110: Cards6_55
+    21300112: Cards6_56
+    21300114: Cards6_57
+    21300116: Cards6_58
+    21300118: Cards6_59
+    21300120: Cards6_60
+    21300122: Cards6_61
+    21300124: Cards6_62
+    21300126: Cards6_63
+    21300128: Cards6_64
+    21300130: Cards6_65
+    21300132: Cards6_66
+    21300134: Cards6_67
+    21300136: Cards6_68
+    21300138: Cards6_69
+    21300140: Cards6_70
+    21300142: Cards6_71
+    21300144: Cards6_72
+    21300146: Cards6_73
+    21300148: Cards6_74
+    21300150: Cards6_75
+    21300152: Cards6_76
+    21300154: Cards6_77
+    21300156: Cards6_78
+    21300158: Cards6_79
+    21300160: Cards6_80
+    21300162: Cards6_81
+    21300164: Cards6_82
+    21300166: Cards6_83
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Cards6_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_1
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_2
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_3
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_4
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_5
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_6
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_7
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_8
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_9
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_10
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_11
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_12
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_13
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 590
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_15
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_16
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_17
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_18
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_19
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_20
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_21
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_22
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_23
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_24
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_25
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_26
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_27
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 472
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_28
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_29
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_30
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_31
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_32
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_33
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_34
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_35
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_36
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_37
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_38
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_39
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_40
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_41
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 354
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_42
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_43
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_44
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_45
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_46
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_47
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_48
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_49
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_50
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_51
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_52
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_53
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_54
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_55
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 236
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_57
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_58
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_59
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_60
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_61
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_62
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_63
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_64
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_65
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_66
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_67
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_68
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_69
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 118
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_70
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_71
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_72
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_73
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_74
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_75
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_76
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_77
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_78
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_79
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_80
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_81
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_82
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cards6_83
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 0
+        width: 84
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
