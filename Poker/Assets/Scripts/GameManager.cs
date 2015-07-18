@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
 	public GameObject Player;
 	List<PlayerScript> playerScripts;
-	List<PlayerScript> activePlayers;
+	//List<PlayerScript> activePlayers;
 	CardDeck cardDeck;
 
 	public GameObject Card;
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 	int pot;
 	List<PlayerScript> allinPlayers;
 
-	int dealerCheap = -1;
+	int dealerCheap;
 	int lastPlayer;
 	int currentPlayer;
 
@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
 		playerUIScript.gameObject.SetActive (false);
 		cardDeck = new CardDeck();
 		cardDeck.Shuffle ();
+		dealerCheap = numOfPlayers - 1;
 		//timer = 0;
 		playerScripts = new List<PlayerScript> ();
 		for (int i =0; i<numOfPlayers; i++)
@@ -72,11 +73,6 @@ public class GameManager : MonoBehaviour
 			RoundController ();
 	}
 
-	private void DeleteAllinLosers()
-	{
-		
-	}
-
 	private void RoundController()
 	{
 		if (gamePhase == 0)
@@ -86,19 +82,19 @@ public class GameManager : MonoBehaviour
 		else 
 		{
 			var player = playerScripts[currentPlayer];
+			if (player.Thinking)
+				return;
 			if (PlayerMadeMove(player))
 		    {
-				if (player.Money == 0)
-					allinPlayers = playersFilter.AddAllinPlayer(allinPlayers,player);
 				playerUIScript.gameObject.SetActive(false);
 				CheckRaise(player);
+				if (player.Money == 0)
+					allinPlayers = playersFilter.AddAllinPlayer(allinPlayers,player);
 				if (player.Folded && currentPlayer == lastPlayer)
-					lastPlayer = SetNextPlayer(lastPlayer);
+					lastPlayer = SetPrevPlayer(lastPlayer);
 				currentPlayer = SetNextPlayer(currentPlayer);
 				CountPOT();
-			}
-			else if (player.Thinking)
-				return;
+			} 
 			else
 			{
 				player.MakeMove();
@@ -123,8 +119,8 @@ public class GameManager : MonoBehaviour
 
 	private bool BetsDone()
 	{
-		activePlayers = playersFilter.ActivePlayers (playerScripts);
-		return (activePlayers.Count == 1 && activePlayers [0].PlayerBet >= maxBet);
+		var activePlayers = playersFilter.ActivePlayers (playerScripts);
+		return (activePlayers.Count == 0 || activePlayers.Count == 1 && activePlayers [0].PlayerBet >= maxBet);
 	}
 
 	private void NextPhase()
@@ -138,7 +134,7 @@ public class GameManager : MonoBehaviour
 			}
 			player.Thinking = false;
 		}
-		activePlayers = playersFilter.ActivePlayers (playerScripts);
+		//activePlayers = playersFilter.ActivePlayers (activePlayers);
 	}
 
 	private bool PlayersMadeMove()
@@ -173,19 +169,29 @@ public class GameManager : MonoBehaviour
 	private int SetPrevPlayer(int curPlayerNum)
 	{
 		curPlayerNum = (curPlayerNum + playerScripts.Count - 1) % playerScripts.Count;
-		while (playerScripts[curPlayerNum].Folded || 
-		       (playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))
-			curPlayerNum = (curPlayerNum + playerScripts.Count - 1) % playerScripts.Count;
+		for (int i=0;i<playerScripts.Count;i++)
+		{
+			if (playerScripts[curPlayerNum].Folded || 
+			       (playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))
+				curPlayerNum = (curPlayerNum + playerScripts.Count - 1) % playerScripts.Count;
+		}
 		return curPlayerNum;
 	}
 
 	private int SetNextPlayer(int curPlayerNum)
 	{
+		/*if (activePlayers [curPlayerNum].Money == 0)
+		{
+			activePlayers = playersFilter.ActivePlayers(activePlayers);
+			return curPlayerNum % activePlayers.Count;
+		}*/
 		curPlayerNum = (curPlayerNum + 1) % playerScripts.Count;
-		/*тут все плохо*/
-		while (playerScripts[curPlayerNum].Folded || 
-		       (playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))	
-			curPlayerNum = (curPlayerNum + 1) % playerScripts.Count;
+		for (int i=0;i<playerScripts.Count;i++)
+		{
+			if (playerScripts[curPlayerNum].Folded || 
+		       		(playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))	
+				curPlayerNum = (curPlayerNum + 1) % playerScripts.Count;
+		}
 		return curPlayerNum;
 	}
 
@@ -298,6 +304,7 @@ public class GameManager : MonoBehaviour
 				playerScripts[i].UpdateCombo();
 			}
 		}
+		//activePlayers = playersFilter.ActivePlayers (playerScripts);
 		DefaultValues ();
 	}
 
@@ -345,7 +352,8 @@ public class GameManager : MonoBehaviour
 	{
 		PutCardOnTable (numOfCard);
 		var cardScript = tableCards [numOfCard].GetComponent<CardScript> ();
-		foreach (var playerScript in playerScripts)
+		var notFoldedPlayers = playersFilter.NotFoldedPlayers (playerScripts);
+		foreach (var playerScript in notFoldedPlayers)
 			playerScript.AddCard (cardScript);
 	}
 
