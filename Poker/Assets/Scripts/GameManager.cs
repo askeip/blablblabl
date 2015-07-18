@@ -338,6 +338,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	/*Убрал в класс*/
 	private void CountPOT()
 	{
 		pot = 0;

@@ -26,7 +26,7 @@ public class PlayerScript : MonoBehaviour
 	public bool MadeMove{ get; set; }
 
 	public int MaxBet{ get; set; }
-	public int LastRaise{ get; set; }
+	public int LastBet{ get; set; }
 	public int PlayerBet{ get; set; }
 
 
@@ -136,6 +136,7 @@ public class PlayerScript : MonoBehaviour
 
 	public void Bet(int raise)
 	{
+		int prevBetSize = PlayerBet;
 		int callSize = MaxBet - PlayerBet;
 		if (Money >= callSize + raise)
 		{
@@ -147,6 +148,7 @@ public class PlayerScript : MonoBehaviour
 			PlayerBet += Money;
 			Money = 0;
 		}
+		LastBet = PlayerBet - prevBetSize;
 		Done ();
 	}
 
@@ -187,7 +189,7 @@ public class PlayerScript : MonoBehaviour
 			Folded = true;
 		MadeMove = false;
 		MaxBet = 0;
-		LastRaise = 0;
+		LastBet = 0;
 		PlayerBet = 0;
 	}
 
