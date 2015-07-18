@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
 	float waitingTime = 0f;
 	int gamePhase = 0;
 
-	int pot;
+	PotCounter pot;
 	List<PlayerScript> allinPlayers;
 
 	int dealerCheap;
@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
 	int currentPlayer;
 
 	int maxBet;
-	int lastRaise;
 
 	int bigBlind;
 
@@ -47,6 +46,7 @@ public class GameManager : MonoBehaviour
 	{
 		winnerChooser = new WinnerChooser ();
 		playersFilter = new PlayersFilter ();
+		pot = new PotCounter ();
 		playerUIScript = Instantiate (playerUI).GetComponent<ButtonCanvasScript> (); 
 		playerUIScript.gameObject.SetActive (false);
 		cardDeck = new CardDeck();
@@ -93,7 +93,8 @@ public class GameManager : MonoBehaviour
 				if (player.Folded && currentPlayer == lastPlayer)
 					lastPlayer = SetPrevPlayer(lastPlayer);
 				currentPlayer = SetNextPlayer(currentPlayer);
-				CountPOT();
+				if (!player.Folded)
+					pot.CountPot(player.LastBet);
 			} 
 			else
 			{
@@ -111,7 +112,6 @@ public class GameManager : MonoBehaviour
 	{
 		if (player.PlayerBet > maxBet)
 		{
-			lastRaise = player.PlayerBet - maxBet;
 			maxBet = player.PlayerBet;
 			SetMaxValues();
 		}
@@ -207,6 +207,10 @@ public class GameManager : MonoBehaviour
 	public void PhaseManager()
 	{
 		SetLastAndCurrentPlayers();
+		if (allinPlayers.Count > 0)
+		{
+			pot.CountPots(playerScripts,allinPlayers);
+		}
 		if (gamePhase == 0)
 		{
 			PreFlop();
@@ -255,7 +259,6 @@ public class GameManager : MonoBehaviour
 		blindPlayer = SetNextPlayer (blindPlayer);
 		BetBlinds (blindPlayer, bigBlind);
 		CheckRaise (playerScripts [blindPlayer]);
-		CountPOT ();
 	}
 
 	private void BetBlinds(int blindPlayer,int bet)
@@ -263,6 +266,7 @@ public class GameManager : MonoBehaviour
 		playerScripts [blindPlayer].Bet (bet);
 		if (playerScripts[blindPlayer].Money > 0)
 			playerScripts [blindPlayer].MadeMove = false;
+		pot.CountPot (playerScripts [blindPlayer].LastBet);
 	}
 
 	private void SetMaxValues()
@@ -270,7 +274,6 @@ public class GameManager : MonoBehaviour
 		foreach (var player in playerScripts)
 		{
 			player.MaxBet = maxBet;
-			player.LastRaise = lastRaise;
 		}
 	}
 
@@ -281,10 +284,10 @@ public class GameManager : MonoBehaviour
 
 	public void DefaultValues()
 	{
+		pot = new PotCounter ();
 		allinPlayers = new List<PlayerScript> ();
 		bigBlind = 200;
 		maxBet = 0;
-		lastRaise = 0;
 		waitingTime = 0f;
 		dealerCheap = SetNextPlayer (dealerCheap);
 	}
@@ -310,9 +313,17 @@ public class GameManager : MonoBehaviour
 
 	public void ChooseWinners()
 	{
-		var winners = winnerChooser.ChooseWinner (playerScripts);
-		GivePOT (winners);		
-		WinnersText(winners);
+		int minBet = 0;
+		for (int i=0;i<pot.pots.Count;i++)
+		{
+			minBet = pot.pots[i].MinBet;
+			var winners = winnerChooser.ChooseWinner (playerScripts.Where(z=>!z.Folded && z.PlayerBet >= minBet).ToList());
+			pot.GivePOT (winners,pot.pots[i].Pot);		
+			WinnersText(winners);
+		}
+		var winners2 = winnerChooser.ChooseWinner (playerScripts.Where(z=>!z.Folded && z.PlayerBet >=minBet + 1).ToList());
+		pot.GivePOT (winners2,pot.lastPot);
+		WinnersText(winners2);
 	}
 
 	private void WinnersText(List<PlayerScript> winners)
@@ -330,15 +341,7 @@ public class GameManager : MonoBehaviour
 			POTText.text = winners [0].name + " is a winner!";		
 	}
 
-	private void GivePOT(List<PlayerScript> winners)
-	{
-		for (int i=0;i<winners.Count;i++)
-		{
-			winners[i].GetMoney(pot/winners.Count);
-		}
-	}
-
-	/*Убрал в класс*/
+	/*Убрал в класс
 	private void CountPOT()
 	{
 		pot = 0;
@@ -347,7 +350,7 @@ public class GameManager : MonoBehaviour
 			pot+=player.PlayerBet;
 		}
 		POTText.text = pot.ToString ();
-	}
+	}*/
 
 	private void PutNewCard(int numOfCard)
 	{
