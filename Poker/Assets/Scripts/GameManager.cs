@@ -88,13 +88,14 @@ public class GameManager : MonoBehaviour
 		    {
 				playerUIScript.gameObject.SetActive(false);
 				CheckRaise(player);
-				if (player.Money == 0)
+				if (player.Money == 0 && player.MadeMove)
 					allinPlayers = playersFilter.AddAllinPlayer(allinPlayers,player);
 				if (player.Folded && currentPlayer == lastPlayer)
 					lastPlayer = SetPrevPlayer(lastPlayer);
 				currentPlayer = SetNextPlayer(currentPlayer);
-				if (!player.Folded)
+				if (!player.Folded && player.MadeMove)
 					pot.CountPot(player.LastBet);
+				POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
 			} 
 			else
 			{
@@ -128,12 +129,13 @@ public class GameManager : MonoBehaviour
 		gamePhase++;
 		foreach (var player in playerScripts)
 		{
-			if (!player.Folded || player.Money != 0)
-			{
+			//if (!player.Folded || player.Money != 0)
+			//{
 				player.MadeMove = false;
-			}
+			//}
 			player.Thinking = false;
 		}
+		allinPlayers = new List<PlayerScript> ();
 		//activePlayers = playersFilter.ActivePlayers (activePlayers);
 	}
 
@@ -171,8 +173,8 @@ public class GameManager : MonoBehaviour
 		curPlayerNum = (curPlayerNum + playerScripts.Count - 1) % playerScripts.Count;
 		for (int i=0;i<playerScripts.Count;i++)
 		{
-			if (playerScripts[curPlayerNum].Folded || 
-			       (playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))
+			if (playerScripts[curPlayerNum].Folded || playerScripts[curPlayerNum].Money == 0)
+			       //(playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))
 				curPlayerNum = (curPlayerNum + playerScripts.Count - 1) % playerScripts.Count;
 		}
 		return curPlayerNum;
@@ -188,8 +190,8 @@ public class GameManager : MonoBehaviour
 		curPlayerNum = (curPlayerNum + 1) % playerScripts.Count;
 		for (int i=0;i<playerScripts.Count;i++)
 		{
-			if (playerScripts[curPlayerNum].Folded || 
-		       		(playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))	
+			if (playerScripts[curPlayerNum].Folded || playerScripts[curPlayerNum].Money == 0)
+		       		//(playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))	
 				curPlayerNum = (curPlayerNum + 1) % playerScripts.Count;
 		}
 		return curPlayerNum;
@@ -210,6 +212,7 @@ public class GameManager : MonoBehaviour
 		if (allinPlayers.Count > 0)
 		{
 			pot.CountPots(playerScripts,allinPlayers);
+			POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
 		}
 		if (gamePhase == 0)
 		{
@@ -239,15 +242,15 @@ public class GameManager : MonoBehaviour
 				}
 			}
 		}	
+		foreach (var playerScript in playerScripts)
+		{
+			playerScript.UpdateCombo();
+		}
 		if (gamePhase == 3) 
 		{
 			foreach (var playerScript in playerScripts)
 				if (!playerScript.Folded)
 					playerScript.ChooseWinningCards();
-		}
-		foreach (var playerScript in playerScripts)
-		{
-			playerScript.UpdateCombo();
 		}
 		NextPhase ();
 	}
@@ -264,9 +267,10 @@ public class GameManager : MonoBehaviour
 	private void BetBlinds(int blindPlayer,int bet)
 	{
 		playerScripts [blindPlayer].Bet (bet);
-		if (playerScripts[blindPlayer].Money > 0)
+		//if (playerScripts[blindPlayer].Money > 0)
 			playerScripts [blindPlayer].MadeMove = false;
 		pot.CountPot (playerScripts [blindPlayer].LastBet);
+		POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
 	}
 
 	private void SetMaxValues()
