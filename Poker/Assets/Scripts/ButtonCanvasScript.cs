@@ -3,26 +3,26 @@ using System.Collections;
 
 public class ButtonCanvasScript : MonoBehaviour 
 {
-	PlayerScript player;
+	PlayerMoveController playerMoveController;
 
 	public void SetPlayer(PlayerScript player)
 	{
-		this.player = player;
+		this.playerMoveController = player.playerMoveController;
 		this.gameObject.SetActive (true);
 	}
 
 	public void Bet(int bet)
 	{
-		player.Bet (bet);
+		playerMoveController.Bet (bet);
 	}
 
 	public void Call()
 	{
-		player.Call ();
+		playerMoveController.Call ();
 	}
 
 	public void Fold()
 	{
-		player.Fold ();
+		playerMoveController.Fold ();
 	}
 }

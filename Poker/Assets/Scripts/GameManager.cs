@@ -59,8 +59,8 @@ public class GameManager : MonoBehaviour
 			var timePlayer = (GameObject) Instantiate(Player,positions[i],Quaternion.identity);
 			timePlayer.name = "Player" + (i + 1).ToString();
 			playerScripts.Add(timePlayer.GetComponent<PlayerScript>());
-			playerScripts[i].MoneyText = PlayerMoneyText[i];
-			playerScripts[i].GetMoney(2000);
+			playerScripts[i].playerMoveController.MoneyText = PlayerMoneyText[i];
+			playerScripts[i].playerMoveController.GetMoney(2000);
 		}
 		NextRound ();
 	}
@@ -82,19 +82,19 @@ public class GameManager : MonoBehaviour
 		else 
 		{
 			var player = playerScripts[currentPlayer];
-			if (player.Thinking)
+			if (player.playerMoveController.Thinking)
 				return;
-			if (PlayerMadeMove(player))
+			if (PlayerMadeMove(player.playerMoveController))
 		    {
 				playerUIScript.gameObject.SetActive(false);
 				CheckRaise(player);
-				if (player.Money == 0 && player.MadeMove)
+				if (player.playerMoveController.Money == 0 && player.playerMoveController.MadeMove)
 					allinPlayers = playersFilter.AddAllinPlayer(allinPlayers,player);
-				if (player.Folded && currentPlayer == lastPlayer)
+				if (player.playerMoveController.Folded && currentPlayer == lastPlayer)
 					lastPlayer = SetPrevPlayer(lastPlayer);
 				currentPlayer = SetNextPlayer(currentPlayer);
-				if (!player.Folded && player.MadeMove)
-					pot.CountPot(player.LastBet);
+				if (!player.playerMoveController.Folded && player.playerMoveController.MadeMove)
+					pot.CountPot(player.playerMoveController.LastBet);
 				POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
 			} 
 			else
@@ -111,9 +111,9 @@ public class GameManager : MonoBehaviour
 
 	private void CheckRaise(PlayerScript player)
 	{
-		if (player.PlayerBet > maxBet)
+		if (player.playerMoveController.PlayerBet > maxBet)
 		{
-			maxBet = player.PlayerBet;
+			maxBet = player.playerMoveController.PlayerBet;
 			SetMaxValues();
 		}
 	}
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
 	private bool BetsDone()
 	{
 		var activePlayers = playersFilter.ActivePlayers (playerScripts);
-		return (activePlayers.Count == 0 || activePlayers.Count == 1 && activePlayers [0].PlayerBet >= maxBet);
+		return (activePlayers.Count == 0 || activePlayers.Count == 1 && activePlayers [0].playerMoveController.PlayerBet >= maxBet);
 	}
 
 	private void NextPhase()
@@ -131,9 +131,9 @@ public class GameManager : MonoBehaviour
 		{
 			//if (!player.Folded || player.Money != 0)
 			//{
-				player.MadeMove = false;
+				player.playerMoveController.MadeMove = false;
 			//}
-			player.Thinking = false;
+			player.playerMoveController.Thinking = false;
 		}
 		allinPlayers = new List<PlayerScript> ();
 		//activePlayers = playersFilter.ActivePlayers (activePlayers);
@@ -143,13 +143,13 @@ public class GameManager : MonoBehaviour
 	{
 		foreach (var player in playerScripts)
 		{
-			if (!PlayerMadeMove(player))
+			if (!PlayerMadeMove(player.playerMoveController))
 				return false;
 		}
 		return true;
 	}
 
-	private bool PlayerMadeMove(PlayerScript player)
+	private bool PlayerMadeMove(PlayerMoveController player)
 	{
 		return player.Folded || player.Money == 0 || (player.MadeMove && player.PlayerBet >= maxBet);
 	}
@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
 		curPlayerNum = (curPlayerNum + playerScripts.Count - 1) % playerScripts.Count;
 		for (int i=0;i<playerScripts.Count;i++)
 		{
-			if (playerScripts[curPlayerNum].Folded || playerScripts[curPlayerNum].Money == 0)
+			if (playerScripts[curPlayerNum].playerMoveController.Folded || playerScripts[curPlayerNum].playerMoveController.Money == 0)
 			       //(playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))
 				curPlayerNum = (curPlayerNum + playerScripts.Count - 1) % playerScripts.Count;
 		}
@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour
 		curPlayerNum = (curPlayerNum + 1) % playerScripts.Count;
 		for (int i=0;i<playerScripts.Count;i++)
 		{
-			if (playerScripts[curPlayerNum].Folded || playerScripts[curPlayerNum].Money == 0)
+			if (playerScripts[curPlayerNum].playerMoveController.Folded || playerScripts[curPlayerNum].playerMoveController.Money == 0)
 		       		//(playerScripts[curPlayerNum].MadeMove && playerScripts[curPlayerNum].Money == 0))	
 				curPlayerNum = (curPlayerNum + 1) % playerScripts.Count;
 		}
@@ -223,7 +223,7 @@ public class GameManager : MonoBehaviour
 			for (int i =0; i<3; i++)
 				PutNewCard(i);
 			foreach (var playerScript in playerScripts)
-				playerScript.CheckSuit ();
+				playerScript.handContoller.CheckSuit ();
 		} 
 		else if (gamePhase == 4)
 		{
@@ -236,21 +236,22 @@ public class GameManager : MonoBehaviour
 			var cardScript = tableCards [gamePhase+1].GetComponent<CardScript> ();
 			foreach (var playerScript in playerScripts)
 			{
-				if (cardScript.Suit == playerScript.FlushPossible.Item1)
+				if (cardScript.Suit == playerScript.handContoller.FlushPossible.Item1)
 				{
-					playerScript.FlushPossible.Item2 += 1;
+					playerScript.handContoller.FlushPossible.Item2 += 1;
 				}
 			}
 		}	
 		foreach (var playerScript in playerScripts)
 		{
-			playerScript.UpdateCombo();
+			if (!playerScript.playerMoveController.Folded)
+				playerScript.handContoller.UpdateCombo();
 		}
 		if (gamePhase == 3) 
 		{
 			foreach (var playerScript in playerScripts)
-				if (!playerScript.Folded)
-					playerScript.ChooseWinningCards();
+				if (!playerScript.playerMoveController.Folded)
+					playerScript.handContoller.ChooseWinningCards();
 		}
 		NextPhase ();
 	}
@@ -266,10 +267,10 @@ public class GameManager : MonoBehaviour
 
 	private void BetBlinds(int blindPlayer,int bet)
 	{
-		playerScripts [blindPlayer].Bet (bet);
+		playerScripts [blindPlayer].playerMoveController.Bet (bet);
 		//if (playerScripts[blindPlayer].Money > 0)
-			playerScripts [blindPlayer].MadeMove = false;
-		pot.CountPot (playerScripts [blindPlayer].LastBet);
+			playerScripts [blindPlayer].playerMoveController.MadeMove = false;
+		pot.CountPot (playerScripts [blindPlayer].playerMoveController.LastBet);
 		POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
 	}
 
@@ -277,7 +278,7 @@ public class GameManager : MonoBehaviour
 	{
 		foreach (var player in playerScripts)
 		{
-			player.MaxBet = maxBet;
+			player.playerMoveController.MaxBet = maxBet;
 		}
 	}
 
@@ -305,10 +306,10 @@ public class GameManager : MonoBehaviour
 		for (int i =0; i<numOfPlayers; i++)
 		{
 			playerScripts[i].NextRound ();
-			if (!playerScripts[i].Folded)
+			if (!playerScripts[i].playerMoveController.Folded)
 			{
 				GiveCards(playerScripts[i],i);
-				playerScripts[i].UpdateCombo();
+				playerScripts[i].handContoller.UpdateCombo();
 			}
 		}
 		//activePlayers = playersFilter.ActivePlayers (playerScripts);
@@ -321,11 +322,13 @@ public class GameManager : MonoBehaviour
 		for (int i=0;i<pot.pots.Count;i++)
 		{
 			minBet = pot.pots[i].MinBet;
-			var winners = winnerChooser.ChooseWinner (playerScripts.Where(z=>!z.Folded && z.PlayerBet >= minBet).ToList());
+			var winners = winnerChooser.ChooseWinner (playerScripts
+                      .Where(z=>!z.playerMoveController.Folded && z.playerMoveController.PlayerBet >= minBet).ToList());
 			pot.GivePOT (winners,pot.pots[i].Pot);		
 			WinnersText(winners);
 		}
-		var winners2 = winnerChooser.ChooseWinner (playerScripts.Where(z=>!z.Folded && z.PlayerBet >=minBet + 1).ToList());
+		var winners2 = winnerChooser.ChooseWinner (playerScripts
+                   .Where(z=>!z.playerMoveController.Folded && z.playerMoveController.PlayerBet >=minBet + 1).ToList());
 		pot.GivePOT (winners2,pot.lastPot);
 		WinnersText(winners2);
 	}
@@ -345,24 +348,13 @@ public class GameManager : MonoBehaviour
 			POTText.text = winners [0].name + " is a winner!";		
 	}
 
-	/*Убрал в класс
-	private void CountPOT()
-	{
-		pot = 0;
-		foreach (var player in playerScripts)
-		{
-			pot+=player.PlayerBet;
-		}
-		POTText.text = pot.ToString ();
-	}*/
-
 	private void PutNewCard(int numOfCard)
 	{
 		PutCardOnTable (numOfCard);
 		var cardScript = tableCards [numOfCard].GetComponent<CardScript> ();
 		var notFoldedPlayers = playersFilter.NotFoldedPlayers (playerScripts);
 		foreach (var playerScript in notFoldedPlayers)
-			playerScript.AddCard (cardScript);
+			playerScript.handContoller.AddCard (cardScript);
 	}
 
 	public void PutCardOnTable(int i)

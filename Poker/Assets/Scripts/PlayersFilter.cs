@@ -9,7 +9,7 @@ public class PlayersFilter
 		List<PlayerScript> notFoldedPlayers = new List<PlayerScript>();
 		foreach (var player in playerScripts)
 		{
-			if (!player.Folded)
+			if (!player.playerMoveController.Folded)
 				notFoldedPlayers.Add(player);
 		}
 		return notFoldedPlayers;
@@ -21,7 +21,7 @@ public class PlayersFilter
 		List<PlayerScript> activePlayers = new List<PlayerScript>();
 		foreach (var player in notFoldedPlayers)
 		{
-			if (player.Money > 0)
+			if (player.playerMoveController.Money > 0)
 				activePlayers.Add(player);
 		}
 		return activePlayers;
@@ -35,7 +35,7 @@ public class PlayersFilter
 		{
 			for (int i=0;i<allinPlayers.Count;i++)
 			{
-				if (allinPlayers[i].PlayerBet > player.PlayerBet)
+				if (allinPlayers[i].playerMoveController.PlayerBet > player.playerMoveController.PlayerBet)
 					if (i == 0)
 						allinPlayers.Insert(0,player);
 				else
@@ -50,7 +50,7 @@ public class PlayersFilter
 		var losers = new List<PlayerScript> ();
 		foreach (var allinPlayer in allinPlayers)
 		{
-			if (allinPlayer.Money == 0)
+			if (allinPlayer.playerMoveController.Money == 0)
 				losers.Add(allinPlayer);
 		}
 		return losers;

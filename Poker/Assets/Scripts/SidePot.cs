@@ -30,11 +30,11 @@ public class PotCounter
 
 	public void CountPots(List<PlayerScript> players,List<PlayerScript> allinPlayers)
 	{
-		allinPlayers = allinPlayers.OrderBy (z => z.PlayerBet)
+		allinPlayers = allinPlayers.OrderBy (z => z.playerMoveController.PlayerBet)
 			.ToList ();
 		foreach (var allinPlayer in allinPlayers)
 		{ 
-			AddPot(players, allinPlayer.PlayerBet);
+			AddPot(players, allinPlayer.playerMoveController.PlayerBet);
 		}
 	}
 
@@ -45,22 +45,16 @@ public class PotCounter
 			prevBet = pots [pots.Count - 1].MinBet;
 		if (prevBet == allinPlayerBet)
 			return;
-		var folded = players.Where(z=>z.PlayerBet > prevBet && z.PlayerBet < allinPlayerBet)
+		var folded = players.Where(z=>z.playerMoveController.PlayerBet > prevBet && z.playerMoveController.PlayerBet < allinPlayerBet)
 			.ToList();
-		var foldedMoney = folded.Sum(z=>z.PlayerBet) - folded.Count * prevBet;
-		players = players.Where(z=>z.PlayerBet >= allinPlayerBet)
+		var foldedMoney = folded.Sum(z=>z.playerMoveController.PlayerBet) - folded.Count * prevBet;
+		players = players.Where(z=>z.playerMoveController.PlayerBet >= allinPlayerBet)
 			.ToList();
 		int pot = players.Count * allinPlayerBet + foldedMoney - prevBet * players.Count;
 		pots.Add (new SidePot (pot, allinPlayerBet));
 		RecountLastPot ();
 	}
-
-	/*public void RecountLastPot(List<PlayerScript> players)
-	{
-		int allinPlayerBet = pots [pots.Count - 1].MinBet;
-		pots.RemoveAt (pots.Count - 1);
-		AddPot (players, allinPlayerBet);
-	}*/
+	
 	public void RecountLastPot()
 	{
 		lastPot -= pots [pots.Count - 1].Pot;
@@ -76,11 +70,7 @@ public class PotCounter
 	{
 		for (int i=0;i<winners.Count;i++)
 		{
-			winners[i].GetMoney(pot/winners.Count);
+			winners[i].playerMoveController.GetMoney(pot/winners.Count);
 		}
 	}
-	/*public void CountMainPot(List<PlayerScript> playerScripts)
-	{
-		mainPot = CountPot (playerScripts);
-	}*/
 }
