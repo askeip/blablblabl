@@ -13,6 +13,17 @@ public class CardScript : MonoBehaviour
 	float timer;
 	bool startTimer = false;
 
+	/*public void SetCard(int rank, Suits suit)
+	{
+		Rank = rank;
+		Suit = suit;
+	}
+
+	private void SetCardSprite (int numOfCard)
+	{
+		this.gameObject.GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite> ("Cards/" + numOfCard);
+		Resources.UnloadUnusedAssets ();
+	}*/
 	public void SetCard(string cardName)
 	{
 		Rank = RankToInt(cardName[0]);
@@ -47,7 +58,6 @@ public class CardScript : MonoBehaviour
 
 	public void ShowCard()
 	{
-		//this.transform.position.y += MoveRange;
 		startTimer = true;
 	}
 }

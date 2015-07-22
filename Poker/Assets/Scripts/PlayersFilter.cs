@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PlayersFilter
 {
@@ -36,13 +37,25 @@ public class PlayersFilter
 			for (int i=0;i<allinPlayers.Count;i++)
 			{
 				if (allinPlayers[i].playerMoveController.PlayerBet > player.playerMoveController.PlayerBet)
-					if (i == 0)
-						allinPlayers.Insert(0,player);
-				else
-					allinPlayers.Insert(i+1,player);
+				{
+					allinPlayers.Insert(i,player);
+				}
+				else if (i == allinPlayers.Count - 1)
+					allinPlayers.Add(player);
+				else 
+					continue;
+				break;
 			}
 		}
 		return allinPlayers;
+	}
+
+	public List<PlayerScript> HighestBetPlayer (List<PlayerScript> playerScripts)
+	{
+		int highestBet = playerScripts.Max (z => z.playerMoveController.PlayerBet);
+		return playerScripts.Where (z => z.playerMoveController.PlayerBet == highestBet)
+			.Take (1)
+				.ToList();
 	}
 
 	public List<PlayerScript> Losers(List<PlayerScript> allinPlayers)
