@@ -1,63 +1,33 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
-public enum Suits{Hearts,Diamonds,Clubs,Spikes};
-
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : PlayerBasicScript
 {
-	public GameObject Card;
-	CardScript leftCard;
-	CardScript rightCard;
+	public GameObject playerUI;
+	ButtonCanvasScript playerUIScript;
 
-	public PlayerMoveController playerMoveController;
-
-	public HandController handContoller; 
-	//public List<CardScript>[] Combination = new List<CardScript>[13];
-
-	Vector3 leftCardPosition;
-	Vector3 rightCardPosition;
-
-
-	void Awake()
+	public void Start()
 	{
-		handContoller = new HandController ();
-		playerMoveController = new PlayerMoveController ();
-		leftCardPosition = new Vector3(transform.position.x - 0.5f,transform.position.y  - 0.5f,transform.position.z);
-		rightCardPosition = new Vector3(transform.position.x + 0.5f,transform.position.y  - 0.5f,transform.position.z);
-
-		var timeCard =(GameObject)Instantiate (Card, leftCardPosition, Quaternion.identity);
-		leftCard = timeCard.GetComponent<CardScript> ();
-		timeCard = (GameObject)Instantiate (Card, rightCardPosition, Quaternion.identity);
-		rightCard = timeCard.GetComponent<CardScript> ();
+		playerUIScript = Instantiate (playerUI).GetComponent<ButtonCanvasScript> (); 
+		playerUIScript.gameObject.SetActive (false);
+		playerUIScript.SetPlayer (this.playerMoveController);
 	}
 
-	public void GetNewHand(string newLeftCard,string newRightCard)
+	public override void MakeMove ()
 	{
-		SetNewCard (leftCard, newLeftCard, "LeftCard");
-		SetNewCard (rightCard, newRightCard, "RightCard");
+		playerUIScript.gameObject.SetActive (true);
+		playerUIScript.bet = playerMoveController.LastRaise;
+		playerMoveController.MakeMove ();
 	}
 
-	private void SetNewCard(CardScript card,string newCard,string cardName)
+	public override bool PlayerThinking ()
 	{
-		card.SetCard (newCard);
-		card.name = this.gameObject.name + cardName;
-		handContoller.AddCard (card);
-		card.gameObject.SetActive (true);
-	}
-
-	public void MakeMove()
-	{
-		playerMoveController.Thinking = true;
-	}
-
-	public void NextRound()
-	{
-		playerMoveController.DefaultValues ();
-		leftCard.gameObject.SetActive (false);
-		rightCard.gameObject.SetActive (false);
-		handContoller = new HandController ();
+		if (playerMoveController.Thinking)
+			return true;
+		else
+		{
+			playerUIScript.gameObject.SetActive(false);
+		}
+		return false;
 	}
 }

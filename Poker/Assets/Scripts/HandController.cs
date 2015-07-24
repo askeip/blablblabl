@@ -9,6 +9,8 @@ public class HandController
 
 	public Combo combo;
 
+	public int cardsTaken { get; set; }
+
 	public Tuple<Suits,int> FlushPossible;
 
 	public List<CardScript> WinningCards;
@@ -83,6 +85,7 @@ public class HandController
 	
 	public void AddCard(CardScript cScript)
 	{
+		cardsTaken++;
 		if (AvailableCards.ContainsKey (cScript.Rank))
 			AvailableCards [cScript.Rank].Add (cScript);
 		else

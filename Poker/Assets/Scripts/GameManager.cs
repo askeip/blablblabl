@@ -9,7 +9,8 @@ using System;
 public class GameManager : MonoBehaviour 
 {
 	public GameObject Player;
-	List<PlayerScript> playerScripts;
+	public GameObject Bot;
+	List<PlayerBasicScript> playerScripts;
 	//List<PlayerScript> activePlayers;
 	CardDistributor cardDistributor;
 
@@ -18,12 +19,12 @@ public class GameManager : MonoBehaviour
 	Vector3[] positions = new Vector3[]{new Vector3(0,-2,0),new Vector3(-5,0,0),new Vector3(5,0,0)};
 	Vector3 deckPosition = new Vector3(0,0,0);
 
+	public bool gameOver { get; private set; }
+	public int LastRaise { get; private set; }
+
 	WinnerChooser winnerChooser;
 	PlayersFilter playersFilter;
 	OrderController orderController;
-
-	public GameObject playerUI;
-	ButtonCanvasScript playerUIScript;
 
 	public Text POTText;
 	public Text[] PlayerMoneyText;
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
 	int gamePhase = 0;
 
 	PotCounter pot;
-	List<PlayerScript> allinPlayers;
+	List<PlayerBasicScript> allinPlayers;
 
 	int maxBet;
 
@@ -40,28 +41,35 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
+		gameOver = false;
 		cardDistributor = new CardDistributor ();
 		winnerChooser = new WinnerChooser ();
 		playersFilter = new PlayersFilter ();
 		orderController = new OrderController (numOfPlayers);
 		pot = new PotCounter ();
-		playerUIScript = Instantiate (playerUI).GetComponent<ButtonCanvasScript> (); 
-		playerUIScript.gameObject.SetActive (false);
 		//timer = 0;
-		playerScripts = new List<PlayerScript> ();
-		for (int i =0; i<numOfPlayers; i++)
+		playerScripts = new List<PlayerBasicScript> ();
+		for (int i =0; i<numOfPlayers - 1; i++)
 		{
-			var timePlayer = (GameObject) Instantiate(Player,positions[i],Quaternion.identity);
-			timePlayer.name = "Player" + (i + 1).ToString();
-			playerScripts.Add(timePlayer.GetComponent<PlayerScript>());
-			playerScripts[i].playerMoveController.MoneyText = PlayerMoneyText[i];
-			playerScripts[i].playerMoveController.GetMoney(2000);
+			SeatThePlayer(i,Player);
 		}
+		SeatThePlayer (numOfPlayers - 1, Bot);
 		NextRound ();
+	}
+
+	private void SeatThePlayer(int placeNum, GameObject player)
+	{
+		var timePlayer = (GameObject) Instantiate(player,positions[placeNum],Quaternion.identity);
+		timePlayer.name = "Player" + (placeNum + 1).ToString();
+		playerScripts.Add(timePlayer.GetComponent<PlayerBasicScript>());
+		playerScripts[placeNum].playerMoveController.MoneyText = PlayerMoneyText[placeNum];
+		playerScripts[placeNum].playerMoveController.GetMoney(2000);
 	}
 
 	public void Update()
 	{
+		if (gameOver)
+			return;
 		if (waitingTime > 0)
 			WaitFinish ();
 		else
@@ -84,11 +92,12 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	private void CheckRaise(PlayerScript player)
+	private void CheckRaise(PlayerBasicScript player)
 	{
 		if (player.playerMoveController.PlayerBet > maxBet)
 		{
 			maxBet = player.playerMoveController.PlayerBet;
+			LastRaise = player.playerMoveController.LastRaise;
 			SetMaxValues();
 		}
 	}
@@ -102,11 +111,10 @@ public class GameManager : MonoBehaviour
 	private void CheckPlayersCondition()
 	{
 		var player = playerScripts[orderController.currentPlayer];
-		if (player.playerMoveController.Thinking)
+		if (player.PlayerThinking())
 			return;
 		if (PlayerMadeMove(player.playerMoveController))
 		{
-			playerUIScript.gameObject.SetActive(false);
 			CheckRaise(player);
 			if (player.playerMoveController.Money == 0 && !player.playerMoveController.Folded && player.playerMoveController.MadeMove)
 				allinPlayers = playersFilter.AddAllinPlayer(allinPlayers,player);
@@ -114,25 +122,26 @@ public class GameManager : MonoBehaviour
 				orderController.SetLastPlayer(playerScripts);
 			orderController.SetCurrentPlayer(playerScripts);
 			if (!player.playerMoveController.Folded && player.playerMoveController.MadeMove)
-				pot.CountPot(player.playerMoveController.LastBet);
+				pot.CountPot(player.playerMoveController.LastPlayerBet);
 			POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
 		} 
-		else
+		else if (!BetsDone())
 		{
 			player.MakeMove();
-			playerUIScript.SetPlayer(player);
 		}
 	}
 
 	private void NextPhase()
 	{
+		LastRaise = bigBlind;
 		gamePhase++;
 		foreach (var player in playerScripts)
 		{
 			player.playerMoveController.MadeMove = false;
 			player.playerMoveController.Thinking = false;
+			player.playerMoveController.LastRaise = LastRaise;
 		}
-		allinPlayers = new List<PlayerScript> ();
+		allinPlayers = new List<PlayerBasicScript> ();
 		//activePlayers = playersFilter.ActivePlayers (activePlayers);
 	}
 
@@ -173,6 +182,17 @@ public class GameManager : MonoBehaviour
 			pot.CountPots(playerScripts,allinPlayers);
 			POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
 		}
+		InitPhase ();
+		foreach (var playerScript in playerScripts)
+		{
+			if (!playerScript.playerMoveController.Folded)
+				playerScript.handContoller.UpdateCombo();
+		}
+		NextPhase ();
+	}
+
+	private void InitPhase()
+	{
 		switch (gamePhase)
 		{
 		case 0:PreFlop();
@@ -192,12 +212,6 @@ public class GameManager : MonoBehaviour
 			WaitFinish();
 			break;
 		}
-		foreach (var playerScript in playerScripts)
-		{
-			if (!playerScript.playerMoveController.Folded)
-				playerScript.handContoller.UpdateCombo();
-		}
-		NextPhase ();
 	}
 
 	private void PreFlop()
@@ -234,7 +248,7 @@ public class GameManager : MonoBehaviour
 	{
 		playerScripts [blindPlayer].playerMoveController.Bet (bet);
 		playerScripts [blindPlayer].playerMoveController.MadeMove = false;
-		pot.CountPot (playerScripts [blindPlayer].playerMoveController.LastBet);
+		pot.CountPot (playerScripts [blindPlayer].playerMoveController.LastPlayerBet);
 		POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
 	}
 
@@ -243,13 +257,14 @@ public class GameManager : MonoBehaviour
 		foreach (var player in playerScripts)
 		{
 			player.playerMoveController.MaxBet = maxBet;
+			player.playerMoveController.LastRaise = LastRaise;
 		}
 	}
 
 	public void DefaultValues()
 	{
 		pot = new PotCounter ();
-		allinPlayers = new List<PlayerScript> ();
+		allinPlayers = new List<PlayerBasicScript> ();
 		bigBlind = 200;
 		maxBet = 0;
 		waitingTime = 0f;
@@ -272,6 +287,13 @@ public class GameManager : MonoBehaviour
 			}
 		}
 		DefaultValues ();
+		if (playersFilter.ActivePlayers(playerScripts).Count == 1)
+			GameOver ();
+	}
+
+	public void GameOver()
+	{
+		gameOver = true;
 	}
 
 	public void ChooseWinners()
@@ -284,13 +306,16 @@ public class GameManager : MonoBehaviour
 			minBet = pot.pots[i].MinBet;
 			ChooseWinner(minBet,pot.pots[i].Pot,notFoldedPlayers);
 		}
-		if (activePlayers.Count != 0)
-			ChooseWinner (minBet, pot.lastPot, activePlayers);
-		else
-			ChooseWinner (minBet, pot.lastPot, playersFilter.HighestBetPlayer(notFoldedPlayers));
+		if (pot.lastPot != 0)
+		{
+			if (activePlayers.Count != 0)
+				ChooseWinner (minBet, pot.lastPot, activePlayers);
+			else
+				ChooseWinner (minBet, pot.lastPot, playersFilter.HighestBetPlayer(notFoldedPlayers));
+		}
 	}
 
-	private void ChooseWinner(int minBet,int potSize, List<PlayerScript> possibleWinners)
+	private void ChooseWinner(int minBet,int potSize, List<PlayerBasicScript> possibleWinners)
 	{
 		var winners = winnerChooser.ChooseWinner (possibleWinners
 		      .Where(z=> z.playerMoveController.PlayerBet >= minBet).ToList());
@@ -298,7 +323,7 @@ public class GameManager : MonoBehaviour
 		WinnersText(winners);
 	}
 
-	private void WinnersText(List<PlayerScript> winners)
+	private void WinnersText(List<PlayerBasicScript> winners)
 	{
 		if (winners.Count > 1) {
 			StringBuilder winText = new StringBuilder ();

@@ -5,9 +5,9 @@ using System.Linq;
 
 public class PlayersFilter
 {
-	public List<PlayerScript> NotFoldedPlayers(List<PlayerScript> playerScripts)
+	public List<PlayerBasicScript> NotFoldedPlayers(List<PlayerBasicScript> playerScripts)
 	{
-		List<PlayerScript> notFoldedPlayers = new List<PlayerScript>();
+		List<PlayerBasicScript> notFoldedPlayers = new List<PlayerBasicScript>();
 		foreach (var player in playerScripts)
 		{
 			if (!player.playerMoveController.Folded)
@@ -16,10 +16,10 @@ public class PlayersFilter
 		return notFoldedPlayers;
 	}
 
-	public List<PlayerScript> ActivePlayers(List<PlayerScript> playerScripts)
+	public List<PlayerBasicScript> ActivePlayers(List<PlayerBasicScript> playerScripts)
 	{
 		var notFoldedPlayers = NotFoldedPlayers (playerScripts);
-		List<PlayerScript> activePlayers = new List<PlayerScript>();
+		List<PlayerBasicScript> activePlayers = new List<PlayerBasicScript>();
 		foreach (var player in notFoldedPlayers)
 		{
 			if (player.playerMoveController.Money > 0)
@@ -28,7 +28,7 @@ public class PlayersFilter
 		return activePlayers;
 	}
 
-	public List<PlayerScript> AddAllinPlayer(List<PlayerScript> allinPlayers,PlayerScript player)
+	public List<PlayerBasicScript> AddAllinPlayer(List<PlayerBasicScript> allinPlayers,PlayerBasicScript player)
 	{
 		if (allinPlayers.Count == 0)
 			allinPlayers.Add (player);
@@ -50,7 +50,7 @@ public class PlayersFilter
 		return allinPlayers;
 	}
 
-	public List<PlayerScript> HighestBetPlayer (List<PlayerScript> playerScripts)
+	public List<PlayerBasicScript> HighestBetPlayer (List<PlayerBasicScript> playerScripts)
 	{
 		int highestBet = playerScripts.Max (z => z.playerMoveController.PlayerBet);
 		return playerScripts.Where (z => z.playerMoveController.PlayerBet == highestBet)
@@ -58,9 +58,9 @@ public class PlayersFilter
 				.ToList();
 	}
 
-	public List<PlayerScript> Losers(List<PlayerScript> allinPlayers)
+	public List<PlayerBasicScript> Losers(List<PlayerBasicScript> allinPlayers)
 	{
-		var losers = new List<PlayerScript> ();
+		var losers = new List<PlayerBasicScript> ();
 		foreach (var allinPlayer in allinPlayers)
 		{
 			if (allinPlayer.playerMoveController.Money == 0)

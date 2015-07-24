@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class WinnerChooser 
 {
-	public List<PlayerScript> ChooseWinner(List<PlayerScript> possibleWinners)
+	public List<PlayerBasicScript> ChooseWinner(List<PlayerBasicScript> possibleWinners)
 	{
-		List<PlayerScript> winners = GetWinnersByHash (possibleWinners);
+		List<PlayerBasicScript> winners = GetWinnersByHash (possibleWinners);
 		if (winners.Count > 1) 
 		{
 			winners = GetWinnersByCards(winners);
@@ -14,9 +14,9 @@ public class WinnerChooser
 		return winners;
 	}
 
-	private List<PlayerScript> GetWinnersByHash(List<PlayerScript> playerScripts)
+	private List<PlayerBasicScript> GetWinnersByHash(List<PlayerBasicScript> playerScripts)
 	{
-		List<PlayerScript> possibleWinners = new List<PlayerScript> ();
+		List<PlayerBasicScript> possibleWinners = new List<PlayerBasicScript> ();
 		var highestHash = 0;
 		foreach (var player in playerScripts)
 		{
@@ -25,7 +25,7 @@ public class WinnerChooser
 				var psHash = player.handContoller.combo.GetHashCode();
 				if (psHash > highestHash)
 				{
-					possibleWinners = new List<PlayerScript>(){player};
+					possibleWinners = new List<PlayerBasicScript>(){player};
 					highestHash = psHash;
 				}
 				else if (psHash == highestHash)
@@ -35,14 +35,14 @@ public class WinnerChooser
 		return possibleWinners;
 	}
 
-	private List<PlayerScript> GetWinnersByCards(List<PlayerScript> possibleWinners)
+	private List<PlayerBasicScript> GetWinnersByCards(List<PlayerBasicScript> possibleWinners)
 	{
-		var winners = new List<PlayerScript> ();
+		var winners = new List<PlayerBasicScript> ();
 		for (int i =0; i<5; i++) {
 			var highRank = 0;
 			foreach (var player in possibleWinners) {
 				if (player.handContoller.WinningCards [i].Rank > highRank) {
-					winners = new List<PlayerScript> (){player};
+					winners = new List<PlayerBasicScript> (){player};
 					highRank = player.handContoller.WinningCards [i].Rank;
 				} else if (player.handContoller.WinningCards [i].Rank == highRank)
 					winners.Add (player);
@@ -50,7 +50,7 @@ public class WinnerChooser
 			if (winners.Count == 1)
 				break;
 			else if (i != 4)
-				winners = new List<PlayerScript> ();
+				winners = new List<PlayerBasicScript> ();
 		}
 		return winners;
 	}

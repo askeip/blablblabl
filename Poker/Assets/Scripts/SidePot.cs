@@ -28,7 +28,7 @@ public class PotCounter
 		pots = new List<SidePot> ();
 	}
 
-	public void CountPots(List<PlayerScript> players,List<PlayerScript> allinPlayers)
+	public void CountPots(List<PlayerBasicScript> players,List<PlayerBasicScript> allinPlayers)
 	{
 		allinPlayers = allinPlayers.OrderBy (z => z.playerMoveController.PlayerBet)
 			.ToList ();
@@ -38,7 +38,7 @@ public class PotCounter
 		}
 	}
 
-	public void AddPot(List<PlayerScript> players,int allinPlayerBet)
+	public void AddPot(List<PlayerBasicScript> players,int allinPlayerBet)
 	{
 		int prevBet = 0;
 		if (pots.Count > 0)
@@ -66,7 +66,7 @@ public class PotCounter
 		lastPot += lastBet;
 	}
 
-	public void GivePOT(List<PlayerScript> winners,int pot)
+	public void GivePOT(List<PlayerBasicScript> winners,int pot)
 	{
 		for (int i=0;i<winners.Count;i++)
 		{

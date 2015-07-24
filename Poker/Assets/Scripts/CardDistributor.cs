@@ -17,12 +17,12 @@ public class CardDistributor
 		playersFilter = new PlayersFilter ();
 	}
 
-	public void GiveCards(PlayerScript playerScript,int i)
+	public void GiveCards(PlayerBasicScript playerScript,int i)
 	{
 		playerScript.GetNewHand(CardDeck.cards[i*2],CardDeck.cards[i*2+1]);
 	}
 
-	public void PutNewCard(List<PlayerScript> playerScripts, int numOfCard)
+	public void PutNewCard(List<PlayerBasicScript> playerScripts, int numOfCard)
 	{
 		var cardScript = TableCards [numOfCard].GetComponent<CardScript> ();
 		var notFoldedPlayers = playersFilter.NotFoldedPlayers (playerScripts);

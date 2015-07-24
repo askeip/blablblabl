@@ -13,8 +13,11 @@ public class PlayerMoveController
 	public bool MadeMove{ get; set; }
 	
 	public int MaxBet{ get; set; }
-	public int LastBet{ get; set; }
+	public int LastPlayerBet{ get; set; }
 	public int PlayerBet{ get; set; }
+	public int CallSize { get; private set; }
+
+	public int LastRaise { get; set; }
 
 	public PlayerMoveController()
 	{
@@ -27,21 +30,29 @@ public class PlayerMoveController
 		MoneyText.text = Money.ToString();
 	}
 
+	public void MakeMove()
+	{
+		Thinking = true;
+		CallSize = MaxBet - PlayerBet;
+	}
 	public void Bet(int raise)
 	{
+		if (raise < LastRaise && raise != 0)
+			raise = LastRaise;
+		else if (raise != 0)
+			LastRaise = raise;
 		int prevBetSize = PlayerBet;
-		int callSize = MaxBet - PlayerBet;
-		if (Money >= callSize + raise)
+		if (Money >= CallSize + raise)
 		{
-			PlayerBet += callSize + raise;
-			Money -= (callSize + raise);
+			PlayerBet += CallSize + raise;
+			Money -= (CallSize + raise);
 		}
 		else
 		{
 			PlayerBet += Money;
 			Money = 0;
 		}
-		LastBet = PlayerBet - prevBetSize;
+		LastPlayerBet = PlayerBet - prevBetSize;
 		Done ();
 	}
 	
@@ -72,7 +83,8 @@ public class PlayerMoveController
 			Folded = true;
 		MadeMove = false;
 		MaxBet = 0;
-		LastBet = 0;
+		LastPlayerBet = 0;
+		LastRaise = 0;
 		PlayerBet = 0;
 	}
 }

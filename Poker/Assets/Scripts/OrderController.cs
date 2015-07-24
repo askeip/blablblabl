@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -22,17 +22,17 @@ public class OrderController
 		return lastPlayer == currentPlayer;
 	}
 
-	public void SetLastPlayer(List<PlayerScript> playerScripts)
+	public void SetLastPlayer(List<PlayerBasicScript> playerScripts)
 	{
 		lastPlayer = SetPrevPlayer(playerScripts,lastPlayer);
 	}
 
-	public void SetCurrentPlayer(List<PlayerScript> playerScripts)
+	public void SetCurrentPlayer(List<PlayerBasicScript> playerScripts)
 	{
 		currentPlayer = SetNextPlayer (playerScripts, currentPlayer);
 	}
 
-	public void SetLastAndCurrentPlayers(List<PlayerScript> playerScripts,int gamePhase)
+	public void SetLastAndCurrentPlayers(List<PlayerBasicScript> playerScripts,int gamePhase)
 	{
 		if (gamePhase == 0)
 		{
@@ -43,17 +43,17 @@ public class OrderController
 		currentPlayer = SetNextPlayer (playerScripts,lastPlayer);
 	}
 	
-	public int SetPrevPlayer(List<PlayerScript> playerScripts, int curPlayerNum)
+	public int SetPrevPlayer(List<PlayerBasicScript> playerScripts, int curPlayerNum)
 	{
 		return SetPlayer (playerScripts, curPlayerNum, playerScripts.Count - 1);
 	}
 	
-	public int SetNextPlayer(List<PlayerScript> playerScripts,int curPlayerNum)
+	public int SetNextPlayer(List<PlayerBasicScript> playerScripts,int curPlayerNum)
 	{
 		return SetPlayer (playerScripts, curPlayerNum, 1);
 	}
 
-	private int SetPlayer(List<PlayerScript> playerScripts, int curPlayerNum, int sum)
+	private int SetPlayer(List<PlayerBasicScript> playerScripts, int curPlayerNum, int sum)
 	{
 		curPlayerNum = (curPlayerNum + sum) % playerScripts.Count;
 		for (int i=0;i<playerScripts.Count;i++)
@@ -64,7 +64,7 @@ public class OrderController
 		return curPlayerNum;
 	}
 
-	public void DefaultValues(List<PlayerScript> playerScripts)
+	public void DefaultValues(List<PlayerBasicScript> playerScripts)
 	{
 		dealerCheap = SetNextPlayer (playerScripts,dealerCheap);
 	}
