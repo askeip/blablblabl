@@ -46,11 +46,18 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\BotScript.cs" />
      <Compile Include="Assets\Scripts\ButtonCanvasScript.cs" />
      <Compile Include="Assets\Scripts\CardDeck.cs" />
+     <Compile Include="Assets\Scripts\CardDistributor.cs" />
      <Compile Include="Assets\Scripts\CardScript.cs" />
      <Compile Include="Assets\Scripts\Combo.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\HandController.cs" />
+     <Compile Include="Assets\Scripts\MoveController.cs" />
+     <Compile Include="Assets\Scripts\NUnitTests\PokerTests.cs" />
+     <Compile Include="Assets\Scripts\OrderController.cs" />
+     <Compile Include="Assets\Scripts\PlayerBasicScript.cs" />
      <Compile Include="Assets\Scripts\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\PlayersFilter.cs" />
      <Compile Include="Assets\Scripts\SidePot.cs" />

@@ -58,7 +58,7 @@ public class OrderController
 		curPlayerNum = (curPlayerNum + sum) % playerScripts.Count;
 		for (int i=0;i<playerScripts.Count;i++)
 		{
-			if (playerScripts[curPlayerNum].playerMoveController.Folded || playerScripts[curPlayerNum].playerMoveController.Money == 0)
+			if (playerScripts[curPlayerNum].moveController.Folded || playerScripts[curPlayerNum].moveController.Money == 0)
 				curPlayerNum = (curPlayerNum + sum) % playerScripts.Count;
 		}
 		return curPlayerNum;

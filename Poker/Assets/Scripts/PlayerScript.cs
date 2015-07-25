@@ -10,19 +10,19 @@ public class PlayerScript : PlayerBasicScript
 	{
 		playerUIScript = Instantiate (playerUI).GetComponent<ButtonCanvasScript> (); 
 		playerUIScript.gameObject.SetActive (false);
-		playerUIScript.SetPlayer (this.playerMoveController);
+		playerUIScript.SetPlayer (this);
 	}
 
 	public override void MakeMove ()
 	{
 		playerUIScript.gameObject.SetActive (true);
-		playerUIScript.bet = playerMoveController.LastRaise;
-		playerMoveController.MakeMove ();
+		playerUIScript.bet = moveController.LastRaise;
+		moveController.MakeMove ();
 	}
 
 	public override bool PlayerThinking ()
 	{
-		if (playerMoveController.Thinking)
+		if (moveController.Thinking)
 			return true;
 		else
 		{

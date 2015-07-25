@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
@@ -30,11 +30,11 @@ public class PotCounter
 
 	public void CountPots(List<PlayerBasicScript> players,List<PlayerBasicScript> allinPlayers)
 	{
-		allinPlayers = allinPlayers.OrderBy (z => z.playerMoveController.PlayerBet)
+		allinPlayers = allinPlayers.OrderBy (z => z.moveController.PlayerBet)
 			.ToList ();
 		foreach (var allinPlayer in allinPlayers)
 		{ 
-			AddPot(players, allinPlayer.playerMoveController.PlayerBet);
+			AddPot(players, allinPlayer.moveController.PlayerBet);
 		}
 	}
 
@@ -45,10 +45,10 @@ public class PotCounter
 			prevBet = pots [pots.Count - 1].MinBet;
 		if (prevBet == allinPlayerBet)
 			return;
-		var folded = players.Where(z=>z.playerMoveController.PlayerBet > prevBet && z.playerMoveController.PlayerBet < allinPlayerBet)
+		var folded = players.Where(z=>z.moveController.PlayerBet > prevBet && z.moveController.PlayerBet < allinPlayerBet)
 			.ToList();
-		var foldedMoney = folded.Sum(z=>z.playerMoveController.PlayerBet) - folded.Count * prevBet;
-		players = players.Where(z=>z.playerMoveController.PlayerBet >= allinPlayerBet)
+		var foldedMoney = folded.Sum(z=>z.moveController.PlayerBet) - folded.Count * prevBet;
+		players = players.Where(z=>z.moveController.PlayerBet >= allinPlayerBet)
 			.ToList();
 		int pot = players.Count * allinPlayerBet + foldedMoney - prevBet * players.Count;
 		pots.Add (new SidePot (pot, allinPlayerBet));
@@ -70,7 +70,7 @@ public class PotCounter
 	{
 		for (int i=0;i<winners.Count;i++)
 		{
-			winners[i].playerMoveController.GetMoney(pot/winners.Count);
+			winners[i].moveController.GetMoney(pot/winners.Count);
 		}
 	}
 }

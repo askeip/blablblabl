@@ -75,16 +75,16 @@ public class MoveController
 		MadeMove = true;
 	}
 
-	public virtual bool FinishedMove()
-	{
-		return Folded || Money == 0 || (MadeMove && PlayerBet >= MaxBet);
-	}
-
 	public void NextPhase(int lastRaise)
 	{
 		LastRaise = lastRaise;
 		MadeMove = false;
 		Thinking = false;
+	}
+
+	public bool FinishedMove()
+	{
+		return Folded || Money == 0 || (MadeMove && PlayerBet >= MaxBet);
 	}
 
 	public void DefaultValues()

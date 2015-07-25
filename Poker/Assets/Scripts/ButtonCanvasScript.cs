@@ -6,44 +6,44 @@ public class ButtonCanvasScript : MonoBehaviour
 {
 	//public Slider kekSlider;
 	//public Button betButton;
-	PlayerMoveController playerMoveController;
+	PlayerScript player;
 	public float bet { get; set; }
 
 	void Start()
 	{
-		bet = playerMoveController.LastRaise;
+		bet = player.moveController.LastRaise;
 		//betButton.OnPointerClick += Bet ();
 	}
 
-	public void SetPlayer(PlayerMoveController playerMoveController)
+	public void SetPlayer(PlayerScript player)
 	{
-		this.playerMoveController = playerMoveController;
+		this.player = player;
 	}
 
 	public void Bet()
 	{
-		playerMoveController.Bet ((int)bet);
+		player.Bet ((int)bet);
 	}
 
 	public void Call()
 	{
-		playerMoveController.Call ();
+		player.Call ();
 	}
 
 	public void Fold()
 	{
-		playerMoveController.Fold ();
+		player.Fold ();
 	}
 
 	void OnGUI()
 	{
 		Rect box = new Rect(Screen.width * 0.8f, Screen.height * 0.2f, Screen.width * 0.2f, Screen.height * 0.2f);
-		if (playerMoveController.Money > playerMoveController.LastRaise + playerMoveController.CallSize)
-			bet = GUI.HorizontalSlider (box, bet, playerMoveController.LastRaise, playerMoveController.Money - playerMoveController.CallSize);
+		if (player.moveController.Money > player.moveController.LastRaise + player.moveController.CallSize)
+			bet = GUI.HorizontalSlider (box, bet, player.moveController.LastRaise, player.moveController.Money - player.moveController.CallSize);
 		else
 		{
 			GUI.HorizontalSlider (box, 1, 0, 1); 
-			bet = playerMoveController.Money;
+			bet = player.moveController.Money;
 		}
 		GUI.Label (box, bet.ToString ());//(new Rect (box.x, box.y - box.width - 20f, box.width, box.height), bet.ToString ());
 	}

@@ -12,7 +12,7 @@ public class PlayerBasicScript : MonoBehaviour
 	CardScript leftCard;
 	CardScript rightCard;
 
-	public PlayerMoveController playerMoveController;
+	public MoveController moveController;
 
 	public HandController handContoller; 
 	//public List<CardScript>[] Combination = new List<CardScript>[13];
@@ -24,7 +24,7 @@ public class PlayerBasicScript : MonoBehaviour
 	void Awake()
 	{
 		handContoller = new HandController ();
-		playerMoveController = new PlayerMoveController ();
+		moveController = new MoveController ();
 		leftCardPosition = new Vector3(transform.position.x - 0.5f,transform.position.y  - 0.5f,transform.position.z);
 		rightCardPosition = new Vector3(transform.position.x + 0.5f,transform.position.y  - 0.5f,transform.position.z);
 
@@ -33,6 +33,7 @@ public class PlayerBasicScript : MonoBehaviour
 		timeCard = (GameObject)Instantiate (Card, rightCardPosition, Quaternion.identity);
 		rightCard = timeCard.GetComponent<CardScript> ();
 	}
+
 
 	public void GetNewHand(string newLeftCard,string newRightCard)
 	{
@@ -48,9 +49,24 @@ public class PlayerBasicScript : MonoBehaviour
 		card.gameObject.SetActive (true);
 	}
 
+	public virtual void Bet(int raise)
+	{
+		moveController.Bet (raise);
+	}
+
+	public virtual void Call()
+	{
+		moveController.Call ();
+	}
+
+	public virtual void Fold()
+	{
+		moveController.Fold ();
+	}
+
 	public virtual void MakeMove()
 	{
-		playerMoveController.Thinking = true;
+		moveController.Thinking = true;
 	}
 
 	public virtual bool PlayerThinking()
@@ -60,7 +76,7 @@ public class PlayerBasicScript : MonoBehaviour
 
 	public void NextRound()
 	{
-		playerMoveController.DefaultValues ();
+		moveController.DefaultValues ();
 		handContoller.cardsTaken = 0;
 		leftCard.gameObject.SetActive (false);
 		rightCard.gameObject.SetActive (false);
