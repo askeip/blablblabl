@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class MoveController	
 {
-	public int Money;
+	public float Money;
 
 	public Text MoneyText { get; set; }
 
@@ -12,19 +12,20 @@ public class MoveController
 	public bool Folded{ get; set; }
 	public bool MadeMove{ get; set; }
 	
-	public int MaxBet{ get; set; }
-	public int LastPlayerBet{ get; set; }
-	public int PlayerBet{ get; set; }
-	public int CallSize { get; private set; }
+	public float MaxBet{ get; set; }
+	public float LastPlayerBet{ get; set; }
+	public float PlayerBet{ get; set; }
+	public float CallSize { get; private set; }
+	public float Divider = 100f;
 
-	public int LastRaise { get; set; }
+	public float LastRaise { get; set; }
 
 	public MoveController()
 	{
 		Money = 0;
 		DefaultValues ();
 	}
-	public void GetMoney(int money)
+	public void GetMoney(float money)
 	{
 		Money += money;
 		MoneyText.text = Money.ToString();
@@ -36,13 +37,14 @@ public class MoveController
 		CallSize = MaxBet - PlayerBet;
 	}
 
-	public void Bet(int raise)
+	public void Bet(float raise)
 	{
+		raise = (raise - raise % Divider);
 		if (raise < LastRaise && raise != 0)
 			raise = LastRaise;
 		else if (raise != 0)
 			LastRaise = raise;
-		int prevBetSize = PlayerBet;
+		float prevBetSize = PlayerBet;
 		if (Money >= CallSize + raise)
 		{
 			PlayerBet += CallSize + raise;
@@ -61,6 +63,14 @@ public class MoveController
 	{
 		Bet (0);
 	}
+
+	public void CheckFold()
+	{
+		if (PlayerBet == MaxBet)
+			Call ();
+		else
+			Fold ();
+	}
 	
 	public void Fold()
 	{
@@ -75,7 +85,7 @@ public class MoveController
 		MadeMove = true;
 	}
 
-	public void NextPhase(int lastRaise)
+	public void NextPhase(float lastRaise)
 	{
 		LastRaise = lastRaise;
 		MadeMove = false;

@@ -8,8 +8,8 @@ public class BotScript : PlayerBasicScript
 	private float timer = 0f;
 	private bool finishedMove;
 	private bool myMove;
-
-	private int raise;
+	private int movesDone;
+	private float raise;
 
 	private Action botAction;
 
@@ -24,6 +24,7 @@ public class BotScript : PlayerBasicScript
 	public override void MakeMove ()
 	{
 		moveController.MakeMove ();
+		movesDone++;
 		myMove = true;
 		finishedMove = false;
 		MakeBet ();
@@ -60,19 +61,35 @@ public class BotScript : PlayerBasicScript
 		}
 		else if(handContoller.cardsTaken == 5)
 		{
-			return;
+			FlopDecision();
 		}
 		timer += Time.deltaTime;
 	}
 
 	private void PreFlopDesicion()
 	{
-		if (handContoller.combo.GetHashCode() > 200)
+		int comboHash = handContoller.combo.GetHashCode ();
+		if (comboHash > 20000)
 		{
-			raise = moveController.Money / 4 - moveController.CallSize;
-			botAction = Betting;
+			if (movesDone == 1)
+				SetBettingAsAction((moveController.Money - moveController.CallSize) / 4);
+			else
+				SetBettingAsAction(moveController.Money);
 		}
-		else if (handContoller.AvailableCards.Sum (z=>z.Value[0].Rank) >= 19 || moveController.PlayerBet >= moveController.MaxBet / 2)
+		else if (handContoller.AvailableCards.Sum (z=>z.Value[0].Rank) >= 22)
+		{
+			if (movesDone == 1)
+			{
+				SetBettingAsAction((moveController.Money - moveController.CallSize) / 6);
+			}
+			else
+				botAction = Call;
+		}
+		else if (handContoller.AvailableCards.Sum (z=>z.Value[0].Rank) >= 17 && moveController.PlayerBet + moveController.Money >= moveController.MaxBet * 10)
+		{
+			botAction = Call;
+		}
+		else if (moveController.PlayerBet >= moveController.MaxBet / 2.5)
 		{
 			botAction = Call;
 		}
@@ -80,6 +97,104 @@ public class BotScript : PlayerBasicScript
 		{
 			botAction = Fold;
 		}
+	}
+
+	private void FlopDecision()
+	{
+		int comboHash = handContoller.combo.GetHashCode ();
+		if (comboHash > 30000)
+		{
+			raise = potSize > moveController.PlayerBet * 3 ? moveController.PlayerBet * 2 : potSize;
+			botAction = Betting;
+		}
+		else if (comboHash > 20000)
+		{
+			if (leftCard.Rank == comboHash % 10000 || rightCard.Rank == comboHash % 10000)
+			{
+				if (moveController.MaxBet == moveController.PlayerBet)
+				{
+					SetBettingAsAction(moveController.Divider * 2);
+				}
+			}
+		}
+	}
+
+	private void MoveDecision()
+	{
+		if (handContoller.combo.Item1 == Combos.Straight || handContoller.combo.Item1 == Combos.Flush || handContoller.combo.Item1 == Combos.StraightFlush)
+		{
+			if (moveController.MaxBet == moveController.PlayerBet)
+			{
+				SetBettingAsAction(moveController.LastRaise * 5f);				                   
+			}
+			else 
+			{
+				SetBettingAsAction(moveController.LastRaise * 1.5f);
+			}
+		}
+		else
+		{
+			int comboHash = handContoller.combo.GetHashCode ();
+			if (leftCard.Rank == comboHash/100 || leftCard.Rank == comboHash%100 || rightCard.Rank == comboHash/100 || rightCard.Rank == comboHash%100)
+			{
+
+			}
+		}
+	}
+
+	private void ChooseBet()
+	{
+		switch (handContoller.combo.Item1)
+		{
+		case Combos.High:HighComboDecision();
+			break;
+		case Combos.Pair:PairComboDecision();
+			break;
+		}
+	}
+
+	private void HighComboDecision()
+	{
+		if (handContoller.AvailableCards.Count == 2)
+		{
+			int ranksSum = handContoller.AvailableCards.Sum (z=>z.Value[0].Rank);
+			if (ranksSum >= 22)
+			{
+				if (movesDone == 1)
+				{
+					SetBettingAsAction((moveController.Money - moveController.CallSize) / 6);
+				}
+				else
+					botAction = Call;
+			}
+			else if (ranksSum >= 17 && moveController.PlayerBet + moveController.Money >= moveController.MaxBet * 10)
+			{
+				botAction = Call;
+			}
+			else 
+				CheckFold();
+		}
+		else
+			CheckFold();
+	}
+
+	private void PairComboDecision()
+	{
+
+	}
+
+	private void CheckFold()
+	{
+		if (moveController.PlayerBet == moveController.MaxBet)
+			Check ();
+		else
+			Fold ();
+	}
+
+	private void SetBettingAsAction(float raise)
+	{
+		this.raise = raise;
+		botAction = Betting;
 	}
 
 	public void  Betting()
@@ -91,12 +206,21 @@ public class BotScript : PlayerBasicScript
 		}
 	}
 
-	public override void Bet (int raise)
+	public override void Bet (float raise)
 	{
 		base.Bet (raise);
 	}
 
 	public override void Call ()
+	{
+		if (WaitFinished())
+		{
+			base.Call ();
+			finishedMove = true;
+		}
+	}
+
+	public void Check ()
 	{
 		if (WaitFinished())
 		{
@@ -123,5 +247,11 @@ public class BotScript : PlayerBasicScript
 		}
 		timer = 0f;
 		return true;
+	}
+
+	public override void NextRound()
+	{
+		movesDone = 0;
+		base.NextRound ();
 	}
 }

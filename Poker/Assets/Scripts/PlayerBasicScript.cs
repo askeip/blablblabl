@@ -9,8 +9,9 @@ public enum Suits{Hearts,Diamonds,Clubs,Spikes};
 public class PlayerBasicScript : MonoBehaviour
 {
 	public GameObject Card;
-	CardScript leftCard;
-	CardScript rightCard;
+	public CardScript leftCard { get; private set; }
+	public CardScript rightCard { get; private set; }
+	public float potSize;
 
 	public MoveController moveController;
 
@@ -49,7 +50,7 @@ public class PlayerBasicScript : MonoBehaviour
 		card.gameObject.SetActive (true);
 	}
 
-	public virtual void Bet(int raise)
+	public virtual void Bet(float raise)
 	{
 		moveController.Bet (raise);
 	}
@@ -74,7 +75,7 @@ public class PlayerBasicScript : MonoBehaviour
 		return true;
 	}
 
-	public void NextRound()
+	public virtual void NextRound()
 	{
 		moveController.DefaultValues ();
 		handContoller.cardsTaken = 0;

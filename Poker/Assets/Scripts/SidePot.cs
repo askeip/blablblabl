@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 public class SidePot 
 {
-	public int Pot { get; set; }
-	public int MinBet { get; set; }
+	public float Pot { get; set; }
+	public float MinBet { get; set; }
 
-	public SidePot(int pot, int minBet)
+	public SidePot(float pot, float minBet)
 	{
 		Pot = pot;
 		MinBet = minBet;
@@ -17,8 +17,8 @@ public class SidePot
 
 public class PotCounter
 {
-	public int mainPot { get; set; }
-	public int lastPot { get; set; }
+	public float mainPot { get; set; }
+	public float lastPot { get; set; }
 	public List<SidePot> pots{ get; private set; }
 
 	public PotCounter()
@@ -38,9 +38,9 @@ public class PotCounter
 		}
 	}
 
-	public void AddPot(List<PlayerBasicScript> players,int allinPlayerBet)
+	public void AddPot(List<PlayerBasicScript> players,float allinPlayerBet)
 	{
-		int prevBet = 0;
+		float prevBet = 0;
 		if (pots.Count > 0)
 			prevBet = pots [pots.Count - 1].MinBet;
 		if (prevBet == allinPlayerBet)
@@ -50,7 +50,7 @@ public class PotCounter
 		var foldedMoney = folded.Sum(z=>z.moveController.PlayerBet) - folded.Count * prevBet;
 		players = players.Where(z=>z.moveController.PlayerBet >= allinPlayerBet)
 			.ToList();
-		int pot = players.Count * allinPlayerBet + foldedMoney - prevBet * players.Count;
+		float pot = players.Count * allinPlayerBet + foldedMoney - prevBet * players.Count;
 		pots.Add (new SidePot (pot, allinPlayerBet));
 		RecountLastPot ();
 	}
@@ -60,13 +60,13 @@ public class PotCounter
 		lastPot -= pots [pots.Count - 1].Pot;
 	}
 
-	public void CountPot(int lastBet)
+	public void CountPot(float lastBet)
 	{
 		mainPot += lastBet;
 		lastPot += lastBet;
 	}
 
-	public void GivePOT(List<PlayerBasicScript> winners,int pot)
+	public void GivePOT(List<PlayerBasicScript> winners,float pot)
 	{
 		for (int i=0;i<winners.Count;i++)
 		{

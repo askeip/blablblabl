@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public enum Combos{High,Pair,TwoPair,Set,Straight,Flush,FullHouse,Quad,StraightFlush,RoyalFlush};
+public enum Combos{High=1,Pair,TwoPair,Set,Straight,Flush,FullHouse,Quad,StraightFlush,RoyalFlush};
 
 public class Combo 
 {

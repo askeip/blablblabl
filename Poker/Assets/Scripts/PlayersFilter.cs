@@ -52,7 +52,7 @@ public class PlayersFilter
 
 	public List<PlayerBasicScript> HighestBetPlayer (List<PlayerBasicScript> playerScripts)
 	{
-		int highestBet = playerScripts.Max (z => z.moveController.PlayerBet);
+		float highestBet = playerScripts.Max (z => z.moveController.PlayerBet);
 		return playerScripts.Where (z => z.moveController.PlayerBet == highestBet)
 			.Take (1)
 				.ToList();
