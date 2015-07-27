@@ -137,7 +137,7 @@ public class BotScript : PlayerBasicScript
 			int comboHash = handContoller.combo.GetHashCode ();
 			if (leftCard.Rank == comboHash/100 || leftCard.Rank == comboHash%100 || rightCard.Rank == comboHash/100 || rightCard.Rank == comboHash%100)
 			{
-
+				ChooseBet();
 			}
 		}
 	}
@@ -180,7 +180,10 @@ public class BotScript : PlayerBasicScript
 
 	private void PairComboDecision()
 	{
-
+		if (movesDone == 1)
+			SetBettingAsAction((moveController.Money - moveController.CallSize) / 4);
+		else
+			SetBettingAsAction(moveController.Money);
 	}
 
 	private void CheckFold()
