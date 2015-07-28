@@ -11,7 +11,8 @@ public class MoveController
 	public bool Thinking{ get; set; }
 	public bool Folded{ get; set; }
 	public bool MadeMove{ get; set; }
-	
+
+	public float BigBlind { get; set; }
 	public float MaxBet{ get; set; }
 	public float LastPlayerBet{ get; set; }
 	public float PlayerBet{ get; set; }
@@ -29,6 +30,11 @@ public class MoveController
 	{
 		Money += money;
 		MoneyText.text = Money.ToString();
+	}
+
+	public bool CanCheck()
+	{
+		return MaxBet == PlayerBet;
 	}
 
 	public void MakeMove()
@@ -85,9 +91,9 @@ public class MoveController
 		MadeMove = true;
 	}
 
-	public void NextPhase(float lastRaise)
+	public void NextPhase()
 	{
-		LastRaise = lastRaise;
+		LastRaise = BigBlind;
 		MadeMove = false;
 		Thinking = false;
 	}
@@ -107,6 +113,7 @@ public class MoveController
 			Folded = true;
 		MadeMove = false;
 		MaxBet = 0;
+		CallSize = 0;
 		LastPlayerBet = 0;
 		LastRaise = 0;
 		PlayerBet = 0;

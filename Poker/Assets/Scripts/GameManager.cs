@@ -40,9 +40,14 @@ public class GameManager : MonoBehaviour
 	float maxBet;
 
 	float bigBlind;
+	int roundsPlayed;
+	float blindDifference;
 
 	void Start()
 	{
+		blindDifference = 400f;
+		bigBlind = blindDifference;
+		roundsPlayed = -1;
 		Divider = 100f;
 		gameOver = false;
 		cardDistributor = new CardDistributor ();
@@ -143,7 +148,7 @@ public class GameManager : MonoBehaviour
 		gamePhase++;
 		foreach (var player in playerScripts)
 		{
-			player.moveController.NextPhase(LastRaise);
+			player.NextPhase();
 		}
 		allinPlayers = new List<PlayerBasicScript> ();
 		//activePlayers = playersFilter.ActivePlayers (activePlayers);
@@ -222,6 +227,16 @@ public class GameManager : MonoBehaviour
 		CheckRaise (playerScripts [blindPlayer]);
 	}
 
+	private void SetBigBlind()
+	{
+		if (roundsPlayed % 5 == 0)
+		{
+			bigBlind += blindDifference;
+			foreach (var player in playerScripts)
+				player.moveController.BigBlind = bigBlind;
+		}
+	}
+
 	private void Flop()
 	{
 		for (int i =0; i<3; i++)
@@ -262,18 +277,20 @@ public class GameManager : MonoBehaviour
 
 	public void DefaultValues()
 	{
+		POTText.text = "";
 		pot = new PotCounter ();
 		allinPlayers = new List<PlayerBasicScript> ();
-		bigBlind = 200;
 		maxBet = 0;
+		gamePhase = 0;
 		waitingTime = 0f;
 		orderController.DefaultValues (playerScripts);
 	}
 
 	public void NextRound()
 	{
-		POTText.text = "";
-		gamePhase = 0;
+		DefaultValues ();
+		roundsPlayed++;
+		SetBigBlind ();
 		DestroyCards ();
 		cardDistributor.CardDeck.Shuffle ();
 		for (int i =0; i<numOfPlayers; i++)
@@ -285,7 +302,6 @@ public class GameManager : MonoBehaviour
 				playerScripts[i].handContoller.UpdateCombo();
 			}
 		}
-		DefaultValues ();
 		if (playersFilter.ActivePlayers(playerScripts).Count == 1)
 			GameOver ();
 	}

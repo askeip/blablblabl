@@ -24,10 +24,9 @@ public class BotScript : PlayerBasicScript
 	public override void MakeMove ()
 	{
 		moveController.MakeMove ();
-		movesDone++;
 		myMove = true;
 		finishedMove = false;
-		MakeBet ();
+		MakeMoveDecision ();
 	}
 
 	public override bool PlayerThinking ()
@@ -40,7 +39,7 @@ public class BotScript : PlayerBasicScript
 			}
 			else if (myMove)
 			{
-				MakeBet();
+				MakeMoveDecision();
 			}
 			return true;
 		}
@@ -49,100 +48,32 @@ public class BotScript : PlayerBasicScript
 			botAction = null;
 			raise = 0;
 			myMove = false;
+			movesDone++;
 			return false;
 		}
 	}
 
-	private void MakeBet()
+	private void MakeMoveDecision()
 	{
-		if (handContoller.cardsTaken == 2)
+		if (handContoller.combo.Item1 == Combos.Straight || handContoller.combo.Item1 == Combos.Flush
+		    || handContoller.combo.Item1 >= Combos.StraightFlush)
 		{
-			PreFlopDesicion();
-		}
-		else if(handContoller.cardsTaken == 5)
-		{
-			FlopDecision();
-		}
-		timer += Time.deltaTime;
-	}
-
-	private void PreFlopDesicion()
-	{
-		int comboHash = handContoller.combo.GetHashCode ();
-		if (comboHash > 20000)
-		{
-			if (movesDone == 1)
-				SetBettingAsAction((moveController.Money - moveController.CallSize) / 4);
-			else
-				SetBettingAsAction(moveController.Money);
-		}
-		else if (handContoller.AvailableCards.Sum (z=>z.Value[0].Rank) >= 22)
-		{
-			if (movesDone == 1)
-			{
-				SetBettingAsAction((moveController.Money - moveController.CallSize) / 6);
-			}
-			else
-				botAction = Call;
-		}
-		else if (handContoller.AvailableCards.Sum (z=>z.Value[0].Rank) >= 17 && moveController.PlayerBet + moveController.Money >= moveController.MaxBet * 10)
-		{
-			botAction = Call;
-		}
-		else if (moveController.PlayerBet >= moveController.MaxBet / 2.5)
-		{
-			botAction = Call;
-		}
-		else 
-		{
-			botAction = Fold;
-		}
-	}
-
-	private void FlopDecision()
-	{
-		int comboHash = handContoller.combo.GetHashCode ();
-		if (comboHash > 30000)
-		{
-			raise = potSize > moveController.PlayerBet * 3 ? moveController.PlayerBet * 2 : potSize;
-			botAction = Betting;
-		}
-		else if (comboHash > 20000)
-		{
-			if (leftCard.Rank == comboHash % 10000 || rightCard.Rank == comboHash % 10000)
-			{
-				if (moveController.MaxBet == moveController.PlayerBet)
-				{
-					SetBettingAsAction(moveController.Divider * 2);
-				}
-			}
-		}
-	}
-
-	private void MoveDecision()
-	{
-		if (handContoller.combo.Item1 == Combos.Straight || handContoller.combo.Item1 == Combos.Flush || handContoller.combo.Item1 == Combos.StraightFlush)
-		{
-			if (moveController.MaxBet == moveController.PlayerBet)
-			{
-				SetBettingAsAction(moveController.LastRaise * 5f);				                   
-			}
-			else 
-			{
-				SetBettingAsAction(moveController.LastRaise * 1.5f);
-			}
+			ChooseBotAction();
 		}
 		else
 		{
 			int comboHash = handContoller.combo.GetHashCode ();
 			if (leftCard.Rank == comboHash/100 || leftCard.Rank == comboHash%100 || rightCard.Rank == comboHash/100 || rightCard.Rank == comboHash%100)
 			{
-				ChooseBet();
+				ChooseBotAction();
 			}
+			else 
+				botAction = CheckFold;
 		}
+		timer += Time.deltaTime;
 	}
 
-	private void ChooseBet()
+	private void ChooseBotAction()
 	{
 		switch (handContoller.combo.Item1)
 		{
@@ -150,17 +81,33 @@ public class BotScript : PlayerBasicScript
 			break;
 		case Combos.Pair:PairComboDecision();
 			break;
+		case Combos.TwoPair:TwoPairComboDecision();
+			break;
+		case Combos.Set:SetComboDecision();
+			break;
+		case Combos.Straight:StraightDecision();
+			break;
+		case Combos.Flush:FlushDecision();
+			break;
+		case Combos.FullHouse:FullHouseDecision();
+			break;
+		case Combos.Quad:QuadDecision();
+			break;
+		case Combos.StraightFlush:StraightFlushDecision();
+			break;
+		case Combos.RoyalFlush:RoyalFlushDecision();
+			break;
 		}
 	}
 
 	private void HighComboDecision()
 	{
-		if (handContoller.AvailableCards.Count == 2)
+		if (handContoller.cardsTaken == 2)
 		{
 			int ranksSum = handContoller.AvailableCards.Sum (z=>z.Value[0].Rank);
 			if (ranksSum >= 22)
 			{
-				if (movesDone == 1)
+				if (movesDone == 0)
 				{
 					SetBettingAsAction((moveController.Money - moveController.CallSize) / 6);
 				}
@@ -172,23 +119,88 @@ public class BotScript : PlayerBasicScript
 				botAction = Call;
 			}
 			else 
-				CheckFold();
+				botAction = CheckFold;
 		}
 		else
-			CheckFold();
+			botAction = CheckFold;
 	}
 
 	private void PairComboDecision()
 	{
-		if (movesDone == 1)
-			SetBettingAsAction((moveController.Money - moveController.CallSize) / 4);
-		else
-			SetBettingAsAction(moveController.Money);
+		if (handContoller.cardsTaken == 2)
+		{
+			if (movesDone == 0)
+				SetBettingAsAction((moveController.Money - moveController.CallSize) / 4);
+			else
+				SetBettingAsAction(moveController.MaxBet * 2f);
+		}
+		else if (handContoller.cardsTaken >= 5)
+		{
+			if (moveController.CanCheck())
+			{
+				SetBettingAsAction(moveController.BigBlind * 2.5f);
+			}
+			else if (MaxBetNotBig(1.5f))
+			{
+				SetBettingAsAction(moveController.BigBlind * 1.5f);
+			}
+			else if (MaxBetNotBig(2.2f) || moveController.MaxBet < moveController.PlayerBet + moveController.Money)
+			{
+				botAction = Call;
+			}
+			else 
+				botAction = Fold;
+		}
+	}
+
+	private void TwoPairComboDecision()
+	{
+
+	}
+
+	private void SetComboDecision()
+	{
+		SetBettingAsAction(moveController.LastRaise * 3.2f);
+	}
+
+	private void StraightDecision()
+	{
+		SetBettingAsAction(moveController.LastRaise * 4.5f);
+	}
+
+	private void FlushDecision()
+	{
+		SetBettingAsAction(moveController.LastRaise * 4.2f);
+	}
+
+	private void FullHouseDecision()
+	{
+		SetBettingAsAction(moveController.LastRaise * 6f);
+	}
+
+	private void QuadDecision()
+	{
+		SetBettingAsAction(moveController.LastRaise * 8f);
+	}
+
+	private void StraightFlushDecision()
+	{
+		SetBettingAsAction(moveController.LastRaise * 10f);
+	}
+
+	private void RoyalFlushDecision()
+	{
+		SetBettingAsAction(moveController.LastRaise * 12f);
+	}
+
+	public bool MaxBetNotBig(float multiplier)
+	{
+		return moveController.MaxBet < moveController.PlayerBet + moveController.BigBlind * multiplier;
 	}
 
 	private void CheckFold()
 	{
-		if (moveController.PlayerBet == moveController.MaxBet)
+		if (moveController.CanCheck())
 			Check ();
 		else
 			Fold ();
@@ -251,7 +263,11 @@ public class BotScript : PlayerBasicScript
 		timer = 0f;
 		return true;
 	}
-
+	public override void NextPhase ()
+	{
+		movesDone = 0;
+		base.NextPhase ();
+	}
 	public override void NextRound()
 	{
 		movesDone = 0;

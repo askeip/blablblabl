@@ -65,6 +65,10 @@ public class PlayerBasicScript : MonoBehaviour
 		moveController.Fold ();
 	}
 
+	public virtual void NextPhase()
+	{
+		moveController.NextPhase ();
+	}
 	public virtual void MakeMove()
 	{
 		moveController.Thinking = true;
@@ -78,6 +82,7 @@ public class PlayerBasicScript : MonoBehaviour
 	public virtual void NextRound()
 	{
 		moveController.DefaultValues ();
+		potSize = 0;
 		handContoller.cardsTaken = 0;
 		leftCard.gameObject.SetActive (false);
 		rightCard.gameObject.SetActive (false);
