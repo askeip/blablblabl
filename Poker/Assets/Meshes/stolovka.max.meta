@@ -1,0 +1,203 @@
+fileFormatVersion: 2
+guid: 8f6f40df554f62a49a7b1cfe28ca3194
+timeCreated: 1437960930
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Balka 1
+    100002: Balka2
+    100004: Ceiling
+    100006: Ceiling001
+    100008: Column 1
+    100010: Column 2
+    100012: Column 3
+    100014: Column 3 1
+    100016: Component_069
+    100018: Component_070
+    100020: Component_071
+    100022: Component_072
+    100024: Component_68
+    100026: Component_68 1
+    100028: end
+    100030: end 1
+    100032: end 2
+    100034: Floor001
+    100036: Floor002
+    100038: Plakate
+    100040: Plakate 2
+    100042: //RootNode
+    100044: Walls
+    100046: Walls001
+    100048: Window 1
+    100050: Window 2
+    100052: Window 3
+    400000: Balka 1
+    400002: Balka2
+    400004: Ceiling
+    400006: Ceiling001
+    400008: Column 1
+    400010: Column 2
+    400012: Column 3
+    400014: Column 3 1
+    400016: Component_069
+    400018: Component_070
+    400020: Component_071
+    400022: Component_072
+    400024: Component_68
+    400026: Component_68 1
+    400028: end
+    400030: end 1
+    400032: end 2
+    400034: Floor001
+    400036: Floor002
+    400038: Plakate
+    400040: Plakate 2
+    400042: //RootNode
+    400044: Walls
+    400046: Walls001
+    400048: Window 1
+    400050: Window 2
+    400052: Window 3
+    2300000: Balka 1
+    2300002: Balka2
+    2300004: Ceiling
+    2300006: Ceiling001
+    2300008: Column 1
+    2300010: Column 2
+    2300012: Column 3
+    2300014: Column 3 1
+    2300016: Component_069
+    2300018: Component_070
+    2300020: Component_071
+    2300022: Component_072
+    2300024: Component_68
+    2300026: Component_68 1
+    2300028: end
+    2300030: end 1
+    2300032: end 2
+    2300034: Floor001
+    2300036: Floor002
+    2300038: Plakate
+    2300040: Plakate 2
+    2300042: Walls
+    2300044: Walls001
+    2300046: Window 1
+    2300048: Window 2
+    2300050: Window 3
+    3300000: Balka 1
+    3300002: Balka2
+    3300004: Ceiling
+    3300006: Ceiling001
+    3300008: Column 1
+    3300010: Column 2
+    3300012: Column 3
+    3300014: Column 3 1
+    3300016: Component_069
+    3300018: Component_070
+    3300020: Component_071
+    3300022: Component_072
+    3300024: Component_68
+    3300026: Component_68 1
+    3300028: end
+    3300030: end 1
+    3300032: end 2
+    3300034: Floor001
+    3300036: Floor002
+    3300038: Plakate
+    3300040: Plakate 2
+    3300042: Walls
+    3300044: Walls001
+    3300046: Window 1
+    3300048: Window 2
+    3300050: Window 3
+    4300000: end
+    4300002: Component_68
+    4300004: Ceiling
+    4300006: Plakate 2
+    4300008: Plakate
+    4300010: Walls
+    4300012: end
+    4300014: Component_68
+    4300016: Window 2
+    4300018: Window 1
+    4300020: Window 3
+    4300022: Column 3
+    4300024: Column 3
+    4300026: Balka 1
+    4300028: Column 2
+    4300030: Column 1
+    4300032: Balka2
+    4300034: end
+    4300036: Component_069
+    4300038: Component_070
+    4300040: Component_071
+    4300042: Component_072
+    4300044: Floor001
+    4300046: Ceiling001
+    4300048: Walls001
+    4300050: Floor002
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .0149999997
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
