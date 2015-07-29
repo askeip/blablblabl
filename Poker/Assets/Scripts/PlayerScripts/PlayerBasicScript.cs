@@ -41,6 +41,11 @@ public class PlayerBasicScript : MonoBehaviour
 		rightCard.HideCard ();
 	}
 
+	public void ShowCards()
+	{
+		leftCard.ShowCard ();
+		rightCard.ShowCard ();
+	}
 
 	public void GetNewHand(CardBasic newLeftCard,CardBasic newRightCard)
 	{

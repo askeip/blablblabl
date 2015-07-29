@@ -133,7 +133,7 @@ public class BotScript : PlayerBasicScript
 			if (movesDone == 0)
 				SetBettingAsAction((moveController.Money - moveController.CallSize) / 4);
 			else
-				SetBettingAsAction(moveController.MaxBet * 2f);
+				SetBettingAsAction(moveController.MaxBet * 1.3f);
 		}
 		else if (handContoller.cardsTaken >= 5)
 		{

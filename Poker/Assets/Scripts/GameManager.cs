@@ -95,10 +95,6 @@ public class GameManager : MonoBehaviour
 		{
 			CheckPlayersCondition();
 		}
-		if (PhaseFinished ())
-		{
-			PhaseManager();
-		}
 	}
 
 	private void CheckRaise(PlayerBasicScript player)
@@ -136,6 +132,10 @@ public class GameManager : MonoBehaviour
 				orderController.SetLastPlayer(playerScripts);
 			orderController.SetCurrentPlayer(playerScripts);
 			POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
+			if (PhaseFinished ())
+			{
+				PhaseManager();
+			}		
 		} 
 		else if (!BetsDone())
 		{
@@ -318,6 +318,8 @@ public class GameManager : MonoBehaviour
 	{
 		float minBet = 0;
 		var notFoldedPlayers = playersFilter.NotFoldedPlayers (playerScripts);
+		foreach (var player in notFoldedPlayers)
+			player.ShowCards ();
 		var activePlayers = playersFilter.ActivePlayers (notFoldedPlayers);
 		for (int i=0;i<pot.pots.Count;i++)
 		{
