@@ -154,6 +154,7 @@
      <None Include="Assets\Standart Assets\ImageEffects\Shaders\VortexEffect.shader" />
      <None Include="Assets\Standart Assets\ImageEffects\Shaders\Contrast Stretch\Adaptation.shader" />
      <None Include="Assets\Standart Assets\ImageEffects\Shaders\NoiseAndGrain.shader" />
+     <None Include="Assets\Sprites\Resources\OtherCards\defaultdeckstyle.xml" />
      <None Include="Assets\Standart Assets\ImageEffects\Shaders\VignettingShader.shader" />
      <None Include="Assets\Standart Assets\ImageEffects\Shaders\Tonemapper.shader" />
      <None Include="Assets\Standart Assets\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter.shader" />

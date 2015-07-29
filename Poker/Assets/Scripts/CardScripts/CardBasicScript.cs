@@ -6,42 +6,39 @@ using System;
 
 public class CardBasicScript : MonoBehaviour 
 {
+	public CardBasic Card { get; set; } 
+
+	public void SetCard(CardBasic card,bool showCard = false)
+	{
+		Card = card;
+		if (showCard)
+			ShowCard ();
+		else
+			HideCard ();
+	}
+
+	public virtual void ShowCard()
+	{
+		this.gameObject.GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite> ("OtherCards/" + ((Card.Rank - 2) + 13 * (int)Card.Suit));
+		Resources.UnloadUnusedAssets ();
+	}
+
+	public virtual void HideCard()
+	{
+		this.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite> ("OtherCards/" + "flipside");
+		Resources.UnloadUnusedAssets ();
+	}
+}
+
+public class CardBasic
+{
 	public int Rank;
 	
 	public Suits Suit;
 	
-	public void SetCard(string cardName)
+	public CardBasic(int rank, Suits suit)
 	{
-		Rank = RankToInt(cardName[0]);
-		Suit = SuitToSuits(cardName[1]);
-		ShowCard (cardName);
-		//string name = "5S";
-	}
-
-	public virtual void ShowCard(string cardName)
-	{
-	}
-	
-	private Suits SuitToSuits(char suit)
-	{
-		switch (suit) 
-		{
-		case 'S':return Suits.Spikes;
-		case 'H':return Suits.Hearts;
-		case 'D':return Suits.Diamonds;
-		default:return Suits.Clubs;
-		}
-	}
-	private int RankToInt(char rank)
-	{
-		switch (rank) 
-		{
-		case 'T': return 10;
-		case 'J': return 11;
-		case 'Q': return 12;
-		case 'K': return 13;
-		case 'A': return 14;
-		default: return int.Parse(rank.ToString());
-		}
+		Rank = rank;
+		Suit = suit;
 	}
 }

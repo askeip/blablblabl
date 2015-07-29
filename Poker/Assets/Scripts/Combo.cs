@@ -30,7 +30,7 @@ public class Combo
 		return Item1 == combo.Item1 && Item2 == combo.Item2;
 	}
 
-	public Combo CheckStraightFlush(Dictionary<int,List<CardScript>> Combination,Tuple<Suits,int> FlushPossible)
+	public Combo CheckStraightFlush(Dictionary<int,List<CardBasicScript>> Combination,Tuple<Suits,int> FlushPossible)
 	{
 		var flush = new Combo(Combos.Flush, HighFlushRank(Combination,FlushPossible));
 		if (Item1!=Combos.Straight)
@@ -40,7 +40,7 @@ public class Combo
 			var sameSuit = false;
 			foreach (var cardScript in Combination[Item2-i])
 			{
-				if (cardScript.Suit == FlushPossible.Item1)
+				if (cardScript.Card.Suit == FlushPossible.Item1)
 				{
 					sameSuit = true;
 					break;
@@ -54,15 +54,15 @@ public class Combo
 		return new Combo(Combos.StraightFlush,Item2);
 	}
 
-	public int HighFlushRank(Dictionary<int,List<CardScript>> Combination,Tuple<Suits,int> FlushPossible)
+	public int HighFlushRank(Dictionary<int,List<CardBasicScript>> Combination,Tuple<Suits,int> FlushPossible)
 	{
 		return Combination.OrderByDescending (z => z.Key)
-			.Where (z => z.Value.Where (d => d.Suit == FlushPossible.Item1) != null)
-				.Select (z => z.Value [0].Rank)
+			.Where (z => z.Value.Where (d => d.Card.Suit == FlushPossible.Item1) != null)
+				.Select (z => z.Value [0].Card.Rank)
 				.ElementAt (0);
 	}
 	
-	public Combo CheckStraight(Dictionary<int,List<CardScript>> Combination)
+	public Combo CheckStraight(Dictionary<int,List<CardBasicScript>> Combination)
 	{
 		int tries = Combination.Count-4;
 		int straightFromRank = 14;

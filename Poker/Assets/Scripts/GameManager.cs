@@ -126,6 +126,7 @@ public class GameManager : MonoBehaviour
 			return;
 		if (player.moveController.FinishedMove())
 		{
+			player.HideCards();
 			if (!player.moveController.Folded && player.moveController.MadeMove)
 				pot.CountPot(player.moveController.LastPlayerBet);
 			CheckRaise(player);
@@ -139,6 +140,8 @@ public class GameManager : MonoBehaviour
 		else if (!BetsDone())
 		{
 			player.MakeMove();
+			player.leftCard.ShowCard();
+			player.rightCard.ShowCard();
 		}
 	}
 
@@ -248,10 +251,10 @@ public class GameManager : MonoBehaviour
 	private void TurnOrRiver()
 	{
 		PutCardOnTable(gamePhase+1);
-		var cardScript = cardDistributor.TableCards [gamePhase+1].GetComponent<CardScript> ();
+		var cardScript = cardDistributor.TableCards [gamePhase+1].GetComponent<CardBasicScript> ();
 		foreach (var playerScript in playerScripts)
 		{
-			if (cardScript.Suit == playerScript.handContoller.FlushPossible.Item1)
+			if (cardScript.Card.Suit == playerScript.handContoller.FlushPossible.Item1)
 			{
 				playerScript.handContoller.FlushPossible.Item2 += 1;
 			}
@@ -355,10 +358,13 @@ public class GameManager : MonoBehaviour
 
 	public void PutCardOnTable(int i)
 	{
-		cardDistributor.TableCards[i] = Card;
-		cardDistributor.TableCards[i].GetComponent<CardScript> ().SetCard (cardDistributor.CardDeck.cards[cardDistributor.CardDeck.Length-1-i]);
+		/*cardDistributor.TableCards[i] = Card;
+		cardDistributor.TableCards[i].GetComponent<CardBasicScript> ().SetCard (cardDistributor.CardDeck.cards[cardDistributor.CardDeck.Length-1-i],true);
 		cardDistributor.TableCards [i] = (GameObject) Instantiate (cardDistributor.TableCards[i], new Vector3 (this.transform.position.x + i * 3.5f - 7f, this.transform.position.y + 3f,
-		                                                                       this.transform.position.z), Quaternion.identity);
+		                                                                       this.transform.position.z), Quaternion.identity);*/
+		cardDistributor.TableCards [i] = (GameObject) Instantiate (Card, new Vector3 (this.transform.position.x + i * 3.5f - 7f, this.transform.position.y + 3f,
+		                                                                                                       this.transform.position.z), Quaternion.identity);
+		cardDistributor.TableCards[i].GetComponent<CardBasicScript> ().SetCard (cardDistributor.CardDeck.cards[cardDistributor.CardDeck.Length-1-i],true);
 		cardDistributor.PutNewCard(playerScripts, i);
 	}
 	

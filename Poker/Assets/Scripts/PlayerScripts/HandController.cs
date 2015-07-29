@@ -5,7 +5,7 @@ using System.Linq;
 
 public class HandController
 {
-	public Dictionary<int,List<CardScript>> AvailableCards;
+	public Dictionary<int,List<CardBasicScript>> AvailableCards;
 
 	public Combo combo;
 
@@ -13,14 +13,14 @@ public class HandController
 
 	public Tuple<Suits,int> FlushPossible;
 
-	public List<CardScript> WinningCards;
+	public List<CardBasicScript> WinningCards;
 
 	public HandController()
 	{
 		combo = new Combo (Combos.High, 0);
-		AvailableCards = new Dictionary<int, List<CardScript>> ();
+		AvailableCards = new Dictionary<int, List<CardBasicScript>> ();
 		FlushPossible = new Tuple<Suits, int> (Suits.Spikes, 0);
-		WinningCards = new List<CardScript> ();
+		WinningCards = new List<CardBasicScript> ();
 	}
 
 	public void UpdateCombo ()
@@ -34,16 +34,16 @@ public class HandController
 			{
 				if (e.Count == 2)
 				{
-					combo = combo.TwoItemCombo(e[0].Rank);
+					combo = combo.TwoItemCombo(e[0].Card.Rank);
 				}
 				else if (e.Count == 3)
 				{
-					combo = combo.ThreeItemCombo(e[0].Rank);
+					combo = combo.ThreeItemCombo(e[0].Card.Rank);
 				}
 			}
 			if (e.Count == 4)
 			{
-				combo = new Combo(Combos.Quad, e[0].Rank);
+				combo = new Combo(Combos.Quad, e[0].Card.Rank);
 			}
 		}
 		if (combo.Item1 < Combos.Straight)
@@ -70,10 +70,10 @@ public class HandController
 			//	continue;
 			foreach (var cardScript in listOfCardScript)
 			{
-				if (suitCount.ContainsKey(cardScript.Suit))
-					suitCount[cardScript.Suit] += 1;
+				if (suitCount.ContainsKey(cardScript.Card.Suit))
+					suitCount[cardScript.Card.Suit] += 1;
 				else
-					suitCount.Add(cardScript.Suit,1);
+					suitCount.Add(cardScript.Card.Suit,1);
 			}
 		}
 		foreach (var suit in suitCount) 
@@ -83,13 +83,13 @@ public class HandController
 		}
 	}
 	
-	public void AddCard(CardScript cScript)
+	public void AddCard(CardBasicScript cScript)
 	{
 		cardsTaken++;
-		if (AvailableCards.ContainsKey (cScript.Rank))
-			AvailableCards [cScript.Rank].Add (cScript);
+		if (AvailableCards.ContainsKey (cScript.Card.Rank))
+			AvailableCards [cScript.Card.Rank].Add (cScript);
 		else
-			AvailableCards.Add (cScript.Rank, new List<CardScript>(){cScript});
+			AvailableCards.Add (cScript.Card.Rank, new List<CardBasicScript>(){cScript});
 	}
 
 	public void ChooseWinningCards()

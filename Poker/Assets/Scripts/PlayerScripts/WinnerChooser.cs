@@ -41,10 +41,10 @@ public class WinnerChooser
 		for (int i =0; i<5; i++) {
 			var highRank = 0;
 			foreach (var player in possibleWinners) {
-				if (player.handContoller.WinningCards [i].Rank > highRank) {
+				if (player.handContoller.WinningCards [i].Card.Rank > highRank) {
 					winners = new List<PlayerBasicScript> (){player};
-					highRank = player.handContoller.WinningCards [i].Rank;
-				} else if (player.handContoller.WinningCards [i].Rank == highRank)
+					highRank = player.handContoller.WinningCards [i].Card.Rank;
+				} else if (player.handContoller.WinningCards [i].Card.Rank == highRank)
 					winners.Add (player);
 			}
 			if (winners.Count == 1)

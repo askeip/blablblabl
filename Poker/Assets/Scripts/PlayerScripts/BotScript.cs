@@ -46,6 +46,7 @@ public class BotScript : PlayerBasicScript
 		else
 		{
 			botAction = null;
+			HideCards();
 			raise = 0;
 			myMove = false;
 			movesDone++;
@@ -63,7 +64,7 @@ public class BotScript : PlayerBasicScript
 		else
 		{
 			int comboHash = handContoller.combo.GetHashCode ();
-			if (leftCard.Rank == comboHash/100 || leftCard.Rank == comboHash%100 || rightCard.Rank == comboHash/100 || rightCard.Rank == comboHash%100)
+			if (leftCard.Card.Rank == comboHash/100 || leftCard.Card.Rank == comboHash%100 || rightCard.Card.Rank == comboHash/100 || rightCard.Card.Rank == comboHash%100)
 			{
 				ChooseBotAction();
 			}
@@ -104,7 +105,7 @@ public class BotScript : PlayerBasicScript
 	{
 		if (handContoller.cardsTaken == 2)
 		{
-			int ranksSum = handContoller.AvailableCards.Sum (z=>z.Value[0].Rank);
+			int ranksSum = handContoller.AvailableCards.Sum (z=>z.Value[0].Card.Rank);
 			if (ranksSum >= 22)
 			{
 				if (movesDone == 0)
@@ -155,42 +156,42 @@ public class BotScript : PlayerBasicScript
 
 	private void TwoPairComboDecision()
 	{
-
+		SetBettingAsAction (moveController.BigBlind * 3f);
 	}
 
 	private void SetComboDecision()
 	{
-		SetBettingAsAction(moveController.LastRaise * 3.2f);
+		SetBettingAsAction(moveController.BigBlind * 3.4f);
 	}
 
 	private void StraightDecision()
 	{
-		SetBettingAsAction(moveController.LastRaise * 4.5f);
+		SetBettingAsAction(moveController.BigBlind * 4.5f);
 	}
 
 	private void FlushDecision()
 	{
-		SetBettingAsAction(moveController.LastRaise * 4.2f);
+		SetBettingAsAction(moveController.BigBlind * 4.2f);
 	}
 
 	private void FullHouseDecision()
 	{
-		SetBettingAsAction(moveController.LastRaise * 6f);
+		SetBettingAsAction(moveController.BigBlind * 6f);
 	}
 
 	private void QuadDecision()
 	{
-		SetBettingAsAction(moveController.LastRaise * 8f);
+		SetBettingAsAction(moveController.BigBlind * 8f);
 	}
 
 	private void StraightFlushDecision()
 	{
-		SetBettingAsAction(moveController.LastRaise * 10f);
+		SetBettingAsAction(moveController.BigBlind * 10f);
 	}
 
 	private void RoyalFlushDecision()
 	{
-		SetBettingAsAction(moveController.LastRaise * 12f);
+		SetBettingAsAction(moveController.BigBlind * 12f);
 	}
 
 	public bool MaxBetNotBig(float multiplier)

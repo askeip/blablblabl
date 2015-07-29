@@ -4,13 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public enum Suits{Hearts,Diamonds,Clubs,Spikes};
+public enum Suits{Diamonds,Hearts,Spikes,Clubs};
 
 public class PlayerBasicScript : MonoBehaviour
 {
 	public GameObject Card;
-	public CardScript leftCard { get; private set; }
-	public CardScript rightCard { get; private set; }
+	public CardBasicScript leftCard { get; private set; }
+	public CardBasicScript rightCard { get; private set; }
 	public float potSize;
 
 	public MoveController moveController;
@@ -30,24 +30,31 @@ public class PlayerBasicScript : MonoBehaviour
 		rightCardPosition = new Vector3(transform.position.x + 0.5f,transform.position.y  - 0.5f,transform.position.z);
 
 		var timeCard =(GameObject)Instantiate (Card, leftCardPosition, Quaternion.identity);
-		leftCard = timeCard.GetComponent<CardScript> ();
+		leftCard = timeCard.GetComponent<CardBasicScript> ();
 		timeCard = (GameObject)Instantiate (Card, rightCardPosition, Quaternion.identity);
-		rightCard = timeCard.GetComponent<CardScript> ();
+		rightCard = timeCard.GetComponent<CardBasicScript> ();
+	}
+
+	public void HideCards()
+	{
+		leftCard.HideCard ();
+		rightCard.HideCard ();
 	}
 
 
-	public void GetNewHand(string newLeftCard,string newRightCard)
+	public void GetNewHand(CardBasic newLeftCard,CardBasic newRightCard)
 	{
 		SetNewCard (leftCard, newLeftCard, "LeftCard");
 		SetNewCard (rightCard, newRightCard, "RightCard");
 	}
 
-	private void SetNewCard(CardScript card,string newCard,string cardName)
+	private void SetNewCard(CardBasicScript card,CardBasic newCard,string cardName)
 	{
 		card.SetCard (newCard);
 		card.name = this.gameObject.name + cardName;
 		handContoller.AddCard (card);
 		card.gameObject.SetActive (true);
+		card.HideCard ();
 	}
 
 	public virtual void Bet(float raise)

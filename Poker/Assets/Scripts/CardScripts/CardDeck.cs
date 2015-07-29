@@ -3,18 +3,15 @@ using System.Collections;
 
 public class CardDeck
 {
-	public string[] cards{ get; set; }
-
-	string suits = "HSDC";
-	string ranks = "23456789TJQKA";
+	public CardBasic[] cards{ get; set; }
 
 	public CardDeck()
 	{
-		cards = new string[52];
-		for (int i = 0; i < ranks.Length; i++) {
-			for (int j = 0; j < suits.Length; j++) {
-				cards [i * suits.Length + j] = ranks [i].ToString () + suits [j].ToString ();
-			}
+		cards = new CardBasic[52];
+		for (int i =0; i<13; i++)
+			for (int j=0;j<4;j++)
+		{
+			cards[i * 4 + j] = new CardBasic(i,(Suits)j);
 		}
 	}
 
