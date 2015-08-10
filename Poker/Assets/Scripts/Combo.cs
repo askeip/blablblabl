@@ -70,41 +70,36 @@ public class Combo
 		{
 			if (Combination.ContainsKey(straightFromRank))
 			{
-				tries--;
-				var straight = true;
-				for (int i=1;i<5;i++)
-				{
-					if (Combination.ContainsKey(straightFromRank-i))
-					{
-						tries--;
-					}
-					else 
-					{
-						straightFromRank-=i;
-						straight = false;
-						break;
-					}
-				}
-				if (straight)
+				int cardsInARow = CardsInARow(Combination,straightFromRank - 1);
+				if (cardsInARow >= 4);
 					return new Combo(Combos.Straight,straightFromRank);
+				else
+					tries-= (cardsInARow + 1);
 			}
 			straightFromRank--;
 		}
 		if (Combination.ContainsKey(14))
 		{
-			var straight = true;
-			for (int i=1;i<5;i++)
-			{
-				if (!Combination.ContainsKey(6-i))
-				{
-					straight = false;
-					break;
-				}
-			}
-			if (straight)
+			int cardsInARow = CardsInARow(Combination,5);
+			if (cardsInARow >= 4);
 				return new Combo(Combos.Straight,5);
 		}
 		return this;
+	}
+
+	public static int CardsInARow(Dictionary<int,List<CardBasicScript>> Combination,int checkFromRank)
+	{
+		int cardsInARow = 0;
+		while (true)
+		{
+			if (Combination.ContainsKey(checkFromRank))
+			{
+				cardsInARow++;
+				checkFromRank--;
+			}
+			else
+				return cardsInARow;
+		}
 	}
 	
 	public Combo TwoItemCombo(int comboRank)
