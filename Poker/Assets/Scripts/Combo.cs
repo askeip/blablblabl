@@ -66,26 +66,43 @@ public class Combo
 	{
 		int tries = Combination.Count-4;
 		int straightFromRank = 14;
-		while (tries>0) {
+		while (tries>0) 
+		{
 			if (Combination.ContainsKey(straightFromRank))
 			{
 				tries--;
-				var flag = true;
+				var straight = true;
 				for (int i=1;i<5;i++)
 				{
 					if (Combination.ContainsKey(straightFromRank-i))
 					{
 						tries--;
-						continue;
 					}
-					straightFromRank-=i;
-					flag = false;
-					break;
+					else 
+					{
+						straightFromRank-=i;
+						straight = false;
+						break;
+					}
 				}
-				if (flag)
+				if (straight)
 					return new Combo(Combos.Straight,straightFromRank);
 			}
 			straightFromRank--;
+		}
+		if (Combination.ContainsKey(14))
+		{
+			var straight = true;
+			for (int i=1;i<5;i++)
+			{
+				if (!Combination.ContainsKey(6-i))
+				{
+					straight = false;
+					break;
+				}
+			}
+			if (straight)
+				return new Combo(Combos.Straight,5);
 		}
 		return this;
 	}
