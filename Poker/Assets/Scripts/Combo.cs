@@ -71,7 +71,7 @@ public class Combo
 			if (Combination.ContainsKey(straightFromRank))
 			{
 				int cardsInARow = CardsInARow(Combination,straightFromRank - 1);
-				if (cardsInARow >= 4);
+				if (cardsInARow >= 4)
 					return new Combo(Combos.Straight,straightFromRank);
 				else
 					tries-= (cardsInARow + 1);
