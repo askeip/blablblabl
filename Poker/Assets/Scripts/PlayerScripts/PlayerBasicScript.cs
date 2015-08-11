@@ -4,8 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public enum Suits{Diamonds,Hearts,Spikes,Clubs};
-
 public class PlayerBasicScript : MonoBehaviour
 {
 	public GameObject Card;
@@ -22,7 +20,7 @@ public class PlayerBasicScript : MonoBehaviour
 	Vector3 rightCardPosition;
 
 
-	void Awake()
+	public void Awake()
 	{
 		handContoller = new HandController ();
 		moveController = new MoveController ();
@@ -81,9 +79,10 @@ public class PlayerBasicScript : MonoBehaviour
 	{
 		moveController.NextPhase ();
 	}
+
 	public virtual void MakeMove()
 	{
-		moveController.Thinking = true;
+		moveController.playerInfo.SetThinking(true);
 	}
 
 	public virtual bool PlayerThinking()
@@ -93,7 +92,7 @@ public class PlayerBasicScript : MonoBehaviour
 
 	public virtual void NextRound()
 	{
-		moveController.DefaultValues ();
+		moveController.playerInfo.DefaultValues ();
 		potSize = 0;
 		handContoller.cardsTaken = 0;
 		leftCard.gameObject.SetActive (false);

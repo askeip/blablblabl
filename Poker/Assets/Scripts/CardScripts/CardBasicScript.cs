@@ -4,6 +4,8 @@ using System.Collections;
 using System.Linq;
 using System;
 
+public enum Suits{Diamonds,Hearts,Spikes,Clubs};
+
 public class CardBasicScript : MonoBehaviour 
 {
 	public CardBasic Card { get; set; } 

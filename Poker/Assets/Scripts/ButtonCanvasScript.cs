@@ -11,7 +11,7 @@ public class ButtonCanvasScript : MonoBehaviour
 
 	void Start()
 	{
-		bet = player.moveController.LastRaise;
+		bet = player.moveController.gameInfo.LastRaise;
 		//betButton.OnPointerClick += Bet ();
 	}
 
@@ -38,12 +38,12 @@ public class ButtonCanvasScript : MonoBehaviour
 	void OnGUI()
 	{
 		Rect box = new Rect(Screen.width * 0.8f, Screen.height * 0.2f, Screen.width * 0.2f, Screen.height * 0.2f);
-		if (player.moveController.Money > player.moveController.LastRaise + player.moveController.CallSize)
-			bet = GUI.HorizontalSlider (box, bet, player.moveController.LastRaise, player.moveController.Money - player.moveController.CallSize);
+		if (player.moveController.playerInfo.Money > player.moveController.gameInfo.LastRaise + player.moveController.playerInfo.CallSize)
+			bet = GUI.HorizontalSlider (box, bet, player.moveController.gameInfo.LastRaise, player.moveController.playerInfo.Money - player.moveController.playerInfo.CallSize);
 		else
 		{
 			GUI.HorizontalSlider (box, 1, 0, 1); 
-			bet = player.moveController.Money;
+			bet = player.moveController.playerInfo.Money;
 		}
 		GUI.Label (box, bet.ToString ());//(new Rect (box.x, box.y - box.width - 20f, box.width, box.height), bet.ToString ());
 	}

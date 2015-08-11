@@ -64,7 +64,6 @@ public class Combo
 	
 	public Combo CheckStraight(Dictionary<int,List<CardBasicScript>> Combination)
 	{
-		int tries = Combination.Count-4;
 		int straightFromRank = 14;
 		while (straightFromRank > 4) 
 		{

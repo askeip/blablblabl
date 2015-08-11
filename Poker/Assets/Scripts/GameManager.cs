@@ -14,15 +14,16 @@ public class GameManager : MonoBehaviour
 	//List<PlayerScript> activePlayers;
 	CardDistributor cardDistributor;
 
-	public float Divider;
+	//public float Divider;
 
 	public GameObject Card;
-	public int numOfPlayers;
+	public GameInfo gameInfo;
+	//public int numOfPlayers;
 	Vector3[] positions = new Vector3[]{new Vector3(0,-2,0),new Vector3(-5,0,0),new Vector3(5,0,0)};
 	//Vector3 deckPosition = new Vector3(0,0,0);
 
 	public bool gameOver { get; private set; }
-	public float LastRaise { get; private set; }
+	//public float LastRaise { get; private set; }
 
 	WinnerChooser winnerChooser;
 	PlayersFilter playersFilter;
@@ -32,47 +33,50 @@ public class GameManager : MonoBehaviour
 	public Text[] PlayerMoneyText;
 
 	float waitingTime = 0f;
-	int gamePhase = 0;
+	//int gamePhase = 0;
 
 	PotCounter pot;
 	List<PlayerBasicScript> allinPlayers;
 
-	float maxBet;
+	//float maxBet;
 
-	float bigBlind;
-	int roundsPlayed;
-	float blindDifference;
+	//float bigBlind;
+	//int roundsPlayed;
+	//float blindDifference;
 
 	void Start()
 	{
-		blindDifference = 400f;
-		bigBlind = blindDifference;
-		roundsPlayed = -1;
-		Divider = 100f;
+		//blindDifference = 400f;
+		//bigBlind = blindDifference;
+		//roundsPlayed = -1;
+		//Divider = 100f;
+		gameInfo = new GameInfo (400f,100f,3);
 		gameOver = false;
 		cardDistributor = new CardDistributor ();
 		winnerChooser = new WinnerChooser ();
 		playersFilter = new PlayersFilter ();
-		orderController = new OrderController (numOfPlayers);
+		orderController = new OrderController (gameInfo.NumOfPlayers);
 		pot = new PotCounter ();
 		//timer = 0;
+		float money = 20000f;
 		playerScripts = new List<PlayerBasicScript> ();
-		for (int i =0; i<numOfPlayers - 1; i++)
+		for (int i =0; i<gameInfo.NumOfPlayers - 1; i++)
 		{
-			SeatThePlayer(i,Player);
+			SeatThePlayer(i,Player,money);
 		}
-		SeatThePlayer (numOfPlayers - 1, Bot);
+		SeatThePlayer (gameInfo.NumOfPlayers - 1, Bot,money);
 		NextRound ();
 	}
 
-	private void SeatThePlayer(int placeNum, GameObject player)
+	private void SeatThePlayer(int placeNum, GameObject player,float money)
 	{
 		var timePlayer = (GameObject) Instantiate(player,positions[placeNum],Quaternion.identity);
 		timePlayer.name = "Player" + (placeNum + 1).ToString();
 		playerScripts.Add(timePlayer.GetComponent<PlayerBasicScript>());
 		playerScripts[placeNum].moveController.MoneyText = PlayerMoneyText[placeNum];
-		playerScripts[placeNum].moveController.GetMoney(20000f);
-		playerScripts [placeNum].moveController.Divider = Divider;
+		playerScripts[placeNum].moveController.GetMoney(money);
+		playerScripts[placeNum].moveController.gameInfo = gameInfo;
+		//playerScripts [placeNum].moveController.Divider = gameInfo.Divider; //ПЕРЕДЕЛАТЬ
 	}
 
 	public void Update()
@@ -87,7 +91,7 @@ public class GameManager : MonoBehaviour
 
 	private void RoundController()
 	{
-		if (gamePhase == 0)
+		if (gameInfo.GamePhase == 0 || BetsDone())
 		{
 			PhaseManager();
 		}
@@ -101,18 +105,18 @@ public class GameManager : MonoBehaviour
 	{
 		foreach (var playerScript in playerScripts)
 			playerScript.potSize = pot.mainPot;
-		if (player.moveController.PlayerBet > maxBet)
+		if (player.moveController.playerInfo.PlayerBet > gameInfo.MaxBet)
 		{
-			maxBet = player.moveController.PlayerBet;
-			LastRaise = player.moveController.LastRaise;
-			SetMaxValues();
+			gameInfo.SetMaxBet(player.moveController.playerInfo.PlayerBet);
+			//gameInfo.LastRaise = player.moveController.LastRaise;
+			//SetMaxValues();
 		}
 	}
 
 	private bool BetsDone()
 	{
 		var activePlayers = playersFilter.ActivePlayers (playerScripts);
-		return (activePlayers.Count == 0 || activePlayers.Count == 1 && activePlayers [0].moveController.PlayerBet >= maxBet);
+		return (activePlayers.Count == 0 || activePlayers.Count == 1 && activePlayers [0].moveController.playerInfo.PlayerBet >= gameInfo.MaxBet);
 	}
 
 	private void CheckPlayersCondition()
@@ -123,12 +127,12 @@ public class GameManager : MonoBehaviour
 		if (player.moveController.FinishedMove())
 		{
 			player.HideCards();
-			if (!player.moveController.Folded && player.moveController.MadeMove)
-				pot.CountPot(player.moveController.LastPlayerBet);
+			if (!player.moveController.playerInfo.Folded && player.moveController.playerInfo.MadeMove)
+				pot.CountPot(player.moveController.playerInfo.LastPlayerBet);
 			CheckRaise(player);
-			if (player.moveController.Money == 0 && !player.moveController.Folded && player.moveController.MadeMove)
+			if (player.moveController.playerInfo.Money == 0 && !player.moveController.playerInfo.Folded && player.moveController.playerInfo.MadeMove)
 				allinPlayers = playersFilter.AddAllinPlayer(allinPlayers,player);
-			if (player.moveController.Folded && orderController.CurrentIsLast())
+			if (player.moveController.playerInfo.Folded && orderController.CurrentIsLast())
 				orderController.SetLastPlayer(playerScripts);
 			orderController.SetCurrentPlayer(playerScripts);
 			POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
@@ -137,18 +141,17 @@ public class GameManager : MonoBehaviour
 				PhaseManager();
 			}		
 		} 
-		else if (!BetsDone())
+		else //if (!BetsDone())
 		{
 			player.MakeMove();
-			player.leftCard.ShowCard();
-			player.rightCard.ShowCard();
+			player.ShowCards();
 		}
 	}
 
 	private void NextPhase()
 	{
-		LastRaise = bigBlind;
-		gamePhase++;
+		gameInfo.LastRaise = gameInfo.BigBlind;
+		gameInfo.NextGamePhase ();
 		foreach (var player in playerScripts)
 		{
 			player.NextPhase();
@@ -183,7 +186,7 @@ public class GameManager : MonoBehaviour
 
 	public void PhaseManager()
 	{
-		orderController.SetLastAndCurrentPlayers(playerScripts,gamePhase);
+		orderController.SetLastAndCurrentPlayers(playerScripts,gameInfo.GamePhase);
 		if (allinPlayers.Count > 0)
 		{
 			pot.CountPots(playerScripts,allinPlayers);
@@ -192,7 +195,7 @@ public class GameManager : MonoBehaviour
 		InitPhase ();
 		foreach (var playerScript in playerScripts)
 		{
-			if (!playerScript.moveController.Folded)
+			if (!playerScript.moveController.playerInfo.Folded)
 				playerScript.handContoller.UpdateCombo();
 		}
 		NextPhase ();
@@ -200,7 +203,7 @@ public class GameManager : MonoBehaviour
 
 	private void InitPhase()
 	{
-		switch (gamePhase)
+		switch (gameInfo.GamePhase)
 		{
 		case 0:PreFlop();
 			break;
@@ -211,7 +214,7 @@ public class GameManager : MonoBehaviour
 		case 3:TurnOrRiver();
 			foreach (var playerScript in playerScripts)
 			{
-				if (!playerScript.moveController.Folded)
+				if (!playerScript.moveController.playerInfo.Folded)
 					playerScript.handContoller.ChooseWinningCards();
 			}
 			break;
@@ -224,19 +227,20 @@ public class GameManager : MonoBehaviour
 	private void PreFlop()
 	{
 		int blindPlayer = orderController.SetNextPlayer (playerScripts,orderController.dealerCheap);
-		BetBlinds (blindPlayer, bigBlind / 2);
+		BetBlinds (blindPlayer, gameInfo.BigBlind / 2);
 		blindPlayer = orderController.SetNextPlayer (playerScripts,blindPlayer);
-		BetBlinds (blindPlayer, bigBlind);
+		BetBlinds (blindPlayer, gameInfo.BigBlind);
 		CheckRaise (playerScripts [blindPlayer]);
 	}
 
 	private void SetBigBlind()
 	{
-		if (roundsPlayed % 5 == 0)
+		if (gameInfo.RoundsPlayed % 5 == 0)
 		{
-			bigBlind += blindDifference;
-			foreach (var player in playerScripts)
-				player.moveController.BigBlind = bigBlind;
+			gameInfo.NextBigBlind();
+			//gameInfo.BigBlind += gameInfo.BlindDifference;
+			//foreach (var player in playerScripts)
+			//	player.moveController.BigBlind = gameInfo.BigBlind;
 		}
 	}
 
@@ -250,8 +254,8 @@ public class GameManager : MonoBehaviour
 
 	private void TurnOrRiver()
 	{
-		PutCardOnTable(gamePhase+1);
-		var cardScript = cardDistributor.TableCards [gamePhase+1].GetComponent<CardBasicScript> ();
+		PutCardOnTable(gameInfo.GamePhase+1);
+		var cardScript = cardDistributor.TableCards [gameInfo.GamePhase+1].GetComponent<CardBasicScript> ();
 		foreach (var playerScript in playerScripts)
 		{
 			if (cardScript.Card.Suit == playerScript.handContoller.FlushPossible.Item1)
@@ -264,42 +268,40 @@ public class GameManager : MonoBehaviour
 	private void BetBlinds(int blindPlayer,float bet)
 	{
 		playerScripts [blindPlayer].moveController.Bet (bet);
-		playerScripts [blindPlayer].moveController.MadeMove = false;
-		pot.CountPot (playerScripts [blindPlayer].moveController.LastPlayerBet);
+		playerScripts [blindPlayer].moveController.playerInfo.SetMadeMove(false);
+		pot.CountPot (playerScripts [blindPlayer].moveController.playerInfo.LastPlayerBet);
 		POTText.text = pot.mainPot.ToString() + "     " + pot.lastPot.ToString();
 	}
 
-	private void SetMaxValues()
+	/*private void SetMaxValues()
 	{
 		foreach (var player in playerScripts)
 		{
-			player.moveController.MaxBet = maxBet;
-			player.moveController.LastRaise = LastRaise;
+			player.moveController.MaxBet = gameInfo.MaxBet;
+			player.moveController.LastRaise = gameInfo.LastRaise;
 		}
-	}
+	}*/
 
 	public void DefaultValues()
 	{
 		POTText.text = "";
 		pot = new PotCounter ();
 		allinPlayers = new List<PlayerBasicScript> ();
-		maxBet = 0;
-		gamePhase = 0;
 		waitingTime = 0f;
 		orderController.DefaultValues (playerScripts);
 	}
 
 	public void NextRound()
 	{
+		gameInfo.NextRound ();
 		DefaultValues ();
-		roundsPlayed++;
 		SetBigBlind ();
 		DestroyCards ();
 		cardDistributor.CardDeck.Shuffle ();
-		for (int i =0; i<numOfPlayers; i++)
+		for (int i =0; i<gameInfo.NumOfPlayers; i++)
 		{
 			playerScripts[i].NextRound ();
-			if (!playerScripts[i].moveController.Folded)
+			if (!playerScripts[i].moveController.playerInfo.Folded)
 			{
 				cardDistributor.GiveCards(playerScripts[i],i);
 				playerScripts[i].handContoller.UpdateCombo();
@@ -338,7 +340,7 @@ public class GameManager : MonoBehaviour
 	private void ChooseWinner(float minBet,float potSize, List<PlayerBasicScript> possibleWinners)
 	{
 		var winners = winnerChooser.ChooseWinner (possibleWinners
-		      .Where(z=> z.moveController.PlayerBet >= minBet).ToList());
+		                             .Where(z=> z.moveController.playerInfo.PlayerBet >= minBet).ToList());
 		pot.GivePOT (winners,potSize);		
 		WinnersText(winners);
 	}
@@ -360,10 +362,6 @@ public class GameManager : MonoBehaviour
 
 	public void PutCardOnTable(int i)
 	{
-		/*cardDistributor.TableCards[i] = Card;
-		cardDistributor.TableCards[i].GetComponent<CardBasicScript> ().SetCard (cardDistributor.CardDeck.cards[cardDistributor.CardDeck.Length-1-i],true);
-		cardDistributor.TableCards [i] = (GameObject) Instantiate (cardDistributor.TableCards[i], new Vector3 (this.transform.position.x + i * 3.5f - 7f, this.transform.position.y + 3f,
-		                                                                       this.transform.position.z), Quaternion.identity);*/
 		cardDistributor.TableCards [i] = (GameObject) Instantiate (Card, new Vector3 (this.transform.position.x + i * 3.5f - 7f, this.transform.position.y + 3f,
 		                                                                                                       this.transform.position.z), Quaternion.identity);
 		cardDistributor.TableCards[i].GetComponent<CardBasicScript> ().SetCard (cardDistributor.CardDeck.cards[cardDistributor.CardDeck.Length-1-i],true);

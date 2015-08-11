@@ -136,17 +136,17 @@ public class BotBasicScript : PlayerBasicScript
 			int ranksSum = handContoller.AvailableCards.Sum (z=>z.Value[0].Card.Rank);
 			if (ranksSum >= 21)
 			{
-				if (moveController.CallSize <= moveController.gameInfo.BigBlind * 6.5f)
+				if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 6.5f)
 					botAction = Call;
 			}
-			else if (ranksSum >= 17 && moveController.CallSize <= moveController.gameInfo.BigBlind * 2.2f)
+			else if (ranksSum >= 17 && moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 2.2f)
 			{
 				botAction = Call;
 			}
 			else 
 				botAction = CheckFold;
 		}
-		else if (moveController.CallSize <= moveController.gameInfo.BigBlind * 2.2f)
+		else if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 2.2f)
 			botAction = Call;
 		else
 			botAction = CheckFold;
@@ -167,7 +167,7 @@ public class BotBasicScript : PlayerBasicScript
 			{
 				SetBettingAsAction(moveController.gameInfo.BigBlind * 2.5f);
 			}
-			else if (moveController.CallSize <= moveController.gameInfo.BigBlind * 4f)
+			else if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 4f)
 			{
 				botAction = Call;
 			}

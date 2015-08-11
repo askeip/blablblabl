@@ -30,11 +30,11 @@ public class PotCounter
 
 	public void CountPots(List<PlayerBasicScript> players,List<PlayerBasicScript> allinPlayers)
 	{
-		allinPlayers = allinPlayers.OrderBy (z => z.moveController.PlayerBet)
+		allinPlayers = allinPlayers.OrderBy (z => z.moveController.playerInfo.PlayerBet)
 			.ToList ();
 		foreach (var allinPlayer in allinPlayers)
 		{ 
-			AddPot(players, allinPlayer.moveController.PlayerBet);
+			AddPot(players, allinPlayer.moveController.playerInfo.PlayerBet);
 		}
 	}
 
@@ -45,10 +45,10 @@ public class PotCounter
 			prevBet = pots [pots.Count - 1].MinBet;
 		if (prevBet == allinPlayerBet)
 			return;
-		var folded = players.Where(z=>z.moveController.PlayerBet > prevBet && z.moveController.PlayerBet < allinPlayerBet)
+		var folded = players.Where(z=>z.moveController.playerInfo.PlayerBet > prevBet && z.moveController.playerInfo.PlayerBet < allinPlayerBet)
 			.ToList();
-		var foldedMoney = folded.Sum(z=>z.moveController.PlayerBet) - folded.Count * prevBet;
-		players = players.Where(z=>z.moveController.PlayerBet >= allinPlayerBet)
+		var foldedMoney = folded.Sum(z=>z.moveController.playerInfo.PlayerBet) - folded.Count * prevBet;
+		players = players.Where(z=>z.moveController.playerInfo.PlayerBet >= allinPlayerBet)
 			.ToList();
 		float pot = players.Count * allinPlayerBet + foldedMoney - prevBet * players.Count;
 		pots.Add (new SidePot (pot, allinPlayerBet));

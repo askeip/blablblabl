@@ -10,7 +10,7 @@ public class PlayersFilter
 		List<PlayerBasicScript> notFoldedPlayers = new List<PlayerBasicScript>();
 		foreach (var player in playerScripts)
 		{
-			if (!player.moveController.Folded)
+			if (!player.moveController.playerInfo.Folded)
 				notFoldedPlayers.Add(player);
 		}
 		return notFoldedPlayers;
@@ -22,7 +22,7 @@ public class PlayersFilter
 		List<PlayerBasicScript> activePlayers = new List<PlayerBasicScript>();
 		foreach (var player in notFoldedPlayers)
 		{
-			if (player.moveController.Money > 0)
+			if (player.moveController.playerInfo.Money > 0)
 				activePlayers.Add(player);
 		}
 		return activePlayers;
@@ -36,7 +36,7 @@ public class PlayersFilter
 		{
 			for (int i=0;i<allinPlayers.Count;i++)
 			{
-				if (allinPlayers[i].moveController.PlayerBet > player.moveController.PlayerBet)
+				if (allinPlayers[i].moveController.playerInfo.PlayerBet > player.moveController.playerInfo.PlayerBet)
 				{
 					allinPlayers.Insert(i,player);
 				}
@@ -52,8 +52,8 @@ public class PlayersFilter
 
 	public List<PlayerBasicScript> HighestBetPlayer (List<PlayerBasicScript> playerScripts)
 	{
-		float highestBet = playerScripts.Max (z => z.moveController.PlayerBet);
-		return playerScripts.Where (z => z.moveController.PlayerBet == highestBet)
+		float highestBet = playerScripts.Max (z => z.moveController.playerInfo.PlayerBet);
+		return playerScripts.Where (z => z.moveController.playerInfo.PlayerBet == highestBet)
 			.Take (1)
 				.ToList();
 	}
@@ -63,7 +63,7 @@ public class PlayersFilter
 		var losers = new List<PlayerBasicScript> ();
 		foreach (var allinPlayer in allinPlayers)
 		{
-			if (allinPlayer.moveController.Money == 0)
+			if (allinPlayer.moveController.playerInfo.Money == 0)
 				losers.Add(allinPlayer);
 		}
 		return losers;

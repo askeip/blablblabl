@@ -16,13 +16,13 @@ public class PlayerScript : PlayerBasicScript
 	public override void MakeMove ()
 	{
 		playerUIScript.gameObject.SetActive (true);
-		playerUIScript.bet = moveController.LastRaise;
+		playerUIScript.bet = moveController.gameInfo.LastRaise;
 		moveController.MakeMove ();
 	}
 
 	public override bool PlayerThinking ()
 	{
-		if (moveController.Thinking)
+		if (moveController.playerInfo.Thinking)
 			return true;
 		else
 		{

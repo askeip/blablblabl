@@ -4,64 +4,66 @@ using UnityEngine.UI;
 
 public class MoveController	
 {
-	public float Money;
+	public PlayersGameInfo gameInfo;
+	public PlayerInfo playerInfo;
+	//public float Money;
 
 	public Text MoneyText { get; set; }
 
-	public bool Thinking{ get; set; }
+	/*public bool Thinking{ get; set; }
 	public bool Folded{ get; set; }
 	public bool MadeMove{ get; set; }
 
-	public float BigBlind { get; set; }
-	public float MaxBet{ get; set; }
+	//public float BigBlind { get; set; }
+	//public float MaxBet{ get; set; }
 	public float LastPlayerBet{ get; set; }
 	public float PlayerBet{ get; set; }
-	public float CallSize { get; private set; }
-	public float Divider = 100f;
+	public float CallSize { get; private set; }*/
+	//public float Divider = 100f;
 
-	public float LastRaise { get; set; }
+	//public float LastRaise { get; set; }
 
 	public MoveController()
 	{
-		Money = 0;
-		DefaultValues ();
+		playerInfo = new PlayerInfo ();
 	}
+
 	public void GetMoney(float money)
 	{
-		Money += money;
-		MoneyText.text = Money.ToString();
+		playerInfo.AddOrDeductMoney (money);
+		//Money += money;
+		MoneyText.text = playerInfo.Money.ToString();
 	}
 
 	public bool CanCheck()
 	{
-		return MaxBet == PlayerBet;
+		return gameInfo.MaxBet == playerInfo.PlayerBet;
 	}
 
 	public void MakeMove()
 	{
-		Thinking = true;
-		CallSize = MaxBet - PlayerBet;
+		playerInfo.SetThinking(true);
+		playerInfo.CalculateCallSize (gameInfo.MaxBet);		
 	}
 
 	public void Bet(float raise)
 	{
-		raise = (raise - raise % Divider);
-		if (raise < LastRaise && raise != 0)
-			raise = LastRaise;
+		raise = (raise - raise % gameInfo.Divider);
+		if (raise < gameInfo.LastRaise && raise != 0)
+			raise = gameInfo.LastRaise;
 		else if (raise != 0)
-			LastRaise = raise;
-		float prevBetSize = PlayerBet;
-		if (Money >= CallSize + raise)
+			gameInfo.LastRaise = raise;
+		float prevBetSize = playerInfo.PlayerBet;
+		if (playerInfo.Money >= playerInfo.CallSize + raise)
 		{
-			PlayerBet += CallSize + raise;
-			Money -= (CallSize + raise);
+			playerInfo.IncreasePlayerBet(playerInfo.CallSize + raise);
+			playerInfo.AddOrDeductMoney(-(playerInfo.CallSize + raise));
 		}
 		else
 		{
-			PlayerBet += Money;
-			Money = 0;
+			playerInfo.IncreasePlayerBet(playerInfo.Money);
+			playerInfo.AddOrDeductMoney(-playerInfo.Money);
 		}
-		LastPlayerBet = PlayerBet - prevBetSize;
 		Done ();
 	}
 	
@@ -72,7 +74,7 @@ public class MoveController
 
 	public void CheckFold()
 	{
-		if (PlayerBet == MaxBet)
+		if (playerInfo.PlayerBet == gameInfo.MaxBet)
 			Call ();
 		else
 			Fold ();
@@ -80,30 +82,30 @@ public class MoveController
 	
 	public void Fold()
 	{
-		Folded = true;
+		playerInfo.SetFolded(true);
 		Done ();
 	}
 	
 	private void Done()
 	{
-		MoneyText.text = Money.ToString ();
-		Thinking = false;
-		MadeMove = true;
+		MoneyText.text = playerInfo.Money.ToString ();
+		playerInfo.SetThinking(false);
+		playerInfo.SetMadeMove(true);
 	}
 
 	public void NextPhase()
 	{
-		LastRaise = BigBlind;
-		MadeMove = false;
-		Thinking = false;
+		//LastRaise = BigBlind;
+		playerInfo.SetMadeMove(false);
+		playerInfo.SetThinking(false);
 	}
 
 	public bool FinishedMove()
 	{
-		return Folded || Money == 0 || (MadeMove && PlayerBet >= MaxBet);
+		return playerInfo.Folded || playerInfo.Money == 0 || (playerInfo.MadeMove && playerInfo.PlayerBet >= gameInfo.MaxBet);
 	}
 
-	public void DefaultValues()
+	/*public void DefaultValues()
 	{
 		Thinking = false;
 		if (Money > 0)
@@ -112,11 +114,9 @@ public class MoveController
 		}else
 			Folded = true;
 		MadeMove = false;
-		MaxBet = 0;
 		CallSize = 0;
 		LastPlayerBet = 0;
-		LastRaise = 0;
 		PlayerBet = 0;
 
-	}
+	}*/
 }

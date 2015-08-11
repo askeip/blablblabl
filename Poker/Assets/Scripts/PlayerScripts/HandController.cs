@@ -56,7 +56,7 @@ public class HandController
 		}
 	}
 
-	private int GetHighestRank()
+	public int GetHighestRank()
 	{
 		return AvailableCards.Max(z=>z.Key);
 	}
@@ -99,7 +99,10 @@ public class HandController
 		{
 			for (int i=0;i<5;i++)
 			{
-				WinningCards.Add(AvailableCards[combo.Item2-i][0]);
+				if (combo.Item2-i == 1)
+					WinningCards.Add(AvailableCards[14][0]);
+				else
+					WinningCards.Add(AvailableCards[combo.Item2-i][0]);
 			}
 		}
 		else

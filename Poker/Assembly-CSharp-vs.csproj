@@ -47,23 +47,30 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\ExitGame.cs" />
+     <Compile Include="Assets\Scripts\AnotherButtonCanvasScript.cs" />
+     <Compile Include="Assets\Scripts\Bots\BotBasicScript.cs" />
+     <Compile Include="Assets\Scripts\Bots\BotBluffScript.cs" />
      <Compile Include="Assets\Scripts\ButtonCanvasScript.cs" />
      <Compile Include="Assets\Scripts\CardScripts\CardBasicScript.cs" />
      <Compile Include="Assets\Scripts\CardScripts\CardDeck.cs" />
      <Compile Include="Assets\Scripts\CardScripts\CardDistributor.cs" />
      <Compile Include="Assets\Scripts\CardScripts\CardScript.cs" />
+     <Compile Include="Assets\Scripts\ChanceOfWin.cs" />
      <Compile Include="Assets\Scripts\Combo.cs" />
      <Compile Include="Assets\Scripts\FPSCamera.cs" />
+     <Compile Include="Assets\Scripts\GameInfo.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\NUnitTests\PokerTests.cs" />
-     <Compile Include="Assets\Scripts\PlayerScripts\BotScript.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\HandController.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\MoveController.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\OrderController.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\PlayerBasicScript.cs" />
+     <Compile Include="Assets\Scripts\PlayerScripts\PlayerInfo.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\PlayersFilter.cs" />
+     <Compile Include="Assets\Scripts\PlayerScripts\ReadonlyPlayerInfo.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\WinnerChooser.cs" />
+     <Compile Include="Assets\Scripts\PlayersGameInfo.cs" />
      <Compile Include="Assets\Scripts\SidePot.cs" />
      <Compile Include="Assets\Standart Assets\ImageEffects\Scripts\Antialiasing.cs" />
      <Compile Include="Assets\Standart Assets\ImageEffects\Scripts\Bloom.cs" />

@@ -20,7 +20,7 @@ public class WinnerChooser
 		var highestHash = 0;
 		foreach (var player in playerScripts)
 		{
-			if (!player.moveController.Folded)
+			if (!player.moveController.playerInfo.Folded)
 			{
 				var psHash = player.handContoller.combo.GetHashCode();
 				if (psHash > highestHash)
