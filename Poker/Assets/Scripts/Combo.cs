@@ -66,23 +66,15 @@ public class Combo
 	{
 		int tries = Combination.Count-4;
 		int straightFromRank = 14;
-		while (tries>0) 
+		while (straightFromRank > 4) 
 		{
 			if (Combination.ContainsKey(straightFromRank))
 			{
 				int cardsInARow = CardsInARow(Combination,straightFromRank - 1);
 				if (cardsInARow >= 4)
 					return new Combo(Combos.Straight,straightFromRank);
-				else
-					tries-= (cardsInARow + 1);
 			}
 			straightFromRank--;
-		}
-		if (Combination.ContainsKey(14))
-		{
-			int cardsInARow = CardsInARow(Combination,5);
-			if (cardsInARow >= 4);
-				return new Combo(Combos.Straight,5);
 		}
 		return this;
 	}
@@ -98,7 +90,11 @@ public class Combo
 				checkFromRank--;
 			}
 			else
+			{
+				if (checkFromRank == 1 && Combination.ContainsKey(14))
+					cardsInARow++;
 				return cardsInARow;
+			}
 		}
 	}
 	
