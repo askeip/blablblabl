@@ -40,9 +40,7 @@ public class PotCounter
 
 	public void AddPot(List<PlayerBasicScript> players,float allinPlayerBet)
 	{
-		float prevBet = 0;
-		if (pots.Count > 0)
-			prevBet = pots [pots.Count - 1].MinBet;
+		float prevBet = pots.Count > 0 ? pots [pots.Count - 1].MinBet : 0f;
 		if (prevBet == allinPlayerBet)
 			return;
 		var folded = players.Where(z=>z.moveController.playerInfo.PlayerBet > prevBet && z.moveController.playerInfo.PlayerBet < allinPlayerBet)

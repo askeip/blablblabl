@@ -1,15 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameInfo :PlayersGameInfo
 {
-	public GameInfo(float blindDifference, float divider,int numOfPlayers)
+	public void AddPlayerInfo(ReadonlyPlayerInfo readonlyPlayerInfo)
 	{
+		readonlyPlayersInfo.Add (readonlyPlayerInfo);
+	}
+
+	public void InsertPlayerInfo(int index,ReadonlyPlayerInfo readonlyPlayerInfo)
+	{
+		readonlyPlayersInfo.Insert (index, readonlyPlayerInfo);
+	}
+
+	public void ChangePlayerInfoItem(int index,ReadonlyPlayerInfo readonlyPlayerInfo)
+	{
+		readonlyPlayersInfo [index] = readonlyPlayerInfo;
+	}
+
+	public GameInfo(float blindDifference, float divider)//,int numOfPlayers)
+	{
+		readonlyPlayersInfo = new List<ReadonlyPlayerInfo> ();
 		this.blindDifference = blindDifference;
-		bigBlind = blindDifference;
+		bigBlind = 2 * blindDifference;
 		roundsPlayed = -1;
 		this.divider = divider;
-		this.numOfPlayers = numOfPlayers;
+		//this.numOfPlayers = numOfPlayers;
 		NextRound ();
 	}
 
@@ -45,6 +62,7 @@ public class GameInfo :PlayersGameInfo
 	{
 		maxBet = 0;
 		gamePhase = 0;
+		LastRaise = 0;
 		roundsPlayed++;
 	}
 

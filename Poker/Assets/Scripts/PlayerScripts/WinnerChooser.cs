@@ -6,7 +6,7 @@ public class WinnerChooser
 {
 	public List<PlayerBasicScript> ChooseWinner(List<PlayerBasicScript> possibleWinners)
 	{
-		List<PlayerBasicScript> winners = GetWinnersByHash (possibleWinners);
+		List<PlayerBasicScript> winners = possibleWinners.Count > 1 ? 	GetWinnersByHash (possibleWinners) : possibleWinners;
 		if (winners.Count > 1) 
 		{
 			winners = GetWinnersByCards(winners);
@@ -22,7 +22,7 @@ public class WinnerChooser
 		{
 			if (!player.moveController.playerInfo.Folded)
 			{
-				var psHash = player.handContoller.combo.GetHashCode();
+				var psHash = player.handController.combo.GetHashCode();
 				if (psHash > highestHash)
 				{
 					possibleWinners = new List<PlayerBasicScript>(){player};
@@ -41,10 +41,10 @@ public class WinnerChooser
 		for (int i =0; i<5; i++) {
 			var highRank = 0;
 			foreach (var player in possibleWinners) {
-				if (player.handContoller.WinningCards [i].Card.Rank > highRank) {
+				if (player.handController.WinningCards [i].Card.Rank > highRank) {
 					winners = new List<PlayerBasicScript> (){player};
-					highRank = player.handContoller.WinningCards [i].Card.Rank;
-				} else if (player.handContoller.WinningCards [i].Card.Rank == highRank)
+					highRank = player.handController.WinningCards [i].Card.Rank;
+				} else if (player.handController.WinningCards [i].Card.Rank == highRank)
 					winners.Add (player);
 			}
 			if (winners.Count == 1)

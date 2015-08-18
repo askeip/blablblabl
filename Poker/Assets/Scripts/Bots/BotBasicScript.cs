@@ -8,17 +8,29 @@ public class BotBasicScript : PlayerBasicScript
 	private float timer = 0f;
 	private bool finishedMove;
 	private bool myMove;
-	public int movesDone { get; private set; }
+	protected int movesDone;// { get; private set; }
 	private float raise;
+
+	protected int bluffChecked;
 
 	protected Action botAction;
 
+	protected System.Random rnd;
+
 	void Start()
 	{
+		rnd = new System.Random();
 		myMove = false;
 		finishedMove = true;
 		timer = 0f;
 		botAction = null;
+	}
+
+	public CardBasic highCard { get; private set; }
+	
+	protected void ChooseHighestHandCard()
+	{
+		highCard = leftCard.Card.Rank > rightCard.Card.Rank ? leftCard.Card : rightCard.Card;
 	}
 
 	public override void MakeMove ()
@@ -56,7 +68,7 @@ public class BotBasicScript : PlayerBasicScript
 
 	protected bool StraightPossible()
 	{
-		var orderedRanks = handContoller.AvailableCards.Select (z => z.Key)
+		var orderedRanks = handController.AvailableCards.Select (z => z.Key)
 			.OrderByDescending (z => z)
 				.ToList ();
 		//int highestCardRank = handContoller.GetHighestRank ();
@@ -65,9 +77,9 @@ public class BotBasicScript : PlayerBasicScript
 		int secondRowOfCards = 0;
 		for (int i=0;i<orderedRanks.Count;)
 		{
-			firstRowOfCards = secondRowOfCards == 0 ? Combo.CardsInARow(handContoller.AvailableCards,orderedRanks[i]) : secondRowOfCards;
+			firstRowOfCards = secondRowOfCards == 0 ? Combo.CardsInARow(handController.AvailableCards,orderedRanks[i]) : secondRowOfCards;
 			if (i + firstRowOfCards < orderedRanks.Count && orderedRanks[i] - firstRowOfCards - 1 == orderedRanks[i+firstRowOfCards])
-				secondRowOfCards = Combo.CardsInARow(handContoller.AvailableCards,orderedRanks[i+firstRowOfCards]);
+				secondRowOfCards = Combo.CardsInARow(handController.AvailableCards,orderedRanks[i+firstRowOfCards]);
 			else if (orderedRanks[i] - firstRowOfCards == 2 && orderedRanks[0] == 14)
 				secondRowOfCards = 1;
 			else
@@ -84,27 +96,28 @@ public class BotBasicScript : PlayerBasicScript
 
 	public virtual void MakeMoveDecision()
 	{
-		if (handContoller.combo.Item1 == Combos.Straight || handContoller.combo.Item1 == Combos.Flush
-		    || handContoller.combo.Item1 >= Combos.StraightFlush)
+		ChooseHighestHandCard ();
+		if (handController.combo.Item1 == Combos.Straight || handController.combo.Item1 == Combos.Flush
+		    || handController.combo.Item1 >= Combos.StraightFlush)
 		{
 			ChooseBotAction();
 		}
 		else
 		{
-			int comboHash = handContoller.combo.GetHashCode ();
-			if (leftCard.Card.Rank == comboHash/100 || leftCard.Card.Rank == comboHash%100 || rightCard.Card.Rank == comboHash/100 || rightCard.Card.Rank == comboHash%100)
+			int comboHash = handController.combo.GetHashCode ();
+			if (leftCard.Card.Rank == (comboHash/100)%100 || leftCard.Card.Rank == comboHash%100 || rightCard.Card.Rank == (comboHash/100)%100 || rightCard.Card.Rank == comboHash%100)
 			{
 				ChooseBotAction();
 			}
 			else 
-				botAction = CheckFold;
+				HighComboDecision();
 		}
 		timer += Time.deltaTime;
 	}
 
 	protected void ChooseBotAction()
 	{
-		switch (handContoller.combo.Item1)
+		switch (handController.combo.Item1)
 		{
 		case Combos.High:HighComboDecision();
 			break;
@@ -131,55 +144,68 @@ public class BotBasicScript : PlayerBasicScript
 
 	protected virtual void HighComboDecision()
 	{
-		if (handContoller.cardsTaken == 2)
-		{
-			int ranksSum = handContoller.AvailableCards.Sum (z=>z.Value[0].Card.Rank);
-			if (ranksSum >= 21)
-			{
-				if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 6.5f)
-					botAction = Call;
-			}
-			else if (ranksSum >= 17 && moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 2.2f)
-			{
+		if (handController.cardsTaken == 2) {
+			int ranksSum = handController.AvailableCards.Sum (z => z.Value [0].Card.Rank);
+			if (ranksSum >= 21) {
+				//if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 6.5f)
 				botAction = Call;
-			}
-			else 
-				botAction = CheckFold;
-		}
-		else if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 2.2f)
+			} else if (highCard.Rank >= 11 && moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 2.5f) {
+				botAction = Call;
+			} else if (leftCard.Card.Suit == rightCard.Card.Suit && Mathf.Abs (leftCard.Card.Rank - rightCard.Card.Rank) <= 2) {
+				botAction = Call;
+			} else 
+				CheckFold();
+		} else if (highCard.Rank >= handController.GetHighestRank () - 1 && moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 3f)
+			botAction = Call;
+		else if (HighChanceOfLuck())//	&& moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 4f
+		         //|| moveController.playerInfo.PlayerBet >= moveController.playerInfo.Money * 5)
 			botAction = Call;
 		else
-			botAction = CheckFold;
+			CheckFold();
+	}
+
+	protected bool HighChanceOfLuck()
+	{
+		return  handController.cardsTaken != 7 && (StraightPossible () || handController.FlushPossible.Item2 >= 4);
 	}
 
 	protected virtual void PairComboDecision()
 	{
-		if (handContoller.cardsTaken == 2)
+		if (handController.cardsTaken == 2)
 		{
-			if (movesDone == 0)
-				SetBettingAsAction(moveController.gameInfo.BigBlind * 2.5f);
+			var orderedByMoney = moveController.gameInfo.ReadonlyPlayersInfo.Where(z=>!z.Folded)
+				.OrderByDescending(z=>z.MoneyAtStartOfRound)
+					.ToList();
+			if ((orderedByMoney[0] == moveController.playerInfo && moveController.playerInfo.MoneyAtStartOfRound / 2 > orderedByMoney[1].MoneyAtStartOfRound) ||
+			    moveController.gameInfo.MaxBet < moveController.gameInfo.BigBlind * 3.5f) 
+				SetBettingAsAction(moveController.gameInfo.BigBlind * 3f);
 			else
 				botAction = Call;
 		}
-		else if (handContoller.cardsTaken >= 5)
+		else if (handController.cardsTaken >= 5)
 		{
-			if (moveController.CanCheck())
+			var orderedRanks = handController.AvailableCards.Select (z => z.Key)
+				.OrderByDescending (z => z)
+					.ToList ();
+			if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 3f || highCard.Rank >= 13
+			    || orderedRanks[1 + (highCard.Rank == handController.combo.Item2 ? 0 : 1)] <= handController.combo.Item2)
 			{
-				SetBettingAsAction(moveController.gameInfo.BigBlind * 2.5f);
+				if (handController.combo.Item2 >= 9)
+					SetBettingAsAction(moveController.gameInfo.BigBlind * 3f);
+				else
+					botAction = Call;
 			}
-			else if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 4f)
-			{
+			else if (highCard.Rank >= 11 && moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 6f)
 				botAction = Call;
-			}
-			else 
-				botAction = Fold;
+			else
+				CheckFold();
 		}
 	}
 
 	protected virtual void TwoPairComboDecision()
 	{
 		if (moveController.CanCheck())
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 3.5f);
+			SetBettingAsAction (moveController.gameInfo.BigBlind * 4f);
 		else
 			botAction = Call;
 	}
@@ -187,7 +213,7 @@ public class BotBasicScript : PlayerBasicScript
 	protected virtual void SetComboDecision()
 	{
 		if (moveController.CanCheck())
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 4.5f);
+			SetBettingAsAction (moveController.gameInfo.BigBlind * 6f);
 		else
 			botAction = Call;
 	}
@@ -195,25 +221,25 @@ public class BotBasicScript : PlayerBasicScript
 	protected virtual void StraightDecision()
 	{
 		if (moveController.CanCheck ())
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 4.5f);
+			SetBettingAsAction (moveController.gameInfo.BigBlind * 8f);
 		else
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 3.5f);
+			SetBettingAsAction (moveController.gameInfo.BigBlind * 6f);
 	}
 
 	protected virtual void FlushDecision()
 	{
-		SetBettingAsAction(moveController.gameInfo.BigBlind * 5f);
+		SetBettingAsAction(moveController.gameInfo.BigBlind * 8f);
 	}
 
 	protected virtual void FullHouseDecision()
 	{
-		SetBettingAsAction(moveController.gameInfo.BigBlind * 7f);
+		SetBettingAsAction(moveController.gameInfo.BigBlind * 8f);
 	}
 
 	protected virtual void QuadDecision()
 	{
 		if (moveController.CanCheck ())
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 5f);
+			SetBettingAsAction (moveController.gameInfo.BigBlind * 6f);
 		else
 			SetBettingAsAction(moveController.gameInfo.BigBlind * 8f);
 	}
@@ -221,7 +247,7 @@ public class BotBasicScript : PlayerBasicScript
 	protected virtual void StraightFlushDecision()
 	{
 		if (moveController.CanCheck ())
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 5f);
+			SetBettingAsAction (moveController.gameInfo.BigBlind * 6f);
 		else
 			SetBettingAsAction(moveController.gameInfo.BigBlind * 10f);
 	}
@@ -229,7 +255,7 @@ public class BotBasicScript : PlayerBasicScript
 	protected virtual void RoyalFlushDecision()
 	{
 		if (moveController.CanCheck ())
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 5f);
+			SetBettingAsAction (moveController.gameInfo.BigBlind * 6f);
 		else
 			SetBettingAsAction(moveController.gameInfo.BigBlind * 12f);
 	}
@@ -237,9 +263,9 @@ public class BotBasicScript : PlayerBasicScript
 	protected void CheckFold()
 	{
 		if (moveController.CanCheck())
-			Check ();
+			botAction = Check;
 		else
-			Fold ();
+			botAction = Fold;
 	}
 
 	protected void SetBettingAsAction(float raise)
@@ -264,6 +290,8 @@ public class BotBasicScript : PlayerBasicScript
 
 	public override void Call ()
 	{
+		if (moveController.gameInfo.MaxBet == moveController.playerInfo.PlayerBet)
+			Check ();
 		if (WaitFinished())
 		{
 			base.Call ();
@@ -302,13 +330,13 @@ public class BotBasicScript : PlayerBasicScript
 
 	public override void NextPhase ()
 	{
-		movesDone = 0;
+		movesDone = -1;
 		base.NextPhase ();
 	}
 
 	public override void NextRound()
 	{
-		movesDone = 0;
+		movesDone = -1;
 		base.NextRound ();
 	}
 }

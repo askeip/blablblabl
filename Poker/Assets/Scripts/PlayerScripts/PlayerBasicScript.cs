@@ -13,7 +13,7 @@ public class PlayerBasicScript : MonoBehaviour
 
 	public MoveController moveController;
 
-	public HandController handContoller; 
+	public HandController handController; 
 	//public List<CardScript>[] Combination = new List<CardScript>[13];
 
 	Vector3 leftCardPosition;
@@ -22,7 +22,7 @@ public class PlayerBasicScript : MonoBehaviour
 
 	public void Awake()
 	{
-		handContoller = new HandController ();
+		handController = new HandController ();
 		moveController = new MoveController ();
 		leftCardPosition = new Vector3(transform.position.x - 0.5f,transform.position.y  - 0.5f,transform.position.z);
 		rightCardPosition = new Vector3(transform.position.x + 0.5f,transform.position.y  - 0.5f,transform.position.z);
@@ -55,7 +55,7 @@ public class PlayerBasicScript : MonoBehaviour
 	{
 		card.SetCard (newCard);
 		card.name = this.gameObject.name + cardName;
-		handContoller.AddCard (card);
+		handController.AddCard (card);
 		card.gameObject.SetActive (true);
 		card.HideCard ();
 	}
@@ -94,9 +94,9 @@ public class PlayerBasicScript : MonoBehaviour
 	{
 		moveController.playerInfo.DefaultValues ();
 		potSize = 0;
-		handContoller.cardsTaken = 0;
+		handController.cardsTaken = 0;
 		leftCard.gameObject.SetActive (false);
 		rightCard.gameObject.SetActive (false);
-		handContoller = new HandController ();
+		handController = new HandController ();
 	}
 }

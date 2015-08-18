@@ -8,6 +8,7 @@ public class AnotherButtonCanvasScript : MonoBehaviour
 	public Button BetButton;
 	public Button CallButton;
 	public Button FoldButton;
+	public Transform ParrentCanvas;
 
 	PlayerScript player;
 
@@ -15,6 +16,7 @@ public class AnotherButtonCanvasScript : MonoBehaviour
 
 	void Awake()
 	{
+		transform.SetParent (GameObject.Find ("TextUI").transform, false);
 		BetButton.onClick.AddListener(() => Bet());
 		CallButton.onClick.AddListener (() => Call ());
 		FoldButton.onClick.AddListener (() => Fold ());
@@ -22,6 +24,11 @@ public class AnotherButtonCanvasScript : MonoBehaviour
 
 	public void Start()
 	{
+		Instantiate (BetButton);
+		Instantiate (CallButton);
+		Instantiate (FoldButton);
+		Instantiate (BetSlider);
+		BetSlider.wholeNumbers = true;
 		if (player.moveController.gameInfo.LastRaise < player.moveController.playerInfo.Money - player.moveController.playerInfo.CallSize)
 		{
 			BetSlider.minValue = player.moveController.gameInfo.LastRaise;

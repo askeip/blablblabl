@@ -4,11 +4,11 @@ using System.Collections;
 public class PlayerScript : PlayerBasicScript
 {
 	public GameObject playerUI;
-	ButtonCanvasScript playerUIScript;
+	ButtonCanvasScript playerUIScript;//AnotherButtonCanvasScript playerUIScript;//ButtonCanvasScript playerUIScript;
 
 	public void Start()
 	{
-		playerUIScript = Instantiate (playerUI).GetComponent<ButtonCanvasScript> (); 
+		playerUIScript = Instantiate (playerUI).GetComponent<ButtonCanvasScript>();//AnotherButtonCanvasScript>();//<ButtonCanvasScript> (); 
 		playerUIScript.gameObject.SetActive (false);
 		playerUIScript.SetPlayer (this);
 	}

@@ -4,13 +4,14 @@ using System.Collections.Generic;
 
 public class PlayersGameInfo 
 {
-	public List<ReadonlyPlayerInfo> readonlyPlayersInfo;
+	protected List<ReadonlyPlayerInfo> readonlyPlayersInfo;
+	public List<ReadonlyPlayerInfo> ReadonlyPlayersInfo { get { return readonlyPlayersInfo; } }
 
 	protected float divider;
 	public float Divider { get { return divider; }}
 
-	protected int numOfPlayers;
-	public int NumOfPlayers { get { return numOfPlayers; } }
+	//protected int numOfPlayers;
+	//public int NumOfPlayers { get { return numOfPlayers; } }
 
 	public float LastRaise { get; set; }
 

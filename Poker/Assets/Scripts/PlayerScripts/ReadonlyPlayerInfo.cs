@@ -6,6 +6,9 @@ public class ReadonlyPlayerInfo
 	protected float money;
 	public float Money { get { return money; } }
 
+	protected float moneyAtStartOfRound;
+	public float MoneyAtStartOfRound { get { return moneyAtStartOfRound; } }
+
 	protected float callSize;
 	public float CallSize { get { return callSize; } }
 

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -27,6 +27,6 @@ public class CardDistributor
 		var cardScript = TableCards [numOfCard].GetComponent<CardBasicScript> ();
 		var notFoldedPlayers = playersFilter.NotFoldedPlayers (playerScripts);
 		foreach (var playerScript in notFoldedPlayers)
-			playerScript.handContoller.AddCard (cardScript);
+			playerScript.handController.AddCard (cardScript);
 	}
 }

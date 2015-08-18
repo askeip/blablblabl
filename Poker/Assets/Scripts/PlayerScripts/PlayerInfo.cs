@@ -51,5 +51,6 @@ public class PlayerInfo : ReadonlyPlayerInfo
 		callSize = 0;
 		lastPlayerBet = 0;
 		playerBet = 0;
+		moneyAtStartOfRound = Money;
 	}
 }
