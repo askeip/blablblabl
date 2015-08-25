@@ -19,7 +19,10 @@ public class CardDistributor
 
 	public void GiveCards(PlayerBasicScript playerScript,int i)
 	{
-		playerScript.GetNewHand(CardDeck.cards[i*2],CardDeck.cards[i*2+1]);
+		if (i == 2)
+			playerScript.GetNewHand(new CardBasic(14,Suits.Spikes),new CardBasic(14,Suits.Clubs));
+		else
+			playerScript.GetNewHand(CardDeck.cards[i*2],CardDeck.cards[i*2+1]);
 	}
 
 	public void PutNewCard(List<PlayerBasicScript> playerScripts, int numOfCard)

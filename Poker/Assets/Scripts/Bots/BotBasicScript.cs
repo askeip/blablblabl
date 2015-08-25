@@ -53,7 +53,7 @@ public class BotBasicScript : PlayerBasicScript
 			{
 				MakeMoveDecision();
 			}
-			return true;
+			return !finishedMove;
 		}
 		else
 		{

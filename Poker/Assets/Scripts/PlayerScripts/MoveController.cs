@@ -26,6 +26,7 @@ public class MoveController
 	public MoveController()
 	{
 		playerInfo = new PlayerInfo ();
+		//this.gameInfo = gameInfo;
 	}
 
 	public void GetMoney(float money)

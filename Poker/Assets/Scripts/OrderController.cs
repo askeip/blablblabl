@@ -60,6 +60,8 @@ public class OrderController
 		{
 			if (playerScripts[curPlayerNum].moveController.playerInfo.Folded || playerScripts[curPlayerNum].moveController.playerInfo.Money == 0)
 				curPlayerNum = (curPlayerNum + sum) % playerScripts.Count;
+			else
+				break;
 		}
 		return curPlayerNum;
 	}

@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
 		var timePlayer = (GameObject) Instantiate(player,positions[placeNum],Quaternion.identity);
 		timePlayer.name = "Player" + (placeNum + 1).ToString();
 		playerScripts.Add(timePlayer.GetComponent<PlayerBasicScript>());
+		//playerScripts [placeNum].GeneralStart (gameInfo);
 		playerScripts[placeNum].moveController.MoneyText = PlayerMoneyText[placeNum];
 		gameInfo.AddPlayerInfo (playerScripts [placeNum].moveController.playerInfo);
 		playerScripts[placeNum].moveController.GetMoney(money);
@@ -105,7 +106,8 @@ public class GameManager : MonoBehaviour
 			var notFoldedPlayers = playersFilter.NotFoldedPlayers(playerScripts);
 			if (notFoldedPlayers.Count == 1)
 			{
-				ChooseWinner (0, pot.lastPot, notFoldedPlayers);//ChooseWinners();
+				ChooseWinner (0, pot.lastPot, notFoldedPlayers);
+				ChooseWinners();
 				WaitFinish();
 			}
 			else
@@ -304,7 +306,6 @@ public class GameManager : MonoBehaviour
 		pot = new PotCounter ();
 		allinPlayers = new List<PlayerBasicScript> ();
 		waitingTime = 0f;
-		orderController.DefaultValues (playerScripts);
 	}
 
 	public void NextRound()
@@ -323,6 +324,7 @@ public class GameManager : MonoBehaviour
 				playerScripts[i].handController.UpdateCombo();
 			}
 		}
+		orderController.DefaultValues (playerScripts);
 		if (playersFilter.ActivePlayers(playerScripts).Count == 1)
 			GameOver ();
 	}
