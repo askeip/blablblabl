@@ -6,34 +6,14 @@ public class MoveController
 {
 	public PlayersGameInfo gameInfo;
 	public PlayerInfo playerInfo;
-	//public float Money;
-
-	public Text MoneyText { get; set; }
-
-	/*public bool Thinking{ get; set; }
-	public bool Folded{ get; set; }
-	public bool MadeMove{ get; set; }
-
-	//public float BigBlind { get; set; }
-	//public float MaxBet{ get; set; }
-	public float LastPlayerBet{ get; set; }
-	public float PlayerBet{ get; set; }
-	public float CallSize { get; private set; }*/
-	//public float Divider = 100f;
-
-	//public float LastRaise { get; set; }
-
 	public MoveController()
 	{
 		playerInfo = new PlayerInfo ();
-		//this.gameInfo = gameInfo;
 	}
 
 	public void GetMoney(float money)
 	{
 		playerInfo.AddOrDeductMoney (money);
-		//Money += money;
-		MoneyText.text = playerInfo.Money.ToString();
 	}
 
 	public bool CanCheck()
@@ -57,12 +37,12 @@ public class MoveController
 		float prevBetSize = playerInfo.PlayerBet;
 		if (playerInfo.Money >= playerInfo.CallSize + raise)
 		{
-			playerInfo.IncreasePlayerBet(playerInfo.CallSize + raise);
+			playerInfo.SetLastPlayerBet(playerInfo.CallSize + raise);
 			playerInfo.AddOrDeductMoney(-(playerInfo.CallSize + raise));
 		}
 		else
 		{
-			playerInfo.IncreasePlayerBet(playerInfo.Money);
+			playerInfo.SetLastPlayerBet(playerInfo.Money);
 			playerInfo.AddOrDeductMoney(-playerInfo.Money);
 		}
 		Done ();
@@ -83,20 +63,19 @@ public class MoveController
 	
 	public void Fold()
 	{
+		playerInfo.SetLastPlayerBet (playerInfo.LastPlayerBet);
 		playerInfo.SetFolded(true);
 		Done ();
 	}
 	
 	private void Done()
 	{
-		MoneyText.text = playerInfo.Money.ToString ();
 		playerInfo.SetThinking(false);
 		playerInfo.SetMadeMove(true);
 	}
 
 	public void NextPhase()
 	{
-		//LastRaise = BigBlind;
 		playerInfo.SetMadeMove(false);
 		playerInfo.SetThinking(false);
 	}
@@ -105,19 +84,4 @@ public class MoveController
 	{
 		return playerInfo.Folded || playerInfo.Money == 0 || (playerInfo.MadeMove && playerInfo.PlayerBet >= gameInfo.MaxBet);
 	}
-
-	/*public void DefaultValues()
-	{
-		Thinking = false;
-		if (Money > 0)
-		{
-			Folded = false;
-		}else
-			Folded = true;
-		MadeMove = false;
-		CallSize = 0;
-		LastPlayerBet = 0;
-		PlayerBet = 0;
-
-	}*/
 }

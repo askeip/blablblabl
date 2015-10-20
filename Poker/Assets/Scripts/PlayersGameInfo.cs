@@ -10,6 +10,9 @@ public class PlayersGameInfo
 	protected float divider;
 	public float Divider { get { return divider; }}
 
+    protected bool betsDone;
+    public bool BetsDone { get { return betsDone; } }
+
 	//protected int numOfPlayers;
 	//public int NumOfPlayers { get { return numOfPlayers; } }
 

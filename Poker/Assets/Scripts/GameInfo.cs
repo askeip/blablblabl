@@ -19,11 +19,11 @@ public class GameInfo :PlayersGameInfo
 		readonlyPlayersInfo [index] = readonlyPlayerInfo;
 	}
 
-	public GameInfo(float blindDifference, float divider)//,int numOfPlayers)
+	public GameInfo(float blindDifference, float divider,float bigBlind = 0f)//,int numOfPlayers)
 	{
 		readonlyPlayersInfo = new List<ReadonlyPlayerInfo> ();
 		this.blindDifference = blindDifference;
-		bigBlind = 2 * blindDifference;
+		this.bigBlind = bigBlind == 0 ? 2 * blindDifference : bigBlind;
 		roundsPlayed = -1;
 		this.divider = divider;
 		//this.numOfPlayers = numOfPlayers;
@@ -34,7 +34,13 @@ public class GameInfo :PlayersGameInfo
 	{
 		this.maxBet = maxBet;
 	}
-	/*public void SetNumOfPlayers(int numOfPlayers)
+
+    public void SetBetsDone(bool betsDone)
+    {
+        this.betsDone = betsDone;
+    }
+
+    /*public void SetNumOfPlayers(int numOfPlayers)
 	{
 		this.numOfPlayers = numOfPlayers;
 	}
@@ -63,6 +69,7 @@ public class GameInfo :PlayersGameInfo
 		maxBet = 0;
 		gamePhase = 0;
 		LastRaise = 0;
+	    betsDone = false;
 		roundsPlayed++;
 	}
 

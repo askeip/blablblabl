@@ -8,7 +8,7 @@ public class PlayerScript : PlayerBasicScript
 
 	public void Start()
 	{
-		playerUIScript = Instantiate (playerUI).GetComponent<ButtonCanvasScript>();//AnotherButtonCanvasScript>();//<ButtonCanvasScript> (); 
+		playerUIScript = Instantiate (playerUI).GetComponent< ButtonCanvasScript>();//AnotherButtonCanvasScript>();//<ButtonCanvasScript> ();
 		playerUIScript.gameObject.SetActive (false);
 		playerUIScript.SetPlayer (this);
 	}

@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\Bots\BotBasicScript.cs" />
      <Compile Include="Assets\Scripts\Bots\BotBluffScript.cs" />
      <Compile Include="Assets\Scripts\Bots\HardBotScript.cs" />
+     <Compile Include="Assets\Scripts\Bots\NewBaseOfBots.cs" />
      <Compile Include="Assets\Scripts\ButtonCanvasScript.cs" />
      <Compile Include="Assets\Scripts\CardScripts\CardBasicScript.cs" />
      <Compile Include="Assets\Scripts\CardScripts\CardDeck.cs" />
@@ -71,6 +72,8 @@
      <Compile Include="Assets\Scripts\PlayerScripts\PlayersFilter.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\ReadonlyPlayerInfo.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\WinnerChooser.cs" />
+     <Compile Include="Assets\Scripts\PlayerUIInfo.cs" />
+     <Compile Include="Assets\Scripts\PlayerUIInfoPlacer.cs" />
      <Compile Include="Assets\Scripts\PlayersGameInfo.cs" />
      <Compile Include="Assets\Scripts\SidePot.cs" />
      <Compile Include="Assets\Standart Assets\ImageEffects\Scripts\Antialiasing.cs" />

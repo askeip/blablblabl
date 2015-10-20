@@ -30,7 +30,7 @@ public class BotBluffScript : BotBasicScript
 			}
 			else if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 3f)
 			{
-				if (rnd.Next(10) <= 6)
+				if (rnd.Next(10) <= 5)
 					SetBettingAsAction(moveController.gameInfo.BigBlind * 6f);
 				else
 					botAction = Call;
@@ -42,23 +42,24 @@ public class BotBluffScript : BotBasicScript
 
 	private void HighChanceOfWin()
 	{
-		if (highCard.Rank >= 12)
+		if (highCard.Rank >= 11)
 		{
-			if (moveController.gameInfo.MaxBet == moveController.playerInfo.PlayerBet)
-				SetBettingAsAction(moveController.gameInfo.BigBlind * 9f);
+			if (moveController.playerInfo.CallSize <= moveController.playerInfo.Money / 4)
+				SetBettingAsAction (moveController.gameInfo.BigBlind * 9f);
 			else
-				SetBettingAsAction(moveController.playerInfo.Money);
-		}
-		else if (moveController.gameInfo.MaxBet <= moveController.gameInfo.BigBlind * highCard.Rank)
+				botAction = Call;
+		} else if (moveController.gameInfo.MaxBet <= moveController.gameInfo.BigBlind * highCard.Rank)
 			botAction = Call;
+		else
+			botAction = Fold;
 	}
 
 	private void PreFlopHighCardDecision()
 	{
 		var orderedByMoney = moveController.gameInfo.ReadonlyPlayersInfo.Where(z=>!z.Folded)
-			.OrderByDescending(z=>z.MoneyAtStartOfRound)
+			.OrderByDescending(z=>z.MoneyAtRoundStart)
 				.ToList();
-		if (orderedByMoney[0] == moveController.playerInfo && moveController.playerInfo.MoneyAtStartOfRound / 2 > orderedByMoney[1].MoneyAtStartOfRound &&
+		if (orderedByMoney[0] == moveController.playerInfo && moveController.playerInfo.MoneyAtRoundStart / 2 > orderedByMoney[1].MoneyAtRoundStart &&
 		    moveController.gameInfo.MaxBet < moveController.gameInfo.BigBlind * 3.5f) // && Money / 2 > чем у остальных
 			SetBettingAsAction(moveController.playerInfo.Money / 8);
 		//else if (BluffRound)
@@ -124,9 +125,9 @@ public class BotBluffScript : BotBasicScript
 		if (handController.cardsTaken == 2)
 		{
 			var orderedByMoney = moveController.gameInfo.ReadonlyPlayersInfo.Where(z=>!z.Folded)
-				.OrderByDescending(z=>z.MoneyAtStartOfRound)
+				.OrderByDescending(z=>z.MoneyAtRoundStart)
 					.ToList();
-			if (orderedByMoney[0] == moveController.playerInfo && moveController.playerInfo.MoneyAtStartOfRound / 2 > orderedByMoney[1].MoneyAtStartOfRound)
+			if (orderedByMoney[0] == moveController.playerInfo && moveController.playerInfo.MoneyAtRoundStart / 2 > orderedByMoney[1].MoneyAtRoundStart)
 				SetBettingAsAction(moveController.playerInfo.Money / 8);
 			else if (movesDone == 0)
 				SetBettingAsAction(moveController.gameInfo.BigBlind * 6f);

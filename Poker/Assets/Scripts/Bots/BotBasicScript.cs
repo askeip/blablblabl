@@ -16,10 +16,12 @@ public class BotBasicScript : PlayerBasicScript
 	protected Action botAction;
 
 	protected System.Random rnd;
+	private System.Random randomBet;
 
 	void Start()
 	{
 		rnd = new System.Random();
+		randomBet = new System.Random ();
 		myMove = false;
 		finishedMove = true;
 		timer = 0f;
@@ -169,16 +171,21 @@ public class BotBasicScript : PlayerBasicScript
 		return  handController.cardsTaken != 7 && (StraightPossible () || handController.FlushPossible.Item2 >= 4);
 	}
 
+	protected bool TimeToBet(int chance)
+	{
+		return movesDone == 0 || rnd.Next(10) < chance;
+	}
+
 	protected virtual void PairComboDecision()
 	{
 		if (handController.cardsTaken == 2)
 		{
 			var orderedByMoney = moveController.gameInfo.ReadonlyPlayersInfo.Where(z=>!z.Folded)
-				.OrderByDescending(z=>z.MoneyAtStartOfRound)
+				.OrderByDescending(z=>z.MoneyAtRoundStart)
 					.ToList();
-			if ((orderedByMoney[0] == moveController.playerInfo && moveController.playerInfo.MoneyAtStartOfRound / 2 > orderedByMoney[1].MoneyAtStartOfRound) ||
+			if ((orderedByMoney[0] == moveController.playerInfo && moveController.playerInfo.MoneyAtRoundStart / 2 > orderedByMoney[1].MoneyAtRoundStart) ||
 			    moveController.gameInfo.MaxBet < moveController.gameInfo.BigBlind * 3.5f) 
-				SetBettingAsAction(moveController.gameInfo.BigBlind * 3f);
+				SetBettingAsAction(moveController.gameInfo.BigBlind * 2f);
 			else
 				botAction = Call;
 		}
@@ -191,7 +198,7 @@ public class BotBasicScript : PlayerBasicScript
 			    || orderedRanks[1 + (highCard.Rank == handController.combo.Item2 ? 0 : 1)] <= handController.combo.Item2)
 			{
 				if (handController.combo.Item2 >= 9)
-					SetBettingAsAction(moveController.gameInfo.BigBlind * 3f);
+					SetBettingAsAction(moveController.gameInfo.BigBlind * 2f);
 				else
 					botAction = Call;
 			}
@@ -204,36 +211,27 @@ public class BotBasicScript : PlayerBasicScript
 
 	protected virtual void TwoPairComboDecision()
 	{
-		if (moveController.CanCheck())
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 4f);
-		else
-			botAction = Call;
+		SetBettingAsAction (moveController.gameInfo.BigBlind * 3f);
 	}
 
 	protected virtual void SetComboDecision()
 	{
-		if (moveController.CanCheck())
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 6f);
-		else
-			botAction = Call;
+		SetBettingAsAction (moveController.gameInfo.BigBlind * 4f);
 	}
 
 	protected virtual void StraightDecision()
 	{
-		if (moveController.CanCheck ())
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 8f);
-		else
-			SetBettingAsAction (moveController.gameInfo.BigBlind * 6f);
+		SetBettingAsAction (moveController.gameInfo.BigBlind * 4f);
 	}
 
 	protected virtual void FlushDecision()
 	{
-		SetBettingAsAction(moveController.gameInfo.BigBlind * 8f);
+		SetBettingAsAction(moveController.gameInfo.BigBlind * 6f);
 	}
 
 	protected virtual void FullHouseDecision()
 	{
-		SetBettingAsAction(moveController.gameInfo.BigBlind * 8f);
+		SetBettingAsAction(moveController.gameInfo.BigBlind * 6f);
 	}
 
 	protected virtual void QuadDecision()
@@ -270,7 +268,7 @@ public class BotBasicScript : PlayerBasicScript
 
 	protected void SetBettingAsAction(float raise)
 	{
-		this.raise = raise;
+		this.raise = raise  * (movesDone + 1) + (float)randomBet.NextDouble() * moveController.gameInfo.BigBlind;
 		botAction = Betting;
 	}
 

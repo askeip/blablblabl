@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerInfo : ReadonlyPlayerInfo
@@ -33,7 +33,7 @@ public class PlayerInfo : ReadonlyPlayerInfo
 		callSize = maxBet - PlayerBet;
 	}
 
-	public void IncreasePlayerBet(float playerBet)
+	public void SetLastPlayerBet(float playerBet)
 	{
 		lastPlayerBet = playerBet;
 		this.playerBet += playerBet;
@@ -51,6 +51,6 @@ public class PlayerInfo : ReadonlyPlayerInfo
 		callSize = 0;
 		lastPlayerBet = 0;
 		playerBet = 0;
-		moneyAtStartOfRound = Money;
+		moneyAtRoundStart = Money;
 	}
 }

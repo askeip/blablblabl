@@ -1,27 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Bots\HardBotScript.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerUIInfo.cs">
     <Files>
-      <File FileName="Assets\Scripts\GameManager.cs" Line="139" Column="1" />
-      <File FileName="Assets\Scripts\CardScripts\CardDistributor.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CardScripts\CardBasicScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\OrderController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\PlayerScripts\MoveController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Bots\BotBasicScript.cs" Line="56" Column="24" />
-      <File FileName="Assets\Scripts\Bots\HardBotScript.cs" Line="6" Column="2" />
-      <File FileName="Assets\Scripts\Bots\BotBluffScript.cs" Line="154" Column="21" />
+      <File FileName="Assets\Scripts\PlayerUIInfo.cs" Line="46" Column="153" />
+      <File FileName="Assets\Scripts\PlayerScripts\MoveController.cs" Line="78" Column="3" />
+      <File FileName="Assets\Scripts\Bots\BotBasicScript.cs" Line="162" Column="22" />
+      <File FileName="Assets\Scripts\PlayerScripts\PlayerInfo.cs" Line="50" Column="3" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="401" Column="1" />
+      <File FileName="Assets\Scripts\ButtonCanvasScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Bots\BotBluffScript.cs" Line="21" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="C:\Users\Евгений\Documents\GitHub\blablblabl\Poker\Assets\Scripts\AnotherButtonCanvasScript.cs" line="31" />
-      <Breakpoint file="C:\Users\Евгений\Documents\GitHub\blablblabl\Poker\Assets\Scripts\SidePot.cs" line="43" />
-      <Breakpoint file="C:\Users\Евгений\Documents\GitHub\blablblabl\Poker\Assets\Scripts\GameManager.cs" line="134" />
-      <Breakpoint file="C:\Users\Евгений\Documents\GitHub\blablblabl\Poker\Assets\Scripts\GameManager.cs" line="136" />
-      <Breakpoint file="C:\Users\Евгений\Documents\GitHub\blablblabl\Poker\Assets\Scripts\GameManager.cs" line="155" />
-      <Breakpoint file="C:\Users\Евгений\Documents\GitHub\blablblabl\Poker\Assets\Scripts\OrderController.cs" line="58" />
-      <Breakpoint file="C:\Users\Евгений\Documents\GitHub\blablblabl\Poker\Assets\Scripts\GameManager.cs" line="106" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
