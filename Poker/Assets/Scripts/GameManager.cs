@@ -8,22 +8,14 @@ using System;
 
 public class GameManager : MonoBehaviour 
 {
-	//public GameObject Player;
-	//public GameObject Bot;
 	List<PlayerBasicScript> playerScripts;
-	//List<PlayerScript> activePlayers;
 	CardDistributor cardDistributor;
-
-	//public float Divider;
 
 	public GameObject Card;
 	public GameInfo gameInfo;
-	//public int numOfPlayers;
 	Vector3[] positions = new Vector3[]{new Vector3(0,-2,0),new Vector3(-5,0,0),new Vector3(5,0,0)};
-	//Vector3 deckPosition = new Vector3(0,0,0);
 
 	public bool gameOver { get; private set; }
-	//public float LastRaise { get; private set; }
 
 	WinnerChooser winnerChooser;
 	PlayersFilter playersFilter;
@@ -31,34 +23,23 @@ public class GameManager : MonoBehaviour
 
 	public PlayerUIInfo[] playersUIInfo;
 	public Text POTText;
-	//public Text[] PlayerMoneyText;
 
 	float waitingTime = 0f;
-	//int gamePhase = 0;
 
 	PotCounter pot;
 	List<PlayerBasicScript> allinPlayers;
 
-	//float maxBet;
 	public List<GameObject> players;
-	//float bigBlind;
-	//int roundsPlayed;
-	//float blindDifference;
 
 	void Start()
 	{
-		//blindDifference = 400f;
-		//bigBlind = blindDifference;
-		//roundsPlayed = -1;
-		//Divider = 100f;
 		gameInfo = new GameInfo (400f,100f);
 		gameOver = false;
 		cardDistributor = new CardDistributor ();
 		winnerChooser = new WinnerChooser ();
 		playersFilter = new PlayersFilter ();
-		orderController = new OrderController (players.Count);//gameInfo.NumOfPlayers);
+		orderController = new OrderController (players.Count);
 		pot = new PotCounter ();
-		//timer = 0;
 		float money = 20000f;
 		playerScripts = new List<PlayerBasicScript> ();
 		for (int i =0; i<players.Count;i++)//i<gameInfo.NumOfPlayers - 1; i++) //playersUIInfo.Count должен быть равен players.Count 
@@ -241,10 +222,18 @@ public class GameManager : MonoBehaviour
 					playerScript.handController.ChooseWinningCards();
 			}
 			break;
-		case 4:ChooseWinners();
+		case 4:
+			ChooseWinners ();
+			UpdatePlayersUIInfo ();
 			WaitFinish();
 			break;
 		}
+	}
+
+	private void UpdatePlayersUIInfo()
+	{
+		foreach (var playerUI in playersUIInfo)
+			playerUI.MadeMove ();
 	}
 
 	private void PreFlop()
@@ -281,9 +270,9 @@ public class GameManager : MonoBehaviour
 		var cardScript = cardDistributor.TableCards [gameInfo.GamePhase+1].GetComponent<CardBasicScript> ();
 		foreach (var playerScript in playerScripts)
 		{
-			if (cardScript.Card.Suit == playerScript.handController.FlushPossible.Item1)
+			if (cardScript.Card.Suit == playerScript.handController.FlushCheck.Suit)
 			{
-				playerScript.handController.FlushPossible.Item2 += 1;
+				playerScript.handController.FlushCheck.Amount += 1;
 			}
 		}
 	}

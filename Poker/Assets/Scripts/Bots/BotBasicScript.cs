@@ -99,8 +99,8 @@ public class BotBasicScript : PlayerBasicScript
 	public virtual void MakeMoveDecision()
 	{
 		ChooseHighestHandCard ();
-		if (handController.combo.Item1 == Combos.Straight || handController.combo.Item1 == Combos.Flush
-		    || handController.combo.Item1 >= Combos.StraightFlush)
+		if (handController.combo.ComboName == Combos.Straight || handController.combo.ComboName == Combos.Flush
+		    || handController.combo.ComboName >= Combos.StraightFlush)
 		{
 			ChooseBotAction();
 		}
@@ -119,7 +119,7 @@ public class BotBasicScript : PlayerBasicScript
 
 	protected void ChooseBotAction()
 	{
-		switch (handController.combo.Item1)
+		switch (handController.combo.ComboName)
 		{
 		case Combos.High:HighComboDecision();
 			break;
@@ -168,7 +168,7 @@ public class BotBasicScript : PlayerBasicScript
 
 	protected bool HighChanceOfLuck()
 	{
-		return  handController.cardsTaken != 7 && (StraightPossible () || handController.FlushPossible.Item2 >= 4);
+		return  handController.cardsTaken != 7 && (StraightPossible () || handController.FlushCheck.Amount >= 4);
 	}
 
 	protected bool TimeToBet(int chance)
@@ -195,9 +195,9 @@ public class BotBasicScript : PlayerBasicScript
 				.OrderByDescending (z => z)
 					.ToList ();
 			if (moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 3f || highCard.Rank >= 13
-			    || orderedRanks[1 + (highCard.Rank == handController.combo.Item2 ? 0 : 1)] <= handController.combo.Item2)
+			    || orderedRanks[1 + (highCard.Rank == handController.combo.Strength ? 0 : 1)] <= handController.combo.Strength)
 			{
-				if (handController.combo.Item2 >= 9)
+				if (handController.combo.Strength >= 9)
 					SetBettingAsAction(moveController.gameInfo.BigBlind * 2f);
 				else
 					botAction = Call;

@@ -24,7 +24,7 @@ public class CardDistributor
 
 	public void PutNewCard(List<PlayerBasicScript> playerScripts, int numOfCard)
 	{
-		var cardScript = TableCards [numOfCard].GetComponent<CardBasicScript> ();
+		var cardScript = TableCards[numOfCard].GetComponent<CardBasicScript> ();
 		var notFoldedPlayers = playersFilter.NotFoldedPlayers (playerScripts);
 		foreach (var playerScript in notFoldedPlayers)
 			playerScript.handController.AddCard (cardScript);

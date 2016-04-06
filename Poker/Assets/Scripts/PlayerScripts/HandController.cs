@@ -11,7 +11,7 @@ public class HandController
 
 	public int cardsTaken { get; set; }
 
-	public Tuple<Suits,int> FlushPossible;
+	public FlushChecker FlushCheck;
 
 	public List<CardBasicScript> WinningCards;
 
@@ -19,18 +19,15 @@ public class HandController
 	{
 		combo = new Combo (Combos.High, 0);
 		AvailableCards = new Dictionary<int, List<CardBasicScript>> ();
-		FlushPossible = new Tuple<Suits, int> (Suits.Spikes, 0);
+		FlushCheck = new FlushChecker(Suits.Spikes, 0);
 		WinningCards = new List<CardBasicScript> ();
 	}
 
 	public void UpdateCombo ()
 	{
 		combo = new Combo (Combos.High, 0);
-		//string combo = "";
 		foreach (var e in AvailableCards.Values) {
-			//if (e == null)
-			//	continue;
-			if (combo.Item1 < Combos.Quad)
+			if (combo.ComboName < Combos.Quad)
 			{
 				if (e.Count == 2)
 				{
@@ -46,13 +43,13 @@ public class HandController
 				combo = new Combo(Combos.Quad, e[0].Card.Rank);
 			}
 		}
-		if (combo.Item1 < Combos.Straight)
+		if (combo.ComboName < Combos.Straight)
 			combo = combo.CheckStraight (AvailableCards);
-		if (combo.Item2 == 0)
+		if (combo.Strength == 0)
 			combo = new Combo(Combos.High, GetHighestRank());
-		if (FlushPossible.Item2 >= 5 && combo.Item1 <= Combos.Straight) 
+		if (FlushCheck.Amount >= 5 && combo.ComboName <= Combos.Straight) 
 		{
-			combo = combo.CheckStraightFlush(AvailableCards,FlushPossible);
+			combo = combo.CheckStraightFlush(AvailableCards,FlushCheck);
 		}
 	}
 
@@ -66,8 +63,6 @@ public class HandController
 		Dictionary<Suits,int> suitCount = new Dictionary<Suits, int>();
 		foreach (var listOfCardScript in AvailableCards.Values)
 		{
-			//if (listOfCardScript == null)
-			//	continue;
 			foreach (var cardScript in listOfCardScript)
 			{
 				if (suitCount.ContainsKey(cardScript.Card.Suit))
@@ -78,8 +73,8 @@ public class HandController
 		}
 		foreach (var suit in suitCount) 
 		{
-			if (suit.Value > FlushPossible.Item2)
-				FlushPossible = new Tuple<Suits, int>(suit.Key,suit.Value);
+			if (suit.Value > FlushCheck.Amount)
+				FlushCheck = new FlushChecker(suit.Key,suit.Value);
 		}
 	}
 	
@@ -95,25 +90,25 @@ public class HandController
 	public void ChooseWinningCards()
 	{
 		List<int> ranksForSkip = new List<int> ();
-		if (combo.Item1 == Combos.Straight)
+		if (combo.ComboName == Combos.Straight)
 		{
 			for (int i=0;i<5;i++)
 			{
-				if (combo.Item2-i == 1)
+				if (combo.Strength-i == 1)
 					WinningCards.Add(AvailableCards[14][0]);
 				else
-					WinningCards.Add(AvailableCards[combo.Item2-i][0]);
+					WinningCards.Add(AvailableCards[combo.Strength-i][0]);
 			}
 		}
 		else
 		{
-			if(combo.Item2 > 100)
+			if(combo.Strength > 100)
 			{
-				AddWinningCards(combo.Item2/100);
-				ranksForSkip.Add(combo.Item2/100);
+				AddWinningCards(combo.Strength/100);
+				ranksForSkip.Add(combo.Strength/100);
 			}
-			AddWinningCards(combo.Item2%100);
-			ranksForSkip.Add(combo.Item2%100);
+			AddWinningCards(combo.Strength%100);
+			ranksForSkip.Add(combo.Strength%100);
 		}
 		var orderedCards = AvailableCards.Select (z => z.Key)
 			.OrderByDescending (z => z)
@@ -135,16 +130,4 @@ public class HandController
 				break;
 		}
 	}
-}
-
-public class Tuple<T1,T2>
-{
-	public Tuple(T1 item1, T2 item2)
-	{
-		Item1 = item1;
-		Item2 = item2;
-	}
-	
-	public T1 Item1 { get; set; }
-	public T2 Item2 { get; set; }
 }

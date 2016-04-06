@@ -32,7 +32,7 @@ public class PlayerBasicScript : MonoBehaviour
 		leftCardPosition = new Vector3(transform.position.x - 0.5f,transform.position.y  - 0.5f,transform.position.z);
 		rightCardPosition = new Vector3(transform.position.x + 0.5f,transform.position.y  - 0.5f,transform.position.z);
 		
-		var timeCard =(GameObject)Instantiate (Card, leftCardPosition, Quaternion.identity);
+		var timeCard = (GameObject)Instantiate (Card, leftCardPosition, Quaternion.identity);
 		leftCard = timeCard.GetComponent<CardBasicScript> ();
 		timeCard = (GameObject)Instantiate (Card, rightCardPosition, Quaternion.identity);
 		rightCard = timeCard.GetComponent<CardBasicScript> ();

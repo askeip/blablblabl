@@ -19,14 +19,13 @@ public class GameInfo :PlayersGameInfo
 		readonlyPlayersInfo [index] = readonlyPlayerInfo;
 	}
 
-	public GameInfo(float blindDifference, float divider,float bigBlind = 0f)//,int numOfPlayers)
+	public GameInfo(float blindDifference, float divider,float bigBlind = 0f)
 	{
 		readonlyPlayersInfo = new List<ReadonlyPlayerInfo> ();
 		this.blindDifference = blindDifference;
 		this.bigBlind = bigBlind == 0 ? 2 * blindDifference : bigBlind;
 		roundsPlayed = -1;
 		this.divider = divider;
-		//this.numOfPlayers = numOfPlayers;
 		NextRound ();
 	}
 

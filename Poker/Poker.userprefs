@@ -1,14 +1,34 @@
-﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerUIInfo.cs">
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Bots\NewBaseOfBots.cs">
     <Files>
-      <File FileName="Assets\Scripts\PlayerUIInfo.cs" Line="46" Column="153" />
-      <File FileName="Assets\Scripts\PlayerScripts\MoveController.cs" Line="78" Column="3" />
-      <File FileName="Assets\Scripts\Bots\BotBasicScript.cs" Line="162" Column="22" />
-      <File FileName="Assets\Scripts\PlayerScripts\PlayerInfo.cs" Line="50" Column="3" />
-      <File FileName="Assets\Scripts\GameManager.cs" Line="401" Column="1" />
+      <File FileName="Assets\Scripts\Bots\BotBasicScript.cs" Line="12" Column="22" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="227" Column="27" />
+      <File FileName="Assets\Scripts\Combo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerUIInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerScripts\MoveController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerScripts\PlayerInfo.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ButtonCanvasScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Bots\BotBluffScript.cs" Line="21" Column="5" />
+      <File FileName="Assets\Scripts\Bots\BotBluffScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CardScripts\CardBasicScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CardScripts\CardScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CardScripts\CardDistributor.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CardScripts\CardDeck.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerScripts\PlayerBasicScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerScripts\PlayerScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerScripts\HandController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerScripts\ReadonlyPlayerInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CardScripts\FlushChecker.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Bots\HardBotScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ChanceOfWin.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerUIInfoPlacer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayersGameInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GameInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerScripts\PlayersFilter.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerScripts\WinnerChooser.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\SidePot.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\OrderController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Bots\NewBaseOfBots.cs" Line="9" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

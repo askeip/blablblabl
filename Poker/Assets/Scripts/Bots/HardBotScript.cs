@@ -15,7 +15,7 @@ public class HardBotScript : BotBasicScript
 		}
 		else if (handController.cardsTaken >= 5)
 		{
-			if (handController.combo.Item1 >= Combos.TwoPair)
+			if (handController.combo.ComboName >= Combos.TwoPair)
 			{
 				HighChanceOfWin();
 			}
@@ -135,14 +135,14 @@ public class HardBotScript : BotBasicScript
 			var orderedRanks = handController.AvailableCards.Select (z => z.Key)
 				.OrderByDescending (z => z)
 					.ToList ();
-			if (handController.combo.Item2 >= orderedRanks[1] || handController.combo.Item2 >= 10)
+			if (handController.combo.Strength >= orderedRanks[1] || handController.combo.Strength >= 10)
 			{
 				if (rnd.Next(10) <= 6)
 					SetBettingAsAction(moveController.gameInfo.BigBlind * 5f);
 				else
 					botAction = Call;
 			}
-			else if (handController.combo.Item2 <= orderedRanks[2 + (highCard.Rank == handController.combo.Item2 ? 0 : 1)] &&
+			else if (handController.combo.Strength <= orderedRanks[2 + (highCard.Rank == handController.combo.Strength ? 0 : 1)] &&
 			         moveController.playerInfo.CallSize >= moveController.gameInfo.BigBlind * 5f)
 				botAction = Fold;
 			else //if (HighChanceOfLuck()	&& moveController.playerInfo.CallSize <= moveController.gameInfo.BigBlind * 4f

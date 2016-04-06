@@ -7,19 +7,19 @@ public enum Combos{High=1,Pair,TwoPair,Set,Straight,Flush,FullHouse,Quad,Straigh
 
 public class Combo 
 {
-	public Combos Item1;
+	public Combos ComboName;
 
-	public int Item2;
+	public int Strength;
 
 	public Combo(Combos combo,int strength)
 	{
-		Item1 = combo;
-		Item2 = strength;
+		ComboName = combo;
+		Strength = strength;
 	}
 
 	public override int GetHashCode ()
 	{
-		return (int)Item1 * 10000 + Item2;
+		return (int)ComboName * 10000 + Strength;
 	}
 
 	public override bool Equals (object o)
@@ -27,20 +27,20 @@ public class Combo
 		if (!(o is Combo))
 			return false;
 		var combo = o as Combo;
-		return Item1 == combo.Item1 && Item2 == combo.Item2;
+		return ComboName == combo.ComboName && Strength == combo.Strength;
 	}
 
-	public Combo CheckStraightFlush(Dictionary<int,List<CardBasicScript>> Combination,Tuple<Suits,int> FlushPossible)
+	public Combo CheckStraightFlush(Dictionary<int,List<CardBasicScript>> combination,FlushChecker flushChecker)
 	{
-		var flush = new Combo(Combos.Flush, HighFlushRank(Combination,FlushPossible));
-		if (Item1!=Combos.Straight)
+		var flush = new Combo(Combos.Flush, HighFlushRank(combination,flushChecker));
+		if (ComboName!=Combos.Straight)
 			return flush;
 		for (int i =0; i<5; i++)
 		{
 			var sameSuit = false;
-			foreach (var cardScript in Combination[Item2-i])
+			foreach (var cardScript in combination[Strength-i])
 			{
-				if (cardScript.Card.Suit == FlushPossible.Item1)
+				if (cardScript.Card.Suit == flushChecker.Suit)
 				{
 					sameSuit = true;
 					break;
@@ -49,27 +49,27 @@ public class Combo
 			if (!sameSuit)
 				return flush;
 		}
-		if (Item2 == 14)
-			return new Combo(Combos.RoyalFlush,Item2);
-		return new Combo(Combos.StraightFlush,Item2);
+		if (Strength == 14)
+			return new Combo(Combos.RoyalFlush,Strength);
+		return new Combo(Combos.StraightFlush,Strength);
 	}
 
-	public int HighFlushRank(Dictionary<int,List<CardBasicScript>> Combination,Tuple<Suits,int> FlushPossible)
+	public int HighFlushRank(Dictionary<int,List<CardBasicScript>> combination,FlushChecker flushChecker)
 	{
-		return Combination.OrderByDescending (z => z.Key)
-			.Where (z => z.Value.Where (d => d.Card.Suit == FlushPossible.Item1) != null)
+		return combination.OrderByDescending (z => z.Key)
+			.Where (z => z.Value.Where (d => d.Card.Suit == flushChecker.Suit) != null)
 				.Select (z => z.Value [0].Card.Rank)
 				.ElementAt (0);
 	}
 	
-	public Combo CheckStraight(Dictionary<int,List<CardBasicScript>> Combination)
+	public Combo CheckStraight(Dictionary<int,List<CardBasicScript>> combination)
 	{
 		int straightFromRank = 14;
 		while (straightFromRank > 4) 
 		{
-			if (Combination.ContainsKey(straightFromRank))
+			if (combination.ContainsKey(straightFromRank))
 			{
-				int cardsInARow = CardsInARow(Combination,straightFromRank - 1);
+				int cardsInARow = CardsInARow(combination,straightFromRank - 1);
 				if (cardsInARow >= 4)
 					return new Combo(Combos.Straight,straightFromRank);
 			}
@@ -78,19 +78,19 @@ public class Combo
 		return this;
 	}
 
-	public static int CardsInARow(Dictionary<int,List<CardBasicScript>> Combination,int checkFromRank)
+	public static int CardsInARow(Dictionary<int,List<CardBasicScript>> combination,int checkFromRank)
 	{
 		int cardsInARow = 0;
 		while (true)
 		{
-			if (Combination.ContainsKey(checkFromRank))
+			if (combination.ContainsKey(checkFromRank))
 			{
 				cardsInARow++;
 				checkFromRank--;
 			}
 			else
 			{
-				if (checkFromRank == 1 && Combination.ContainsKey(14))
+				if (checkFromRank == 1 && combination.ContainsKey(14))
 					cardsInARow++;
 				return cardsInARow;
 			}
@@ -99,34 +99,34 @@ public class Combo
 	
 	public Combo TwoItemCombo(int comboRank)
 	{
-		if (Item2 == 0)
+		if (Strength == 0)
 			return new Combo(Combos.Pair,comboRank);
-		if (Item1 < Combos.Set) {
-			if (Item1 == Combos.Pair)
-				return new Combo (Combos.TwoPair, (Item2 > comboRank ? Item2 * 100 + comboRank : comboRank * 100 + Item2));
-			else if (Item1 == Combos.TwoPair) {
-				if (comboRank > Item2 % 100)
-					return new Combo (Combos.TwoPair, (Item2 / 100 > comboRank ? Item2 - Item2 % 100 + comboRank : comboRank * 100 + Item2 / 100));
+		if (ComboName < Combos.Set) {
+			if (ComboName == Combos.Pair)
+				return new Combo (Combos.TwoPair, (Strength > comboRank ? Strength * 100 + comboRank : comboRank * 100 + Strength));
+			else if (ComboName == Combos.TwoPair) {
+				if (comboRank > Strength % 100)
+					return new Combo (Combos.TwoPair, (Strength / 100 > comboRank ? Strength - Strength % 100 + comboRank : comboRank * 100 + Strength / 100));
 			}
-		} else if (Item1 == Combos.Set)
-			return new Combo (Combos.FullHouse, Item2 * 100 + comboRank);
-		else if (Item1 == Combos.FullHouse && comboRank > Item2 % 100)
-			return new Combo (Combos.FullHouse, Item2 - Item2 % 100 + comboRank);
+		} else if (ComboName == Combos.Set)
+			return new Combo (Combos.FullHouse, Strength * 100 + comboRank);
+		else if (ComboName == Combos.FullHouse && comboRank > Strength % 100)
+			return new Combo (Combos.FullHouse, Strength - Strength % 100 + comboRank);
 		return this;
 	}
 	
 	public Combo ThreeItemCombo(int comboRank)
 	{
-		if (Item2 == 0)
+		if (Strength == 0)
 			return new Combo(Combos.Set,comboRank);
-		else if (Item1 == Combos.Pair)
-			return new Combo(Combos.FullHouse,comboRank*100 + Item2);
-		else if (Item1 == Combos.TwoPair)
-			return new Combo(Combos.FullHouse,comboRank*100 + Item2/100);
-		else if (Item1 == Combos.Set)
+		else if (ComboName == Combos.Pair)
+			return new Combo(Combos.FullHouse,comboRank*100 + Strength);
+		else if (ComboName == Combos.TwoPair)
+			return new Combo(Combos.FullHouse,comboRank*100 + Strength/100);
+		else if (ComboName == Combos.Set)
 		{
 			return new Combo(Combos.FullHouse,
-			                 comboRank > Item2 ? comboRank * 100 + Item2 : Item2 * 100 + comboRank);
+			                 comboRank > Strength ? comboRank * 100 + Strength : Strength * 100 + comboRank);
 		}
 		return this;
 	}
@@ -135,17 +135,17 @@ public class Combo
 	
 	public override string ToString ()
 	{
-		switch (Item1) 
+		switch (ComboName) 
 		{
-		case Combos.High: return "High " + Item2;
-		case Combos.Pair: return "Pair of " + Item2;
-		case Combos.TwoPair: return "Two Pair of " + Item2/100 + " and " + Item2%100;
-		case Combos.Set: return "Set of " + Item2;
-		case Combos.Straight: return "Straight from " + Item2;
+		case Combos.High: return "High " + Strength;
+		case Combos.Pair: return "Pair of " + Strength;
+		case Combos.TwoPair: return "Two Pair of " + Strength/100 + " and " + Strength%100;
+		case Combos.Set: return "Set of " + Strength;
+		case Combos.Straight: return "Straight from " + Strength;
 		case Combos.Flush : return "Flush";
-		case Combos.FullHouse: return "FullHouse of " + Item2/100 + " and " + Item2%100;
-		case Combos.Quad: return "Quad of " + Item2;
-		case Combos.StraightFlush: return "StraightFlush from " + Item2;
+		case Combos.FullHouse: return "FullHouse of " + Strength/100 + " and " + Strength%100;
+		case Combos.Quad: return "Quad of " + Strength;
+		case Combos.StraightFlush: return "StraightFlush from " + Strength;
 		case Combos.RoyalFlush: return "RoyalFlush";
 		default: return "KEKUS 4T0 TUT MOJET BIT";
 		}

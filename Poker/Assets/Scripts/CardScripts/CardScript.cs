@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using System.Collections;
 
 using System.Linq;
@@ -18,3 +18,4 @@ public class CardScript : CardBasicScript
 		Resources.UnloadUnusedAssets ();
 	}
 }
+*/
